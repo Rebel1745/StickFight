@@ -12,10 +12,11 @@ namespace StickFight
         [SerializeField, Range(0f, 0.3f)] private float _coyoteTime = 0.2f;
         [SerializeField, Range(0f, 0.3f)] private float _jumpBufferTime = 0.2f;
 
+        private Animator _anim;
         private Controller _controller;
         private Rigidbody2D _body;
         private CollisionDataRetriever _collisionDataRetriever;
-        private PlayerAnimationController _playerAnimationController;
+        private AnimationController _playerAnimationController;
         private Vector2 _velocity;
 
         private int _jumpPhase;
@@ -27,10 +28,11 @@ namespace StickFight
         // Start is called before the first frame update
         void Awake()
         {
+            _anim = GetComponent<Animator>();
             _body = GetComponent<Rigidbody2D>();
             _collisionDataRetriever = GetComponent<CollisionDataRetriever>();
             _controller = GetComponent<Controller>();
-            _playerAnimationController = GetComponent<PlayerAnimationController>();
+            _playerAnimationController = GetComponent<AnimationController>();
 
             _isJumpReset = true;
             _defaultGravityScale = 1f;
@@ -54,6 +56,7 @@ namespace StickFight
                 _jumpPhase = 0;
                 _coyoteCounter = _coyoteTime;
                 _isJumping = false;
+                _anim.SetBool("isJumping", false);
             }
             else
             {
@@ -120,6 +123,7 @@ namespace StickFight
                 }
                 _velocity.y += _jumpSpeed;
 
+                _anim.SetBool("isJumping", true);
                 _playerAnimationController.ChangeAnimationState(AnimationToPlay.Jump);
             }
         }

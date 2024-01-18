@@ -17,24 +17,25 @@ namespace StickFight
         [SerializeField, Range(0.05f, 0.5f)] private float _wallStickTime = 0.25f;
         [Header("Wall Climb")]
         [SerializeField][Range(2f, 10f)] private float _wallClimbMaxSpeed = 4f;
-
-
+        
+        private Animator _anim;
         private CollisionDataRetriever _collisionDataRetriever;
-        private PlayerAnimationController _playerAnimationController;
+        private AnimationController _playerAnimationController;
         private Rigidbody2D _body;
         private Controller _controller;
 
         private Vector2 _velocity;
-        private bool _onWall, _onGround, _onCeiling, _desiredJump, _isJumpReset;
+        private bool _onWall, _onGround, _onCeiling, _desiredJump, _isJumpReset, _isClinging;
         private float _wallDirectionX, _wallStickCounter;
 
         // Start is called before the first frame update
         void Start()
         {
+            _anim = GetComponent<Animator>();
             _collisionDataRetriever = GetComponent<CollisionDataRetriever>();
             _body = GetComponent<Rigidbody2D>();
             _controller = GetComponent<Controller>();
-            _playerAnimationController = GetComponent<PlayerAnimationController>();
+            _playerAnimationController = GetComponent<AnimationController>();
 
             _isJumpReset = true;
         }
@@ -47,16 +48,25 @@ namespace StickFight
 
         private void FixedUpdate()
         {
-            _velocity = _body.velocity;
             _onWall = _collisionDataRetriever.OnWall;
+            _velocity = _body.velocity;
             _onGround = _collisionDataRetriever.OnGround;
             _onCeiling = _collisionDataRetriever.OnCeiling;
             _wallDirectionX = _collisionDataRetriever.ContactNormal.x;
+            _isClinging = _controller.input.RetrieveWallClimbInput(this.gameObject);
+
+            _anim.SetBool("isWall", _onWall);
+            _anim.SetBool("isClinging", _isClinging);
+
+            if (!_onWall)
+            {
+                _anim.SetFloat("ClimbSpeed", 0f);
+            }
 
             #region Wall Climb
             float gravity = _body.gravityScale;
 
-            if (_onWall && _controller.input.RetrieveWallClimbInput(this.gameObject))
+            if (_onWall && _isClinging)
             {
                 _body.gravityScale = 0f;
                 _velocity.x = 0f;
@@ -74,7 +84,7 @@ namespace StickFight
             #endregion
 
             #region Wall Slide
-            if (_onWall && !_controller.input.RetrieveWallClimbInput(this.gameObject))
+            if (_onWall && !_isClinging)
             {
                 if(_velocity.y < -_wallSlideMaxSpeed)
                 {
@@ -85,7 +95,7 @@ namespace StickFight
             #endregion
 
             #region Wall Stick
-            if (_collisionDataRetriever.OnWall && !_collisionDataRetriever.OnGround && !WallJumping)
+            if (_onWall && !_onGround && !WallJumping && !_controller.input.RetrieveDashInput(this.gameObject))
             {
                 if (_wallStickCounter > 0)
                 {
@@ -141,6 +151,7 @@ namespace StickFight
                         _desiredJump = false;
                         _isJumpReset = false;
                     }
+                    _anim.SetBool("isJumping", true);
                     _playerAnimationController.ChangeAnimationState(AnimationToPlay.Jump);
                 }
                 else if (!_desiredJump)
@@ -166,6 +177,7 @@ namespace StickFight
             #endregion
 
             _body.velocity = _velocity;
+            _anim.SetFloat("ClimbSpeed", _velocity.y);
         }
 
         private void OnCollisionEnter2D(Collision2D collision)

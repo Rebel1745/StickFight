@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace StickFight
 {
-    public class PlayerAnimationController : MonoBehaviour
+    public class AnimationController : MonoBehaviour
     {
         private Animator _anim;
         private SpriteRenderer _spriteRenderer;
@@ -62,7 +62,7 @@ namespace StickFight
 
             _animationState = animationToPlay;
 
-            _anim.Play(_animationDictionary[_animationState]);
+            //_anim.Play(_animationDictionary[_animationState]);
 
             _previousAnimation = animationToPlay;
         }

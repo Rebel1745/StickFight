@@ -13,18 +13,20 @@ namespace StickFight
         private float _originalGravity;
         private int _currentDashNumber = 0;
 
+        private Animator _anim;
         private Controller _controller;
         private Rigidbody2D _body;
         private CollisionDataRetriever _collisionDataRetriever;
-        private PlayerAnimationController _playerAnimationController;
+        private AnimationController _playerAnimationController;
         private Vector2 _velocity;
 
         private void Awake()
         {
+            _anim = GetComponent<Animator>();
             _body = GetComponent<Rigidbody2D>();
             _collisionDataRetriever = GetComponent<CollisionDataRetriever>();
             _controller = GetComponent<Controller>();
-            _playerAnimationController = GetComponent<PlayerAnimationController>();
+            _playerAnimationController = GetComponent<AnimationController>();
         }
 
         private void Start()
@@ -55,12 +57,14 @@ namespace StickFight
             _body.gravityScale = _originalGravity;
             _isDashing = false;
             _body.velocity = Vector2.zero;
+            _anim.SetBool("isDashing", false);
             _playerAnimationController.ChangeAnimationState(AnimationToPlay.Idle);
             _controller.input.DashFinished();
         }
 
         private IEnumerator DoDash()
         {
+            _anim.SetBool("isDashing", true);
             _playerAnimationController.ChangeAnimationState(AnimationToPlay.Dash);
             _currentDashNumber++;
             _isDashing = true;

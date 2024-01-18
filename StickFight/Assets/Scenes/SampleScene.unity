@@ -852,7 +852,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxSpeed: 10
-  _useAcceleration: 1
+  _useAcceleration: 0
   _maxAcceleration: 35
   _maxAirAcceleration: 20
 --- !u!96 &876415944

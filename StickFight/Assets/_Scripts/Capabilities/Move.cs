@@ -10,21 +10,23 @@ namespace StickFight
         [SerializeField, Range(0f, 100f)] private float _maxAcceleration = 35f;
         [SerializeField, Range(0f, 100f)] private float _maxAirAcceleration = 20f;
 
+        private Animator _anim;
         private Controller _controller;
         private Vector2 _direction, _desiredVelocity, _velocity;
         private Rigidbody2D _body;
         private CollisionDataRetriever _collisionDataRetriever;
-        private PlayerAnimationController _playerAnimationController;
+        private AnimationController _playerAnimationController;
 
         private float _maxSpeedChange, _acceleration;
         private bool _onGround, _onWall;
 
         private void Awake()
         {
+            _anim = GetComponent<Animator>();
             _body = GetComponent<Rigidbody2D>();
             _collisionDataRetriever = GetComponent<CollisionDataRetriever>();
             _controller = GetComponent<Controller>();
-            _playerAnimationController = GetComponent<PlayerAnimationController>();
+            _playerAnimationController = GetComponent<AnimationController>();
         }
 
         private void Update()
@@ -49,6 +51,9 @@ namespace StickFight
                 _velocity.x = _desiredVelocity.x;
 
             _body.velocity = _velocity;
+
+            _anim.SetBool("isGround", _onGround);
+            _anim.SetFloat("MovementSpeed", Mathf.Abs(_velocity.x));
 
             if (_onGround)
             {

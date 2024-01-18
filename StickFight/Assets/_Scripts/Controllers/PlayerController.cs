@@ -86,14 +86,12 @@ namespace StickFight
 
         private void DashLeftStarted(InputAction.CallbackContext context)
         {
-            Debug.Log("Dash left pressed");
             _isDashing = true;
             _dashDirection = -1;
         }
 
         private void DashRightStarted(InputAction.CallbackContext context)
         {
-            Debug.Log("Dash right pressed");
             _isDashing = true;
             _dashDirection = 1;
         }

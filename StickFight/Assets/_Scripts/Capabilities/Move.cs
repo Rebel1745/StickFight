@@ -6,6 +6,7 @@ namespace StickFight
     public class Move : MonoBehaviour
     {
         [SerializeField, Range(0f, 100f)] private float _maxSpeed = 4f;
+        [SerializeField] bool _useAcceleration = true;
         [SerializeField, Range(0f, 100f)] private float _maxAcceleration = 35f;
         [SerializeField, Range(0f, 100f)] private float _maxAirAcceleration = 20f;
 
@@ -13,6 +14,7 @@ namespace StickFight
         private Vector2 _direction, _desiredVelocity, _velocity;
         private Rigidbody2D _body;
         private CollisionDataRetriever _collisionDataRetriever;
+        private PlayerAnimationController _playerAnimationController;
 
         private float _maxSpeedChange, _acceleration;
         private bool _onGround, _onWall;
@@ -22,6 +24,7 @@ namespace StickFight
             _body = GetComponent<Rigidbody2D>();
             _collisionDataRetriever = GetComponent<CollisionDataRetriever>();
             _controller = GetComponent<Controller>();
+            _playerAnimationController = GetComponent<PlayerAnimationController>();
         }
 
         private void Update()
@@ -36,11 +39,28 @@ namespace StickFight
 
             _velocity = _body.velocity;
            
-            _acceleration = _onGround ? _maxAcceleration : _maxAirAcceleration;
-            _maxSpeedChange = _acceleration * Time.deltaTime;
-            _velocity.x = Mathf.MoveTowards(_velocity.x, _desiredVelocity.x, _maxSpeedChange);
+            if (_useAcceleration)
+            {
+                _acceleration = _onGround ? _maxAcceleration : _maxAirAcceleration;
+                _maxSpeedChange = _acceleration * Time.deltaTime;
+                _velocity.x = Mathf.MoveTowards(_velocity.x, _desiredVelocity.x, _maxSpeedChange);
+            }                
+            else
+                _velocity.x = _desiredVelocity.x;
 
             _body.velocity = _velocity;
+
+            if (_onGround)
+            {
+                if (_velocity.x == 0f)
+                {
+                    _playerAnimationController.ChangeAnimationState(AnimationToPlay.Idle);
+                }
+                else
+                {
+                    _playerAnimationController.ChangeAnimationState(AnimationToPlay.Run);
+                }
+            }
         }
     }
 }

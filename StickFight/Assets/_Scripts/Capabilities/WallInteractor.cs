@@ -20,6 +20,7 @@ namespace StickFight
 
 
         private CollisionDataRetriever _collisionDataRetriever;
+        private PlayerAnimationController _playerAnimationController;
         private Rigidbody2D _body;
         private Controller _controller;
 
@@ -33,6 +34,7 @@ namespace StickFight
             _collisionDataRetriever = GetComponent<CollisionDataRetriever>();
             _body = GetComponent<Rigidbody2D>();
             _controller = GetComponent<Controller>();
+            _playerAnimationController = GetComponent<PlayerAnimationController>();
 
             _isJumpReset = true;
         }
@@ -59,6 +61,11 @@ namespace StickFight
                 _body.gravityScale = 0f;
                 _velocity.x = 0f;
                 _velocity.y = _controller.input.RetrieveMoveInput(this.gameObject).y * _wallClimbMaxSpeed;
+
+                if (_velocity.y >= 0)
+                    _playerAnimationController.ChangeAnimationState(AnimationToPlay.WallClimb);
+                else
+                    _playerAnimationController.ChangeAnimationState(AnimationToPlay.WallSlide);
             }
             else
             {
@@ -72,6 +79,7 @@ namespace StickFight
                 if(_velocity.y < -_wallSlideMaxSpeed)
                 {
                     _velocity.y = -_wallSlideMaxSpeed;
+                    _playerAnimationController.ChangeAnimationState(AnimationToPlay.WallSlide);
                 }
             }
             #endregion
@@ -133,6 +141,7 @@ namespace StickFight
                         _desiredJump = false;
                         _isJumpReset = false;
                     }
+                    _playerAnimationController.ChangeAnimationState(AnimationToPlay.Jump);
                 }
                 else if (!_desiredJump)
                 {
@@ -147,6 +156,7 @@ namespace StickFight
                 _body.gravityScale = 0f;
                 _velocity.x = _controller.input.RetrieveMoveInput(this.gameObject).x * _wallClimbMaxSpeed;
                 _velocity.y = 0f;
+                _playerAnimationController.ChangeAnimationState(AnimationToPlay.CeilingMove);
             }
             else
             {

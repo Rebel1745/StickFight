@@ -60,12 +60,12 @@ namespace StickFight
 
         private void RetrieveFriction(Collision2D collision)
         {
-            _material = collision.rigidbody.sharedMaterial;
-
             Friction = 0;
 
-            if(_material != null)
+            if(collision.rigidbody.sharedMaterial != null)
             {
+
+                _material = collision.rigidbody.sharedMaterial;
                 Friction = _material.friction;
             }
         }

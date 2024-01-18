@@ -14,7 +14,8 @@ namespace StickFight
 
         private Controller _controller;
         private Rigidbody2D _body;
-        private CollisionDataRetriever _ground;
+        private CollisionDataRetriever _collisionDataRetriever;
+        private PlayerAnimationController _playerAnimationController;
         private Vector2 _velocity;
 
         private int _jumpPhase;
@@ -27,8 +28,9 @@ namespace StickFight
         void Awake()
         {
             _body = GetComponent<Rigidbody2D>();
-            _ground = GetComponent<CollisionDataRetriever>();
+            _collisionDataRetriever = GetComponent<CollisionDataRetriever>();
             _controller = GetComponent<Controller>();
+            _playerAnimationController = GetComponent<PlayerAnimationController>();
 
             _isJumpReset = true;
             _defaultGravityScale = 1f;
@@ -44,7 +46,7 @@ namespace StickFight
         {
             if (_controller.input.RetrieveDashInput(this.gameObject)) return;
 
-            _onGround = _ground.OnGround;
+            _onGround = _collisionDataRetriever.OnGround;
             _velocity = _body.velocity;
 
             if (_onGround && _body.velocity.y == 0)
@@ -117,6 +119,8 @@ namespace StickFight
                     _jumpSpeed += Mathf.Abs(_body.velocity.y);
                 }
                 _velocity.y += _jumpSpeed;
+
+                _playerAnimationController.ChangeAnimationState(AnimationToPlay.Jump);
             }
         }
     }

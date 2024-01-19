@@ -852,7 +852,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxSpeed: 10
-  _useAcceleration: 0
+  _useAcceleration: 1
   _maxAcceleration: 35
   _maxAirAcceleration: 20
 --- !u!96 &876415944
@@ -1179,7 +1179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dashSpeed: 30
-  _dashDuration: 0.2
+  _dashDuration: 0.5
   _maxDashes: 1
 --- !u!114 &876415955
 MonoBehaviour:

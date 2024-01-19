@@ -31,7 +31,7 @@ namespace StickFight
 
         private void Update()
         {
-            _direction.x = _controller.input.RetrieveMoveInput(this.gameObject).x;
+            _direction = _controller.input.RetrieveMoveInput(this.gameObject);
             _desiredVelocity = new Vector2(_direction.x, 0f) * Mathf.Max(_maxSpeed - _collisionDataRetriever.Friction, 0f);
         }
 
@@ -54,6 +54,7 @@ namespace StickFight
 
             _anim.SetBool("isGround", _onGround);
             _anim.SetFloat("MovementSpeed", Mathf.Abs(_velocity.x));
+            _anim.SetFloat("ClimbSpeed", _direction.y);
 
             if (_onGround)
             {

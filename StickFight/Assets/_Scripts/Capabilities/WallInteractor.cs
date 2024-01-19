@@ -49,25 +49,21 @@ namespace StickFight
         private void FixedUpdate()
         {
             _onWall = _collisionDataRetriever.OnWall;
+            _anim.SetBool("isWall", _onWall);
+
             _velocity = _body.velocity;
             _onGround = _collisionDataRetriever.OnGround;
             _onCeiling = _collisionDataRetriever.OnCeiling;
             _wallDirectionX = _collisionDataRetriever.ContactNormal.x;
             _isClinging = _controller.input.RetrieveWallClimbInput(this.gameObject);
-
-            _anim.SetBool("isWall", _onWall);
             _anim.SetBool("isClinging", _isClinging);
-
-            if (!_onWall)
-            {
-                _anim.SetFloat("ClimbSpeed", 0f);
-            }
 
             #region Wall Climb
             float gravity = _body.gravityScale;
 
             if (_onWall && _isClinging)
             {
+                _anim.SetBool("isCeiling", false);
                 _body.gravityScale = 0f;
                 _velocity.x = 0f;
                 _velocity.y = _controller.input.RetrieveMoveInput(this.gameObject).y * _wallClimbMaxSpeed;
@@ -77,11 +73,32 @@ namespace StickFight
                 else
                     _playerAnimationController.ChangeAnimationState(AnimationToPlay.WallSlide);
             }
-            else
+            #endregion
+
+            #region On Ceiling
+            if (_onCeiling && _isClinging)
             {
-                _body.gravityScale = gravity;
+                _anim.SetBool("isCeiling", true);
+                _anim.SetBool("isJumping", false);
+                _body.gravityScale = 0f;
+                _velocity.x = _controller.input.RetrieveMoveInput(this.gameObject).x * _wallClimbMaxSpeed;
+                _velocity.y = 0f;
+
+                if (_onWall)
+                {
+                    // we are at the top of a wall, also touching the ceiling.  This should also allow movement on the y axis
+                    _velocity.y = _controller.input.RetrieveMoveInput(this.gameObject).y * _wallClimbMaxSpeed;
+                }
+
+                _playerAnimationController.ChangeAnimationState(AnimationToPlay.CeilingMove);
             }
             #endregion
+
+            if (!_isClinging)
+            {
+                _anim.SetBool("isCeiling", false);
+                //_body.gravityScale = gravity;
+            }
 
             #region Wall Slide
             if (_onWall && !_isClinging)
@@ -161,23 +178,7 @@ namespace StickFight
             }
             #endregion
 
-            #region On Ceiling
-            if(_onCeiling && _controller.input.RetrieveWallClimbInput(this.gameObject))
-            {
-                _body.gravityScale = 0f;
-                _velocity.x = _controller.input.RetrieveMoveInput(this.gameObject).x * _wallClimbMaxSpeed;
-                _velocity.y = 0f;
-                _playerAnimationController.ChangeAnimationState(AnimationToPlay.CeilingMove);
-            }
-            else
-            {
-                _body.gravityScale = gravity;
-            }
-
-            #endregion
-
             _body.velocity = _velocity;
-            _anim.SetFloat("ClimbSpeed", _velocity.y);
         }
 
         private void OnCollisionEnter2D(Collision2D collision)

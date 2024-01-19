@@ -22,7 +22,7 @@ namespace StickFight
         private int _jumpPhase;
         private float _defaultGravityScale, _jumpSpeed, _coyoteCounter, _jumpBufferCounter;
 
-        private bool _desiredJump, _onGround, _isJumping, _isJumpReset;
+        private bool _desiredJump, _onGround, _onWall, _isJumping, _isJumpReset;
 
 
         // Start is called before the first frame update
@@ -46,12 +46,13 @@ namespace StickFight
 
         private void FixedUpdate()
         {
-            if (_controller.input.RetrieveDashInput(this.gameObject)) return;
+            //if (_controller.input.RetrieveDashInput(this.gameObject)) return;
 
             _onGround = _collisionDataRetriever.OnGround;
+            _onWall = _collisionDataRetriever.OnWall;
             _velocity = _body.velocity;
 
-            if (_onGround && _body.velocity.y == 0)
+            if ((_onGround && _body.velocity.y == 0) || _onWall)
             {
                 _jumpPhase = 0;
                 _coyoteCounter = _coyoteTime;
@@ -101,7 +102,7 @@ namespace StickFight
 
         private void JumpAction()
         {
-            if (_coyoteCounter > 0f || (_jumpPhase < _maxAirJumps && _isJumping))
+            if (_coyoteCounter > 0f || (_jumpPhase < _maxAirJumps))
             {
                 if(_isJumping)
                 {

@@ -20,30 +20,29 @@ namespace StickFight
         
         private Animator _anim;
         private CollisionDataRetriever _collisionDataRetriever;
-        private AnimationController _playerAnimationController;
         private Rigidbody2D _body;
         private Controller _controller;
 
-        private Vector2 _velocity;
-        private bool _onWall, _onGround, _onCeiling, _desiredJump, _isJumpReset, _isClinging;
+        private Vector2 _velocity, _moveInput;
+        private bool _onWall, _onGround, _onCeiling, _desiredJump, _isJumpReset, _isClinging, _isDashing;
         private float _wallDirectionX, _wallStickCounter;
-
-        // Start is called before the first frame update
+        
         void Start()
         {
             _anim = GetComponent<Animator>();
             _collisionDataRetriever = GetComponent<CollisionDataRetriever>();
             _body = GetComponent<Rigidbody2D>();
             _controller = GetComponent<Controller>();
-            _playerAnimationController = GetComponent<AnimationController>();
 
             _isJumpReset = true;
         }
-
-        // Update is called once per frame
+        
         void Update()
         {
             _desiredJump = _controller.input.RetrieveJumpInput(this.gameObject);
+            _isClinging = _controller.input.RetrieveWallClimbInput(this.gameObject);
+            _isDashing = _controller.input.RetrieveDashInput(this.gameObject);
+            _moveInput = _controller.input.RetrieveMoveInput(this.gameObject);
         }
 
         private void FixedUpdate()
@@ -55,7 +54,6 @@ namespace StickFight
             _onGround = _collisionDataRetriever.OnGround;
             _onCeiling = _collisionDataRetriever.OnCeiling;
             _wallDirectionX = _collisionDataRetriever.ContactNormal.x;
-            _isClinging = _controller.input.RetrieveWallClimbInput(this.gameObject);
             _anim.SetBool("isClinging", _isClinging);
 
             #region Wall Climb
@@ -66,12 +64,7 @@ namespace StickFight
                 _anim.SetBool("isCeiling", false);
                 _body.gravityScale = 0f;
                 _velocity.x = 0f;
-                _velocity.y = _controller.input.RetrieveMoveInput(this.gameObject).y * _wallClimbMaxSpeed;
-
-                if (_velocity.y >= 0)
-                    _playerAnimationController.ChangeAnimationState(AnimationToPlay.WallClimb);
-                else
-                    _playerAnimationController.ChangeAnimationState(AnimationToPlay.WallSlide);
+                _velocity.y = _moveInput.y * _wallClimbMaxSpeed;
             }
             #endregion
 
@@ -81,23 +74,21 @@ namespace StickFight
                 _anim.SetBool("isCeiling", true);
                 _anim.SetBool("isJumping", false);
                 _body.gravityScale = 0f;
-                _velocity.x = _controller.input.RetrieveMoveInput(this.gameObject).x * _wallClimbMaxSpeed;
+                _velocity.x = _moveInput.x * _wallClimbMaxSpeed;
                 _velocity.y = 0f;
 
                 if (_onWall)
                 {
                     // we are at the top of a wall, also touching the ceiling.  This should also allow movement on the y axis
-                    _velocity.y = _controller.input.RetrieveMoveInput(this.gameObject).y * _wallClimbMaxSpeed;
+                    _velocity.y = _moveInput.y * _wallClimbMaxSpeed;
                 }
-
-                _playerAnimationController.ChangeAnimationState(AnimationToPlay.CeilingMove);
             }
             #endregion
 
             if (!_isClinging)
             {
                 _anim.SetBool("isCeiling", false);
-                //_body.gravityScale = gravity;
+                _body.gravityScale = gravity;
             }
 
             #region Wall Slide
@@ -106,20 +97,19 @@ namespace StickFight
                 if(_velocity.y < -_wallSlideMaxSpeed)
                 {
                     _velocity.y = -_wallSlideMaxSpeed;
-                    _playerAnimationController.ChangeAnimationState(AnimationToPlay.WallSlide);
                 }
             }
             #endregion
 
             #region Wall Stick
-            if (_onWall && !_onGround && !WallJumping && !_controller.input.RetrieveDashInput(this.gameObject))
+            /*if (_onWall && !_onGround && !WallJumping && !_isDashing)
             {
                 if (_wallStickCounter > 0)
                 {
                     _velocity.x = 0;
 
-                    if (_controller.input.RetrieveMoveInput(this.gameObject).x != 0 &&
-                        Mathf.Sign(_controller.input.RetrieveMoveInput(this.gameObject).x) == Mathf.Sign(_collisionDataRetriever.ContactNormal.x))
+                    if (__moveInput.x != 0 &&
+                        Mathf.Sign(_moveInput.x) == Mathf.Sign(_collisionDataRetriever.ContactNormal.x))
                     {
                         _wallStickCounter -= Time.deltaTime;
                     }
@@ -132,7 +122,7 @@ namespace StickFight
                 {
                     _wallStickCounter = _wallStickTime;
                 }
-            }
+            }*/
             #endregion
 
             #region Wall Jump
@@ -142,20 +132,21 @@ namespace StickFight
                 WallJumping = false;
             }
 
-
             if (_onWall && !_onGround)
             {
                 if (_desiredJump && _isJumpReset)
                 {
-                    if (_controller.input.RetrieveMoveInput(this.gameObject).x == 0)
+                    if (_moveInput.x == 0)
                     {
+                        print("Bounce");
                         _velocity = new Vector2(_wallJumpBounce.x * _wallDirectionX, _wallJumpBounce.y);
                         WallJumping = true;
                         _desiredJump = false;
                         _isJumpReset = false;
                     }
-                    else if (Mathf.Sign(-_wallDirectionX) == Mathf.Sign(_controller.input.RetrieveMoveInput(this.gameObject).x))
+                    else if (Mathf.Sign(-_wallDirectionX) == Mathf.Sign(_moveInput.x))
                     {
+                        print("climb");
                         _velocity = new Vector2(_wallJumpClimb.x * _wallDirectionX, _wallJumpClimb.y);
                         WallJumping = true;
                         _desiredJump = false;
@@ -163,13 +154,13 @@ namespace StickFight
                     }
                     else
                     {
+                        print("Leap");
                         _velocity = new Vector2(_wallJumpLeap.x * _wallDirectionX, _wallJumpLeap.y);
                         WallJumping = true;
                         _desiredJump = false;
                         _isJumpReset = false;
                     }
                     _anim.SetBool("isJumping", true);
-                    _playerAnimationController.ChangeAnimationState(AnimationToPlay.Jump);
                 }
                 else if (!_desiredJump)
                 {

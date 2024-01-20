@@ -7,7 +7,7 @@ namespace StickFight
     public class Dash : MonoBehaviour
     {
         [SerializeField] [Range(20f, 100f)] private float _dashSpeed = 30f;
-        [SerializeField] [Range(0.1f, 0.5f)] private float _dashDuration = 0.2f;
+        [SerializeField] [Range(0.1f, 5f)] private float _dashDuration = 0.2f;
         [SerializeField] [Range(0, 5)] private int _maxDashes = 1;
         private bool _isDashing;
         private float _originalGravity;
@@ -17,7 +17,6 @@ namespace StickFight
         private Controller _controller;
         private Rigidbody2D _body;
         private CollisionDataRetriever _collisionDataRetriever;
-        private AnimationController _playerAnimationController;
         private Vector2 _velocity;
 
         private void Awake()
@@ -26,7 +25,6 @@ namespace StickFight
             _body = GetComponent<Rigidbody2D>();
             _collisionDataRetriever = GetComponent<CollisionDataRetriever>();
             _controller = GetComponent<Controller>();
-            _playerAnimationController = GetComponent<AnimationController>();
         }
 
         private void Start()
@@ -47,28 +45,25 @@ namespace StickFight
             {
                 if (!_isDashing && _currentDashNumber <= _maxDashes)
                     StartCoroutine(DoDash());
-                else
-                    _controller.input.DashFinished();
+                //else
+                  //  _controller.input.DashFinished();
             }
         }
 
         void ResetDash()
         {
+            _controller.input.DashFinished();
             _body.gravityScale = _originalGravity;
             _isDashing = false;
             _body.velocity = Vector2.zero;
             _anim.SetBool("isDashing", false);
-            _playerAnimationController.ChangeAnimationState(AnimationToPlay.Idle);
-            _controller.input.DashFinished();
         }
 
         private IEnumerator DoDash()
         {
             _anim.SetBool("isDashing", true);
-            _playerAnimationController.ChangeAnimationState(AnimationToPlay.Dash);
             _currentDashNumber++;
             _isDashing = true;
-
             _body.gravityScale = 0f;
 
             int dashDir = _controller.input.RetrieveDashDirection(this.gameObject);

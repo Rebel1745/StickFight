@@ -46,6 +46,8 @@ namespace StickFight
             _inputActions = null;
         }
 
+        // TODO: make a function to limit movement for a time (while dashing, wall jumping etc)
+        // _canMove = true;  void UpdateCanMove(bool canMove); void UpdateCanMove(bool canMove, float delay);
         public override Vector2 RetrieveMoveInput(GameObject gameObject)
         {
             // we can't move if we are dashing
@@ -88,6 +90,10 @@ namespace StickFight
         {
             _isDashing = true;
             _dashDirection = -1;
+
+            // FYI: in the InputActions, both dash left and right values are passed not as 'Button' (as jump is)
+            // but as a value, clamped to the nearest integer (i.e 0 or 1)
+            // This is to stop multiple dash calls which seem to be triggered otherwise
         }
 
         private void DashRightStarted(InputAction.CallbackContext context)

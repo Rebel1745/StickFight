@@ -15,10 +15,9 @@ namespace StickFight
         private Vector2 _direction, _desiredVelocity, _velocity;
         private Rigidbody2D _body;
         private CollisionDataRetriever _collisionDataRetriever;
-        private AnimationController _playerAnimationController;
 
         private float _maxSpeedChange, _acceleration;
-        private bool _onGround, _onWall;
+        private bool _onGround, _onWall, _isFacingRight = true;
 
         private void Awake()
         {
@@ -26,7 +25,6 @@ namespace StickFight
             _body = GetComponent<Rigidbody2D>();
             _collisionDataRetriever = GetComponent<CollisionDataRetriever>();
             _controller = GetComponent<Controller>();
-            _playerAnimationController = GetComponent<AnimationController>();
         }
 
         private void Update()
@@ -37,6 +35,9 @@ namespace StickFight
 
         private void FixedUpdate()
         {
+            if (_controller.input.RetrieveDashInput(this.gameObject))
+                return;
+
             _onGround = _collisionDataRetriever.OnGround;
 
             _velocity = _body.velocity;
@@ -56,17 +57,21 @@ namespace StickFight
             _anim.SetFloat("MovementSpeed", Mathf.Abs(_velocity.x));
             _anim.SetFloat("ClimbSpeed", _direction.y);
 
-            if (_onGround)
-            {
-                if (_velocity.x == 0f)
-                {
-                    _playerAnimationController.ChangeAnimationState(AnimationToPlay.Idle);
-                }
-                else
-                {
-                    _playerAnimationController.ChangeAnimationState(AnimationToPlay.Run);
-                }
-            }
+            if (_body.velocity.x > 0f && !_isFacingRight)
+                Flip();
+            else if (_body.velocity.x < 0f && _isFacingRight)
+                Flip();
+        }
+
+        private void Flip()
+        {
+            // Switch the way the player is labelled as facing.
+            _isFacingRight = !_isFacingRight;
+
+            if(_isFacingRight)
+                this.transform.localScale = new Vector3(1f, 1f, 1f); 
+            else
+                this.transform.localScale = new Vector3(-1f, 1f, 1f);
         }
     }
 }

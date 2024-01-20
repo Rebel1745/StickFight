@@ -16,29 +16,24 @@ namespace StickFight
         private Controller _controller;
         private Rigidbody2D _body;
         private CollisionDataRetriever _collisionDataRetriever;
-        private AnimationController _playerAnimationController;
         private Vector2 _velocity;
 
         private int _jumpPhase;
         private float _defaultGravityScale, _jumpSpeed, _coyoteCounter, _jumpBufferCounter;
 
         private bool _desiredJump, _onGround, _onWall, _isJumping, _isJumpReset;
-
-
-        // Start is called before the first frame update
+        
         void Awake()
         {
             _anim = GetComponent<Animator>();
             _body = GetComponent<Rigidbody2D>();
             _collisionDataRetriever = GetComponent<CollisionDataRetriever>();
             _controller = GetComponent<Controller>();
-            _playerAnimationController = GetComponent<AnimationController>();
 
             _isJumpReset = true;
             _defaultGravityScale = 1f;
         }
-
-        // Update is called once per frame
+        
         void Update()
         {
             _desiredJump = _controller.input.RetrieveJumpInput(this.gameObject);
@@ -46,7 +41,7 @@ namespace StickFight
 
         private void FixedUpdate()
         {
-            //if (_controller.input.RetrieveDashInput(this.gameObject)) return;
+            if (_controller.input.RetrieveDashInput(this.gameObject)) return;
 
             _onGround = _collisionDataRetriever.OnGround;
             _onWall = _collisionDataRetriever.OnWall;
@@ -88,7 +83,7 @@ namespace StickFight
             {
                 _body.gravityScale = _upwardMovementMultiplier;
             }
-            else if (!_controller.input.RetrieveJumpInput(this.gameObject) || _body.velocity.y < 0)
+            else if ((!_controller.input.RetrieveJumpInput(this.gameObject) || _body.velocity.y < 0) && !_controller.input.RetrieveDashInput(this.gameObject))
             {
                 _body.gravityScale = _downwardMovementMultiplier;
             }
@@ -125,7 +120,6 @@ namespace StickFight
                 _velocity.y += _jumpSpeed;
 
                 _anim.SetBool("isJumping", true);
-                _playerAnimationController.ChangeAnimationState(AnimationToPlay.Jump);
             }
         }
     }

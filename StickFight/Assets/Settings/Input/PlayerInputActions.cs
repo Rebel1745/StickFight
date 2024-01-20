@@ -56,21 +56,21 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""DashRight"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""5978fb9e-2522-456f-b5de-247f5fc8abe4"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Integer"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""DashLeft"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""2748bc0a-210f-4b44-8ef3-2dc77c7df923"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Integer"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [

@@ -10,29 +10,64 @@ namespace StickFight
             
         }
 
-        public override int RetrieveDashDirection(GameObject gameObject)
+        public override void KickFinished()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void PunchFinished()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override int RetrieveDashDirection(bool includeMutedInput)
         {
             return 0;
         }
 
-        public override bool RetrieveDashInput(GameObject gameObject)
+        public override bool RetrieveDashInput(bool includeMutedInput)
         {
             return false;
         }
 
-        public override bool RetrieveJumpInput(GameObject gameObject)
+        public override bool RetrieveIsMutedInput()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override bool RetrieveJumpInput(bool includeMutedInput)
         {
             return false;
         }
 
-        public override Vector2 RetrieveMoveInput(GameObject gameObject)
+        public override bool RetrieveKickInput(bool includeMutedInput)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override Vector2 RetrieveMoveInput(bool includeMutedInput)
         {
             return Vector2.zero;
         }
 
-        public override bool RetrieveWallClimbInput(GameObject gameObject)
+        public override bool RetrievePunchInput(bool includeMutedInput)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override bool RetrieveWallClimbInput(bool includeMutedInput)
         {
             return false;
+        }
+
+        public override void UpdateInputMuting(bool isMuted)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void UpdateInputMuting(bool isMuted, float duration)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

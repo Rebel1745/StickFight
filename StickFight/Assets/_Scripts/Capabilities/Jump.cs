@@ -21,7 +21,7 @@ namespace StickFight
         private int _jumpPhase;
         private float _defaultGravityScale, _jumpSpeed, _coyoteCounter, _jumpBufferCounter;
 
-        private bool _desiredJump, _onGround, _onWall, _isJumping, _isJumpReset;
+        private bool _desiredJump, _onGround, _onWall, _isJumping, _isJumpReset, _isInputMuted;
         
         void Awake()
         {
@@ -36,12 +36,13 @@ namespace StickFight
         
         void Update()
         {
-            _desiredJump = _controller.input.RetrieveJumpInput(this.gameObject);
+            _desiredJump = _controller.input.RetrieveJumpInput(false);
+            _isInputMuted = _controller.input.RetrieveIsMutedInput();
         }
 
         private void FixedUpdate()
         {
-            if (_controller.input.RetrieveDashInput(this.gameObject)) return;
+            if (_isInputMuted) return;
 
             _onGround = _collisionDataRetriever.OnGround;
             _onWall = _collisionDataRetriever.OnWall;
@@ -79,11 +80,11 @@ namespace StickFight
                 JumpAction();
             }
 
-            if (_controller.input.RetrieveJumpInput(this.gameObject) && _body.velocity.y > 0)
+            if (_controller.input.RetrieveJumpInput(false) && _body.velocity.y > 0)
             {
                 _body.gravityScale = _upwardMovementMultiplier;
             }
-            else if ((!_controller.input.RetrieveJumpInput(this.gameObject) || _body.velocity.y < 0) && !_controller.input.RetrieveDashInput(this.gameObject))
+            else if ((!_controller.input.RetrieveJumpInput(false) || _body.velocity.y < 0) && !_controller.input.RetrieveDashInput(false))
             {
                 _body.gravityScale = _downwardMovementMultiplier;
             }
@@ -118,7 +119,7 @@ namespace StickFight
                     _jumpSpeed += Mathf.Abs(_body.velocity.y);
                 }
                 _velocity.y += _jumpSpeed;
-
+                
                 _anim.SetBool("isJumping", true);
             }
         }

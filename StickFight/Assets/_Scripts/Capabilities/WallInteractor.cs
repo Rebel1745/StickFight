@@ -24,7 +24,7 @@ namespace StickFight
         private Controller _controller;
 
         private Vector2 _velocity, _moveInput;
-        private bool _onWall, _onGround, _onCeiling, _desiredJump, _isJumpReset, _isClinging, _isDashing;
+        private bool _onWall, _onGround, _onCeiling, _desiredJump, _isJumpReset, _isClinging, _isDashing, _isInputMuted;
         private float _wallDirectionX, _wallStickCounter;
         
         void Start()
@@ -39,10 +39,11 @@ namespace StickFight
         
         void Update()
         {
-            _desiredJump = _controller.input.RetrieveJumpInput(this.gameObject);
-            _isClinging = _controller.input.RetrieveWallClimbInput(this.gameObject);
-            _isDashing = _controller.input.RetrieveDashInput(this.gameObject);
-            _moveInput = _controller.input.RetrieveMoveInput(this.gameObject);
+            _isInputMuted = _controller.input.RetrieveIsMutedInput();
+            _desiredJump = _controller.input.RetrieveJumpInput(false);
+            _isClinging = _controller.input.RetrieveWallClimbInput(false);
+            _isDashing = _controller.input.RetrieveDashInput(false);
+            _moveInput = _controller.input.RetrieveMoveInput(false);
         }
 
         private void FixedUpdate()
@@ -55,6 +56,8 @@ namespace StickFight
             _onCeiling = _collisionDataRetriever.OnCeiling;
             _wallDirectionX = _collisionDataRetriever.ContactNormal.x;
             _anim.SetBool("isClinging", _isClinging);
+
+            if (_isInputMuted) return;
 
             #region Wall Climb
             float gravity = _body.gravityScale;
@@ -89,6 +92,8 @@ namespace StickFight
             {
                 _anim.SetBool("isCeiling", false);
                 _body.gravityScale = gravity;
+                if (!_onWall && !_onGround)
+                    _anim.SetBool("isJumping", true);
             }
 
             #region Wall Slide
@@ -146,7 +151,7 @@ namespace StickFight
                     }
                     else if (Mathf.Sign(-_wallDirectionX) == Mathf.Sign(_moveInput.x))
                     {
-                        print("climb");
+                        print("Climb");
                         _velocity = new Vector2(_wallJumpClimb.x * _wallDirectionX, _wallJumpClimb.y);
                         WallJumping = true;
                         _desiredJump = false;
@@ -160,6 +165,7 @@ namespace StickFight
                         _desiredJump = false;
                         _isJumpReset = false;
                     }
+
                     _anim.SetBool("isJumping", true);
                 }
                 else if (!_desiredJump)

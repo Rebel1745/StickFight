@@ -71,6 +71,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Punch"",
+                    ""type"": ""Button"",
+                    ""id"": ""644bfb89-4cfe-4573-aa91-51adb109e23c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Kick"",
+                    ""type"": ""Button"",
+                    ""id"": ""459e9387-509d-4433-8c91-d56e96c52c72"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -205,6 +223,50 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""DashLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d2a8cff7-5b77-4cf2-bbd1-b025623a3eeb"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Punch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""06539480-7f3b-4177-b469-fac2b99b9fb9"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Punch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""577c1ad2-8dec-43c2-ba79-49884b9ccdba"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Kick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""92914364-1e7c-495b-98ad-91bfc608ed0d"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Kick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -218,6 +280,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Gameplay_WallClimb = m_Gameplay.FindAction("WallClimb", throwIfNotFound: true);
         m_Gameplay_DashRight = m_Gameplay.FindAction("DashRight", throwIfNotFound: true);
         m_Gameplay_DashLeft = m_Gameplay.FindAction("DashLeft", throwIfNotFound: true);
+        m_Gameplay_Punch = m_Gameplay.FindAction("Punch", throwIfNotFound: true);
+        m_Gameplay_Kick = m_Gameplay.FindAction("Kick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -284,6 +348,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_WallClimb;
     private readonly InputAction m_Gameplay_DashRight;
     private readonly InputAction m_Gameplay_DashLeft;
+    private readonly InputAction m_Gameplay_Punch;
+    private readonly InputAction m_Gameplay_Kick;
     public struct GameplayActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -293,6 +359,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @WallClimb => m_Wrapper.m_Gameplay_WallClimb;
         public InputAction @DashRight => m_Wrapper.m_Gameplay_DashRight;
         public InputAction @DashLeft => m_Wrapper.m_Gameplay_DashLeft;
+        public InputAction @Punch => m_Wrapper.m_Gameplay_Punch;
+        public InputAction @Kick => m_Wrapper.m_Gameplay_Kick;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -317,6 +385,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @DashLeft.started += instance.OnDashLeft;
             @DashLeft.performed += instance.OnDashLeft;
             @DashLeft.canceled += instance.OnDashLeft;
+            @Punch.started += instance.OnPunch;
+            @Punch.performed += instance.OnPunch;
+            @Punch.canceled += instance.OnPunch;
+            @Kick.started += instance.OnKick;
+            @Kick.performed += instance.OnKick;
+            @Kick.canceled += instance.OnKick;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -336,6 +410,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @DashLeft.started -= instance.OnDashLeft;
             @DashLeft.performed -= instance.OnDashLeft;
             @DashLeft.canceled -= instance.OnDashLeft;
+            @Punch.started -= instance.OnPunch;
+            @Punch.performed -= instance.OnPunch;
+            @Punch.canceled -= instance.OnPunch;
+            @Kick.started -= instance.OnKick;
+            @Kick.performed -= instance.OnKick;
+            @Kick.canceled -= instance.OnKick;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -360,5 +440,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnWallClimb(InputAction.CallbackContext context);
         void OnDashRight(InputAction.CallbackContext context);
         void OnDashLeft(InputAction.CallbackContext context);
+        void OnPunch(InputAction.CallbackContext context);
+        void OnKick(InputAction.CallbackContext context);
     }
 }

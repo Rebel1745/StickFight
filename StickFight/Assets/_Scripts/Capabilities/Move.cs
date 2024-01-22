@@ -17,7 +17,7 @@ namespace StickFight
         private CollisionDataRetriever _collisionDataRetriever;
 
         private float _maxSpeedChange, _acceleration;
-        private bool _onGround, _onWall, _isFacingRight = true;
+        private bool _onGround, _onWall, _isFacingRight = true, _isInputMuted;
 
         private void Awake()
         {
@@ -29,14 +29,19 @@ namespace StickFight
 
         private void Update()
         {
-            _direction = _controller.input.RetrieveMoveInput(this.gameObject);
+            _direction = _controller.input.RetrieveMoveInput(false);
             _desiredVelocity = new Vector2(_direction.x, 0f) * Mathf.Max(_maxSpeed - _collisionDataRetriever.Friction, 0f);
+            _isInputMuted = _controller.input.RetrieveIsMutedInput();
         }
 
         private void FixedUpdate()
         {
-            if (_controller.input.RetrieveDashInput(this.gameObject))
+            if (_isInputMuted)
                 return;
+
+            // THIS IS FOR TESTING ONLY. DELETE WHEN THE PUNCH AND KICK FUNCTIONS WORK
+            if (_controller.input.RetrievePunchInput(false)) _anim.SetBool("isPunching", true);
+            if (_controller.input.RetrieveKickInput(false)) _anim.SetBool("isKicking", true);
 
             _onGround = _collisionDataRetriever.OnGround;
 

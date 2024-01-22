@@ -7,13 +7,14 @@ namespace StickFight
     public class PlayerController : InputController
     {
         private PlayerInputActions _inputActions;
-        private bool _isJumping, _isWallClimb, _isDashing;
+        private bool _isJumping, _isWallClimb, _isDashing, _isInputMuted, _isPunching, _isKicking;
         private int _dashDirection; // -1 = left, 0 = no dash, 1 = right
 
         private void OnEnable()
         {
             _inputActions = new PlayerInputActions();
             _inputActions.Gameplay.Enable();
+            _isInputMuted = false;
 
             // jump
             _inputActions.Gameplay.Jump.started += JumpStarted;
@@ -26,11 +27,18 @@ namespace StickFight
             // dash
             _inputActions.Gameplay.DashLeft.started += DashLeftStarted;
             _inputActions.Gameplay.DashRight.started += DashRightStarted;
+
+            // punch
+            _inputActions.Gameplay.Punch.started += PunchStarted;
+
+            // kick
+            _inputActions.Gameplay.Kick.started += KickStarted;
         }
 
         private void OnDisable()
         {
             _inputActions.Gameplay.Disable();
+            _isInputMuted = true;
 
             // jump
             _inputActions.Gameplay.Jump.started -= JumpStarted;
@@ -43,15 +51,21 @@ namespace StickFight
             // dash
             _inputActions.Gameplay.DashLeft.started -= DashLeftStarted;
             _inputActions.Gameplay.DashRight.started -= DashRightStarted;
+
+            // punch
+            _inputActions.Gameplay.Punch.started -= PunchStarted;
+
+            // kick
+            _inputActions.Gameplay.Kick.started -= KickStarted;
+
             _inputActions = null;
         }
 
         // TODO: make a function to limit movement for a time (while dashing, wall jumping etc)
         // _canMove = true;  void UpdateCanMove(bool canMove); void UpdateCanMove(bool canMove, float delay);
-        public override Vector2 RetrieveMoveInput(GameObject gameObject)
+        public override Vector2 RetrieveMoveInput(bool includeMutedInput)
         {
-            // we can't move if we are dashing
-            if (_isDashing) return Vector2.zero;
+            if (_isInputMuted && !includeMutedInput) return Vector2.zero;
 
             return _inputActions.Gameplay.Move.ReadValue<Vector2>();
         }
@@ -66,8 +80,10 @@ namespace StickFight
             _isJumping = true;
         }
 
-        public override bool RetrieveJumpInput(GameObject gameObject)
+        public override bool RetrieveJumpInput(bool includeMutedInput)
         {
+            if (_isInputMuted && !includeMutedInput) return false;
+
             return _isJumping;
         }
 
@@ -81,8 +97,10 @@ namespace StickFight
             _isWallClimb = true;
         }
 
-        public override bool RetrieveWallClimbInput(GameObject gameObject)
+        public override bool RetrieveWallClimbInput(bool includeMutedInput)
         {
+            if (_isInputMuted && !includeMutedInput) return false;
+
             return _isWallClimb;
         }
 
@@ -108,14 +126,67 @@ namespace StickFight
             _dashDirection = 0;
         }
 
-        public override bool RetrieveDashInput(GameObject gameObject)
+        public override bool RetrieveDashInput(bool includeMutedInput)
         {
+            if (_isInputMuted && !includeMutedInput) return false;
+
             return _isDashing;
         }
 
-        public override int RetrieveDashDirection(GameObject gameObject)
+        public override int RetrieveDashDirection(bool includeMutedInput)
         {
+            if (_isInputMuted && !includeMutedInput) return 0;
+
             return _dashDirection;
+        }
+
+        public override void UpdateInputMuting(bool isMuted)
+        {
+            _isInputMuted = isMuted;
+        }
+
+        public override void UpdateInputMuting(bool isMuted, float duration)
+        {
+            // wait and see if we will need this function
+        }
+
+        public override bool RetrieveIsMutedInput()
+        {
+            return _isInputMuted;
+        }
+
+        private void PunchStarted(InputAction.CallbackContext context)
+        {
+            _isPunching = true;
+        }
+
+        public override bool RetrievePunchInput(bool includeMutedInput)
+        {
+            if (_isInputMuted && !includeMutedInput) return false;
+
+            return _isPunching;
+        }
+
+        public override void PunchFinished()
+        {
+            _isPunching = false;
+        }
+
+        private void KickStarted(InputAction.CallbackContext context)
+        {
+            _isKicking = true;
+        }
+
+        public override bool RetrieveKickInput(bool includeMutedInput)
+        {
+            if (_isInputMuted && !includeMutedInput) return false;
+
+            return _isKicking;
+        }
+
+        public override void KickFinished()
+        {
+            _isKicking = false;
         }
     }
 }

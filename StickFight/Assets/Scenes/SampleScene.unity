@@ -831,6 +831,8 @@ GameObject:
   - component: {fileID: 876415949}
   - component: {fileID: 876415953}
   - component: {fileID: 876415954}
+  - component: {fileID: 876415958}
+  - component: {fileID: 876415957}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -1178,7 +1180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dashSpeed: 30
-  _dashDuration: 0.2
+  _dashDuration: 0.75
   _maxDashes: 1
 --- !u!95 &876415956
 Animator:
@@ -1190,7 +1192,7 @@ Animator:
   m_GameObject: {fileID: 876415942}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c4525a6590b6dcd4ba79150a9ec799c8, type: 2}
+  m_Controller: {fileID: 9100000, guid: 66c202f237986094aa522b6561ab1931, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1201,6 +1203,32 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &876415957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876415942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a0ed9bd946472b479853cde3cb335c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _KickDuration: 0.1
+--- !u!114 &876415958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876415942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69c97e85a9c1af144b39d73a8ef915f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _punchDuration: 0.5
 --- !u!1 &926345987
 GameObject:
   m_ObjectHideFlags: 0

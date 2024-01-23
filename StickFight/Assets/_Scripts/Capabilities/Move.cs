@@ -39,10 +39,6 @@ namespace StickFight
             if (_isInputMuted)
                 return;
 
-            // THIS IS FOR TESTING ONLY. DELETE WHEN THE PUNCH AND KICK FUNCTIONS WORK
-            if (_controller.input.RetrievePunchInput(false)) _anim.SetBool("isPunching", true);
-            if (_controller.input.RetrieveKickInput(false)) _anim.SetBool("isKicking", true);
-
             _onGround = _collisionDataRetriever.OnGround;
 
             _velocity = _body.velocity;

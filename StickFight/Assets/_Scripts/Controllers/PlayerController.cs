@@ -124,6 +124,7 @@ namespace StickFight
         {
             _isDashing = false;
             _dashDirection = 0;
+            UpdateInputMuting(false);
         }
 
         public override bool RetrieveDashInput(bool includeMutedInput)

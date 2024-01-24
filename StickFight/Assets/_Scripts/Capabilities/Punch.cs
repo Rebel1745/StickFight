@@ -45,6 +45,8 @@ namespace StickFight
         private void StartStandardPunch()
         {
             _isPunching = true;
+            _isDashPunching = false;
+
             _currentDuration = 0f;
 
             _anim.SetBool("isPunching", true);

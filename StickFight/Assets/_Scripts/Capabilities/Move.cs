@@ -18,6 +18,7 @@ namespace StickFight
 
         private float _maxSpeedChange, _acceleration;
         private bool _onGround, _onWall, _isFacingRight = true, _isInputMuted;
+        private float _wallDirectionX;
 
         private void Awake()
         {
@@ -32,14 +33,15 @@ namespace StickFight
             _direction = _controller.input.RetrieveMoveInput(false);
             _desiredVelocity = new Vector2(_direction.x, 0f) * Mathf.Max(_maxSpeed - _collisionDataRetriever.Friction, 0f);
             _isInputMuted = _controller.input.RetrieveIsMutedInput();
+            _onGround = _collisionDataRetriever.OnGround;
+            _onWall = _collisionDataRetriever.OnWall;
+            _wallDirectionX = _collisionDataRetriever.ContactNormal.x;
         }
 
         private void FixedUpdate()
         {
             if (_isInputMuted)
                 return;
-
-            _onGround = _collisionDataRetriever.OnGround;
 
             _velocity = _body.velocity;
            
@@ -58,10 +60,21 @@ namespace StickFight
             _anim.SetFloat("MovementSpeed", Mathf.Abs(_velocity.x));
             _anim.SetFloat("ClimbSpeed", _direction.y);
 
-            if (_body.velocity.x > 0f && !_isFacingRight)
-                Flip();
-            else if (_body.velocity.x < 0f && _isFacingRight)
-                Flip();
+            if (!_onWall)
+            {
+                if (_body.velocity.x > 0f && !_isFacingRight)
+                    Flip();
+                else if (_body.velocity.x < 0f && _isFacingRight)
+                    Flip();
+            }
+            else
+            {
+                // wallDirectionX = 1 if wall is on players left, -1 if it is on the right
+                if (_wallDirectionX == 1 && _isFacingRight)
+                    Flip();
+                else if (_wallDirectionX == -1 && !_isFacingRight)
+                    Flip();
+            }
         }
 
         private void Flip()

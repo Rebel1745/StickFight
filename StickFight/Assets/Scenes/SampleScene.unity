@@ -1180,7 +1180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dashSpeed: 30
-  _dashDuration: 0.75
+  _dashDuration: 0.2
   _maxDashes: 1
 --- !u!95 &876415956
 Animator:
@@ -1215,7 +1215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a0ed9bd946472b479853cde3cb335c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _KickDuration: 0.1
+  _KickDuration: 0.2
 --- !u!114 &876415958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1228,7 +1228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69c97e85a9c1af144b39d73a8ef915f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _punchDuration: 0.5
+  _punchDuration: 0.1
 --- !u!1 &926345987
 GameObject:
   m_ObjectHideFlags: 0

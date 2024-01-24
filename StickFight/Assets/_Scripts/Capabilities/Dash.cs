@@ -9,9 +9,9 @@ namespace StickFight
         [SerializeField] [Range(20f, 100f)] private float _dashSpeed = 30f;
         [SerializeField] [Range(0.1f, 5f)] private float _dashDuration = 0.2f;
         [SerializeField] [Range(0, 5)] private int _maxDashes = 1;
-        private bool _isDashing, _isInputMuted;
-        private float _originalGravity;
-        private int _currentDashNumber = 0;
+        private bool _isDashing, _isInputMuted, _isDashingInput, _isPunchingInputMuted, _isKickingInputMuted;
+        private float _originalGravity, _currentDashDuration = 0f, _wallDirectionX;
+        private int _currentDashNumber = 0, _dashDirection;
 
         private Animator _anim;
         private Controller _controller;
@@ -36,7 +36,9 @@ namespace StickFight
         private void Update()
         {
             _isInputMuted = _controller.input.RetrieveIsMutedInput();
-            if (_isInputMuted) return;
+            _isDashingInput = _controller.input.RetrieveDashInput(false);
+            _isPunchingInputMuted = _controller.input.RetrievePunchInput(true);
+            _isKickingInputMuted = _controller.input.RetrieveKickInput(true);
 
             // if we are grounded or on a wall, reset our dashes so we can dash again
             if (_collisionDataRetriever.OnGround || _collisionDataRetriever.OnWall)
@@ -44,16 +46,60 @@ namespace StickFight
                 _currentDashNumber = 0;
             }
 
-            if(_controller.input.RetrieveDashInput(false))
+            // if we are not currently dashing, and we are pressing dash, start dashing
+            if(!_isDashing && _isDashingInput && _currentDashNumber <= _maxDashes)
             {
-                if (!_isDashing && _currentDashNumber <= _maxDashes)
-                    StartCoroutine(DoDash());
-                //else
-                  //  _controller.input.DashFinished();
+                StartDash();
+            }
+
+            UpdateDash();
+        }
+
+        void StartDash()
+        {
+            _anim.SetBool("isDashing", true);
+            _currentDashNumber++;
+            _isDashing = true;
+            _body.gravityScale = 0f;
+            _currentDashDuration = 0;
+            _dashDirection = _controller.input.RetrieveDashDirection(false);
+
+            _body.velocity = Vector2.right * _dashDirection * _dashSpeed;
+
+            // mute the input so nothing can happen when we are dashing
+            _controller.input.UpdateInputMuting(true);
+        }
+
+        void UpdateDash()
+        {
+            if (!_isDashing)
+                return;
+
+            _currentDashDuration += Time.deltaTime;
+
+            if (_isPunchingInputMuted)
+                _anim.SetBool("isPunching", true);
+
+            if (_isKickingInputMuted)
+                _anim.SetBool("isKicking", true);
+
+            // if we have reached or surpassed the intedend duration of the dash, stop it
+            if (_currentDashDuration >= _dashDuration)
+                StopDash();
+
+            // if we hit a wall, stop dashing
+            if (_collisionDataRetriever.OnWall)
+            {
+                // wallDirectionX = 1 if wall is on players left, -1 if it is on the right
+                _wallDirectionX = _collisionDataRetriever.ContactNormal.x;
+
+                // if the dash direction IS in the direction of the wall, stop the dash
+                if(Mathf.Sign(_wallDirectionX) != Mathf.Sign(_dashDirection))
+                    StopDash();
             }
         }
 
-        void ResetDash()
+        void StopDash()
         {
             _controller.input.DashFinished();
             _controller.input.UpdateInputMuting(false);
@@ -61,24 +107,8 @@ namespace StickFight
             _isDashing = false;
             _body.velocity = Vector2.zero;
             _anim.SetBool("isDashing", false);
-        }
-
-        private IEnumerator DoDash()
-        {
-            _anim.SetBool("isDashing", true);
-            _currentDashNumber++;
-            _isDashing = true;
-            _body.gravityScale = 0f;
-
-            int dashDir = _controller.input.RetrieveDashDirection(false);
-            _body.velocity = Vector2.right * dashDir * _dashSpeed;
-
-            // mute the input so nothing can happen when we are dashing
-            _controller.input.UpdateInputMuting(true);
-
-            yield return new WaitForSeconds(_dashDuration);
-
-            ResetDash();
+            _anim.SetBool("isPunching", false);
+            _anim.SetBool("isKicking", false);
         }
     }
 }

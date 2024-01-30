@@ -29,12 +29,10 @@ namespace StickFight
 
             if ((!_isKicking && !_isDashKicking) && _isKickingInput && (!_isDashingInput && !_isDashingMutedInput))
             {
-                print("standard Kick");
                 StartStandardKick();
             }
             else if ((!_isKicking && !_isDashKicking) && _isKickingMutedInput && _isDashingInput)
             {
-                print("dash Kick");
                 StartDashKick();
             }
 

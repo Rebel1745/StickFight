@@ -102,6 +102,8 @@ namespace StickFight
         void StopDash()
         {
             _controller.input.DashFinished();
+            _controller.input.PunchFinished();
+            _controller.input.KickFinished();
             _controller.input.UpdateInputMuting(false);
             _body.gravityScale = _originalGravity;
             _isDashing = false;

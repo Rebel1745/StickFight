@@ -55,7 +55,11 @@ namespace StickFight
             _onGround = _collisionDataRetriever.OnGround;
             _onCeiling = _collisionDataRetriever.OnCeiling;
             _wallDirectionX = _collisionDataRetriever.ContactNormal.x;
-            _anim.SetBool("isClinging", _isClinging);
+
+            if (_onWall || _onCeiling)
+                _anim.SetBool("isClinging", _isClinging);
+            else
+                _anim.SetBool("isClinging", false);
 
             if (_isInputMuted) return;
 

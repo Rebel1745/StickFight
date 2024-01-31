@@ -12,13 +12,39 @@ namespace StickFight
 
         private PhysicsMaterial2D _material;
         
+        [SerializeField] private Transform _groundCheck;
+        [SerializeField] private Vector2 _groundCheckSize;
+        [SerializeField] private LayerMask _whatIsGround;
+
+        [SerializeField] private Transform _wallCheck;
+        [SerializeField] private Vector2 _wallCheckSize;
+        [SerializeField] private LayerMask _whatIsWall;
+
         [SerializeField] private Transform _ceilingCheck;
-        [SerializeField] private float _checkRadius;
+        [SerializeField] private Vector2 _ceilingCheckSize;
         [SerializeField] private LayerMask _whatIsCeiling;
 
-        private void Update()
+        private void FixedUpdate()
         {
+            CheckForGroundContact();
+            CheckForWallContact();
             CheckForCeilingContact();
+        }
+
+        void CheckForGroundContact()
+        {
+            if (_groundCheck == null)
+                return;
+
+            OnGround = Physics2D.OverlapBox(_groundCheck.position, _groundCheckSize, 0f, _whatIsGround);
+        }
+
+        void CheckForWallContact()
+        {
+            if (_wallCheck == null)
+                return;
+
+            OnWall = Physics2D.OverlapBox(_wallCheck.position, _wallCheckSize, 0f, _whatIsWall);
         }
 
         void CheckForCeilingContact()
@@ -26,7 +52,7 @@ namespace StickFight
             if (_ceilingCheck == null)
                 return;
 
-            OnCeiling = Physics2D.OverlapCircle(_ceilingCheck.position, _checkRadius, _whatIsCeiling);
+            OnCeiling = Physics2D.OverlapBox(_ceilingCheck.position, _ceilingCheckSize, 0f, _whatIsCeiling);
         }
 
         private void OnCollisionExit2D(Collision2D collision)
@@ -53,8 +79,13 @@ namespace StickFight
             for (int i = 0; i < collision.contactCount; i++)
             {
                 ContactNormal = collision.GetContact(i).normal;
-                OnGround |= ContactNormal.y >= 0.9f;
-                OnWall = Mathf.Abs(ContactNormal.x) >= 0.9f;
+                /*if (ContactNormal.y >= 0.9f && collision.gameObject.layer == _whatIsGround)
+                    OnGround = true;
+                else OnGround = false;
+
+                if (Mathf.Abs(ContactNormal.x) >= 0.9f && collision.gameObject.layer == _whatIsWall)
+                    OnWall = true;
+                else OnWall = false;*/
             }
         }
 
@@ -68,6 +99,14 @@ namespace StickFight
                 _material = collision.rigidbody.sharedMaterial;
                 Friction = _material.friction;
             }
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+                Gizmos.DrawWireCube(_groundCheck.position, new Vector3(_groundCheckSize.x, _groundCheckSize.y, 1f));
+                Gizmos.DrawWireCube(_wallCheck.position, new Vector3(_wallCheckSize.x, _wallCheckSize.y, 1f));
+                Gizmos.DrawWireCube(_ceilingCheck.position, new Vector3(-_ceilingCheckSize.x, _ceilingCheckSize.y, 1f));
         }
     }
 }

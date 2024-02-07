@@ -9,7 +9,7 @@ namespace StickFight
         [SerializeField] [Range(20f, 100f)] private float _dashSpeed = 30f;
         [SerializeField] [Range(0.1f, 5f)] private float _dashDuration = 0.2f;
         [SerializeField] [Range(0, 5)] private int _maxDashes = 1;
-        private bool _isDashing, _isInputMuted, _isDashingInput, _isPunchingInputMuted, _isKickingInputMuted;
+        private bool _isDashing, _isInputMuted, _isDashingInput, _isPunchingInputMuted, _isKickingInputMuted, _onWall;
         private float _originalGravity, _currentDashDuration = 0f, _wallDirectionX;
         private int _currentDashNumber = 0, _dashDirection;
 
@@ -39,6 +39,7 @@ namespace StickFight
             _isDashingInput = _controller.input.RetrieveDashInput(false);
             _isPunchingInputMuted = _controller.input.RetrievePunchInput(true);
             _isKickingInputMuted = _controller.input.RetrieveKickInput(true);
+            _onWall = _collisionDataRetriever.OnWall;
 
             // if we are grounded or on a wall, reset our dashes so we can dash again
             if (_collisionDataRetriever.OnGround || _collisionDataRetriever.OnWall)
@@ -74,6 +75,13 @@ namespace StickFight
         {
             if (!_isDashing)
                 return;
+
+            // if we hit a wall as we dash into it, stop dashing and bail.  If we are dashing away from a wall, continue
+            if (_onWall && Mathf.Sign(_dashDirection) != Mathf.Sign(_collisionDataRetriever.ContactNormal.x))
+            {
+                StopDash();
+                return;
+            }
 
             _currentDashDuration += Time.deltaTime;
 

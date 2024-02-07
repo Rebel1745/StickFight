@@ -9,7 +9,7 @@ namespace StickFight
         [SerializeField] [Range(20f, 100f)] private float _dashSpeed = 30f;
         [SerializeField] [Range(0.1f, 5f)] private float _dashDuration = 0.2f;
         [SerializeField] [Range(0, 5)] private int _maxDashes = 1;
-        private bool _isDashing, _isInputMuted, _isDashingInput, _isPunchingInputMuted, _isKickingInputMuted, _onWall;
+        private bool _isDashing, _isInputMuted, _isDashingInput, _isPunchingInputMuted, _isKickingInputMuted, _onGround, _onWall, _onCeiling, _isClinging;
         private float _originalGravity, _currentDashDuration = 0f, _wallDirectionX;
         private int _currentDashNumber = 0, _dashDirection;
 
@@ -39,16 +39,19 @@ namespace StickFight
             _isDashingInput = _controller.input.RetrieveDashInput(false);
             _isPunchingInputMuted = _controller.input.RetrievePunchInput(true);
             _isKickingInputMuted = _controller.input.RetrieveKickInput(true);
+            _onGround = _collisionDataRetriever.OnGround;
             _onWall = _collisionDataRetriever.OnWall;
+            _onCeiling = _collisionDataRetriever.OnCeiling;
+            _isClinging = _controller.input.RetrieveWallClimbInput(true);
 
             // if we are grounded or on a wall, reset our dashes so we can dash again
-            if (_collisionDataRetriever.OnGround || _collisionDataRetriever.OnWall)
+            if (_onGround || _onWall || _onCeiling)
             {
                 _currentDashNumber = 0;
             }
 
             // if we are not currently dashing, and we are pressing dash, start dashing
-            if(!_isDashing && _isDashingInput && _currentDashNumber <= _maxDashes)
+            if(!_isDashing && _isDashingInput && _currentDashNumber <= _maxDashes && !_isClinging)
             {
                 StartDash();
             }

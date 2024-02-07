@@ -9,10 +9,6 @@ namespace StickFight
 
         [Header("Wall Slide")]
         [SerializeField][Range(0.1f, 5f)] private float _wallSlideMaxSpeed = 2f;
-        [Header("Wall Jump")]
-        [SerializeField] private Vector2 _wallJumpClimb = new Vector2(4f, 12f);
-        [SerializeField] private Vector2 _wallJumpBounce = new Vector2(10.7f, 10f);
-        [SerializeField] private Vector2 _wallJumpLeap = new Vector2(14f, 12f);
         [Header("Wall Climb")]
         [SerializeField][Range(2f, 10f)] private float _wallClimbMaxSpeed = 4f;
         
@@ -22,7 +18,7 @@ namespace StickFight
         private Controller _controller;
 
         private Vector2 _velocity, _moveInput;
-        private bool _onWall, _onGround, _onCeiling, _desiredJump, _isJumpReset, _isClinging, _isDashing, _isInputMuted;
+        private bool _onWall, _onGround, _onCeiling, _jumpInput, _isClinging, _isDashing, _isInputMuted;
         private float _wallDirectionX, _gravityScale, _initialGravityScale;
         
         void Start()
@@ -32,7 +28,6 @@ namespace StickFight
             _body = GetComponent<Rigidbody2D>();
             _controller = GetComponent<Controller>();
 
-            _isJumpReset = true;
             _initialGravityScale = _body.gravityScale;
         }
         
@@ -49,7 +44,7 @@ namespace StickFight
         void RetrieveInputsAndCollisions()
         {
             _isInputMuted = _controller.input.RetrieveIsMutedInput();
-            _desiredJump = _controller.input.RetrieveJumpInput(false);
+            _jumpInput = _controller.input.RetrieveJumpInput(false);
             _isClinging = _controller.input.RetrieveWallClimbInput(false);
             _isDashing = _controller.input.RetrieveDashInput(false);
             _moveInput = _controller.input.RetrieveMoveInput(false);
@@ -67,6 +62,13 @@ namespace StickFight
         {
             // if we are not in control, we can't do anything on the wall
             if (_isInputMuted) return;
+
+            // if we have pressed jump, we don't need to bother about the rest of the wall code
+            if (_jumpInput)
+            {
+                ResetJumpAnimVariables();
+                return;
+            }
 
             if (_onWall)
             {
@@ -101,13 +103,18 @@ namespace StickFight
             }
             else
             {
-                _anim.SetBool("isWall", false);
-                _anim.SetBool("isCeiling", false);
-                _anim.SetBool("isClinging", false);
-
-                if (!_onGround)
-                    _anim.SetBool("isJumping", true);
+                ResetJumpAnimVariables();
             }
+        }
+
+        void ResetJumpAnimVariables()
+        {
+            _anim.SetBool("isWall", false);
+            _anim.SetBool("isCeiling", false);
+            _anim.SetBool("isClinging", false);
+
+            if (!_onGround)
+                _anim.SetBool("isJumping", true);
         }
 
         void WallStick()
@@ -142,7 +149,7 @@ namespace StickFight
 
         void CeilingInteraction()
         {
-            print("Ceiling");
+            print("CeilingInteration");
             _anim.SetBool("isCeiling", true);
             _anim.SetBool("isJumping", false);
             _gravityScale = 0f;

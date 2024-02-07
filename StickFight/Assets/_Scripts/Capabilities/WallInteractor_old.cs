@@ -13,8 +13,6 @@ namespace StickFight
         [SerializeField] private Vector2 _wallJumpClimb = new Vector2(4f, 12f);
         [SerializeField] private Vector2 _wallJumpBounce = new Vector2(10.7f, 10f);
         [SerializeField] private Vector2 _wallJumpLeap = new Vector2(14f, 12f);
-        [Header("Wall Stick")]
-        [SerializeField, Range(0.05f, 0.5f)] private float _wallStickTime = 0.25f;
         [Header("Wall Climb")]
         [SerializeField][Range(2f, 10f)] private float _wallClimbMaxSpeed = 4f;
         

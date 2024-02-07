@@ -17,26 +17,17 @@ namespace StickFight
         public bool[] OnCeilingRays { get; private set; }
 
         private PhysicsMaterial2D _material;
-
-        [SerializeField] private bool _showGroundCheckGizmo = false;
-        [SerializeField] private Transform _groundCheck;
-        [SerializeField] private Vector2 _groundCheckSize;
+        
         [SerializeField] private LayerMask _whatIsGround;
         [SerializeField] private Transform[] _groundCheckRayPoints;
         [SerializeField] private float _groundCheckRayLength = 0.1f;
         [SerializeField] private bool _showGroundCheckRayGizmos = false;
-
-        [SerializeField] private bool _showWallCheckGizmo = false;
-        [SerializeField] private Transform _wallCheck;
-        [SerializeField] private Vector2 _wallCheckSize;
+        
         [SerializeField] private LayerMask _whatIsWall;
         [SerializeField] private Transform[] _wallCheckRayPoints;
         [SerializeField] private float _wallCheckRayLength = 0.1f;
         [SerializeField] private bool _showWallCheckRayGizmos = false;
-
-        [SerializeField] private bool _showCeilingCheckGizmo = false;
-        [SerializeField] private Transform _ceilingCheck;
-        [SerializeField] private Vector2 _ceilingCheckSize;
+        
         [SerializeField] private LayerMask _whatIsCeiling;
         [SerializeField] private Transform[] _ceilingCheckRayPoints;
         [SerializeField] private float _ceilingCheckRayLength = 0.1f;
@@ -51,11 +42,8 @@ namespace StickFight
 
         private void FixedUpdate()
         {
-            //CheckForGroundContact();
             CheckForGroundContactRay();
-            //CheckForWallContact();
             CheckForWallContactRay();
-            //CheckForCeilingContact();
             CheckForCeilingContactRay();
         }
 
@@ -119,35 +107,9 @@ namespace StickFight
             OnGround = isHit;
         }
 
-        /*void CheckForGroundContact()
-        {
-            if (_groundCheck == null)
-                return;
-
-            OnGround = Physics2D.OverlapBox(_groundCheck.position, _groundCheckSize, 0f, _whatIsGround);
-        }
-
-        void CheckForWallContact()
-        {
-            if (_wallCheck == null)
-                return;
-
-            OnWall = Physics2D.OverlapBox(_wallCheck.position, _wallCheckSize, 0f, _whatIsWall);
-        }
-
-        void CheckForCeilingContact()
-        {
-            if (_ceilingCheck == null)
-                return;
-
-            OnCeiling = Physics2D.OverlapBox(_ceilingCheck.position, _ceilingCheckSize, 0f, _whatIsCeiling);
-        }*/
-
         private void OnCollisionExit2D(Collision2D collision)
         {
-            //OnGround = false;
             Friction = 0;
-            //OnWall = false;
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
@@ -167,13 +129,6 @@ namespace StickFight
             for (int i = 0; i < collision.contactCount; i++)
             {
                 ContactNormal = collision.GetContact(i).normal;
-                /*if (ContactNormal.y >= 0.9f && collision.gameObject.layer == _whatIsGround)
-                    OnGround = true;
-                else OnGround = false;
-
-                if (Mathf.Abs(ContactNormal.x) >= 0.9f && collision.gameObject.layer == _whatIsWall)
-                    OnWall = true;
-                else OnWall = false;*/
             }
         }
 
@@ -191,14 +146,6 @@ namespace StickFight
 
         private void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.red;
-            if(_showGroundCheckGizmo)
-                Gizmos.DrawWireCube(_groundCheck.position, new Vector3(_groundCheckSize.x, _groundCheckSize.y, 1f));
-            if(_showWallCheckGizmo)
-                Gizmos.DrawWireCube(_wallCheck.position, new Vector3(_wallCheckSize.x, _wallCheckSize.y, 1f));
-            if(_showCeilingCheckGizmo)
-                Gizmos.DrawWireCube(_ceilingCheck.position, new Vector3(-_ceilingCheckSize.x, _ceilingCheckSize.y, 1f));
-
             if (_showGroundCheckRayGizmos)
             {
                 for (int i = 0; i < _groundCheckRayPoints.Length; i++)

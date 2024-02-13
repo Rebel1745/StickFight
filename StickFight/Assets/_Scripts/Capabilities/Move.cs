@@ -16,8 +16,9 @@ namespace StickFight
         private CollisionDataRetriever _collisionDataRetriever;
 
         private float _maxSpeedChange, _acceleration;
-        private bool _onGround, _onWall, _isFacingRight = true, _isInputMuted, _dashInput, _jumpInput;
+        private bool _onGround, _onWall, _isFacingRight = true, _isInputMuted, _dashInput, _jumpInput, _clingingInput;
         private float _wallDirectionX;
+        private bool[] _onGroundRays;
 
         private void Awake()
         {
@@ -37,6 +38,8 @@ namespace StickFight
             _wallDirectionX = _collisionDataRetriever.ContactNormal.x;
             _dashInput = _controller.input.RetrieveDashInput(false);
             _jumpInput = _controller.input.RetrieveJumpInput(false);
+            _onGroundRays = _collisionDataRetriever.OnGroundRays;
+            _clingingInput = _controller.input.RetrieveWallClimbInput(false);
         }
 
         private void FixedUpdate()
@@ -74,6 +77,18 @@ namespace StickFight
                     Flip();
                 else if (_body.velocity.x < 0f && _isFacingRight)
                     Flip();
+            }
+
+            CheckPlatformEdge();
+        }
+
+        private void CheckPlatformEdge()
+        {
+            // check to see if only the first ray is on the ground.  If so, we can transition into grabbing the wall
+            if (_onGroundRays[0] && !_onGroundRays[1])
+            {
+                print("Auto move to wall below");
+                // TODO: if the wall cling button is pressed, take control from the player and move it onto the wall
             }
         }
 

@@ -20,6 +20,7 @@ namespace StickFight
         private Vector2 _velocity, _moveInput;
         private bool _onWall, _onGround, _onCeiling, _jumpInput, _isClinging, _isDashing, _isInputMuted;
         private float _wallDirectionX, _gravityScale, _initialGravityScale;
+        private bool[] _onWallRays, _onCeilingRays;
         
         void Start()
         {
@@ -56,6 +57,9 @@ namespace StickFight
             _onGround = _collisionDataRetriever.OnGround;
             _onCeiling = _collisionDataRetriever.OnCeiling;
             _wallDirectionX = _collisionDataRetriever.ContactNormal.x;
+
+            _onWallRays = _collisionDataRetriever.OnWallRays;
+            _onCeilingRays = _collisionDataRetriever.OnCeilingRays;
         }
 
         void ProcessWallInteraction()
@@ -92,8 +96,8 @@ namespace StickFight
                 if(_onCeiling && _isClinging)
                     CeilingInteraction();
 
-                // Wall Jump
-                WallJump();
+                // check to see if we are peeking over a wall onto a platform
+                CheckWallEdge();
 
             }
             else if (_onCeiling)
@@ -104,6 +108,30 @@ namespace StickFight
             else
             {
                 ResetJumpAnimVariables();
+            }
+        }
+
+        private void CheckWallEdge()
+        {
+            // if we are only touching the wall with the lowest raycast, take control from the player and move them to the platform above
+            if(!_onWallRays[1] && _onWallRays[2])
+            {
+                print("Auto move to platform above");
+            }
+
+            // if we are only touching the wall with the highest raycast, take control from the player and move them to the ceiling below them
+            if(!_onWallRays[1] && _onWallRays[0])
+            {
+                print("Auto move to ceiling below");
+            }
+        }
+
+        private void CheckCeilingEdge()
+        {
+            // if we are only touching the ceiling with the leftmost (when facing right) raycast, take control from the player and move them to the wall above
+            if(!_onCeilingRays[1] && _onCeilingRays[0])
+            {
+                print("Auto move to wall above");
             }
         }
 
@@ -149,7 +177,6 @@ namespace StickFight
 
         void CeilingInteraction()
         {
-            print("CeilingInteration");
             _anim.SetBool("isCeiling", true);
             _anim.SetBool("isJumping", false);
             _gravityScale = 0f;
@@ -167,11 +194,7 @@ namespace StickFight
             }
 
             ApplyGravityAndVelocity();
-        }
-
-        void WallJump()
-        {
-           // print("WallJump");
+            CheckCeilingEdge();
         }
 
         void ApplyGravityAndVelocity()

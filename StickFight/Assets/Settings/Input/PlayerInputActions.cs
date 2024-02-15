@@ -47,12 +47,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""WallClimb"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""86fcc17b-0c75-4057-946c-f933b83d42d8"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Integer"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""DashRight"",

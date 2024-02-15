@@ -144,7 +144,7 @@ namespace StickFight
             }
         }
 
-        private void OnDrawGizmosSelected()
+        private void OnDrawGizmos()
         {
             if (_showGroundCheckRayGizmos)
             {

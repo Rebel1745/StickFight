@@ -1440,7 +1440,7 @@ MonoBehaviour:
   - {fileID: 1777293982}
   - {fileID: 1997307129}
   _groundCheckRayLength: 0.1
-  _showGroundCheckRayGizmos: 0
+  _showGroundCheckRayGizmos: 1
   _whatIsWall:
     serializedVersion: 2
     m_Bits: 64
@@ -3117,7 +3117,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1997307128}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.2, y: -1.15, z: 0}
+  m_LocalPosition: {x: 0.249, y: -1.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3148,7 +3148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2035257781}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.2, y: -1.15, z: 0}
+  m_LocalPosition: {x: -0.249, y: -1.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

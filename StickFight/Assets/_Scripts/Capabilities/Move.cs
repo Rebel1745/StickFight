@@ -16,9 +16,9 @@ namespace StickFight
         private CollisionDataRetriever _collisionDataRetriever;
 
         private float _maxSpeedChange, _acceleration;
-        private bool _onGround, _onWall, _isFacingRight = true, _isInputMuted, _dashInput, _jumpInput, _clingingInput;
+        private bool _onGround, _onWall, _isFacingRight = true, _isInputMuted, _dashInput, _jumpInput, _clingingInput, _autoMoveToWall, _autoFlipped;
         private float _wallDirectionX;
-        private bool[] _onGroundRays;
+        private bool[] _onGroundRays, _onWallRays;  // utilises the multiple rays cast in the collisiondataretriever script
 
         private void Awake()
         {
@@ -40,10 +40,16 @@ namespace StickFight
             _jumpInput = _controller.input.RetrieveJumpInput(false);
             _onGroundRays = _collisionDataRetriever.OnGroundRays;
             _clingingInput = _controller.input.RetrieveWallClimbInput(false);
+            _onWallRays = _collisionDataRetriever.OnWallRays;
         }
 
         private void FixedUpdate()
         {
+            if (_autoMoveToWall)
+                MoveToWallBelow();
+            else
+                CheckPlatformEdge();
+
             if (_isInputMuted)
                 return;
 
@@ -78,18 +84,46 @@ namespace StickFight
                 else if (_body.velocity.x < 0f && _isFacingRight)
                     Flip();
             }
-
-            CheckPlatformEdge();
         }
 
         private void CheckPlatformEdge()
         {
             // check to see if only the first ray is on the ground.  If so, we can transition into grabbing the wall
-            if (_onGroundRays[0] && !_onGroundRays[1])
+            if (_onGround && _onGroundRays[0] && !_onGroundRays[1] && _clingingInput)
             {
-                print("Auto move to wall below");
-                // TODO: if the wall cling button is pressed, take control from the player and move it onto the wall
+                _autoMoveToWall = true;
+                _body.velocity = Vector2.zero;
+                _autoFlipped = false;
+                // mute the input so control is out of the players hands
+                _controller.input.UpdateInputMuting(true);
             }
+        }
+
+        private void MoveToWallBelow()
+        {
+            if (_onGroundRays[0])
+            {
+                // if we are still grounded move the player forward until they are fully over the edge
+                _body.velocity = _isFacingRight ? transform.right * _maxSpeed : -transform.right * _maxSpeed;
+
+                return;
+            }
+            if(!_onWallRays[1])
+            {
+                // if we arent facing the wall, flip the sprite
+                if (!_autoFlipped)
+                {
+                    Flip();
+                    _autoFlipped = true;
+                }
+                
+                // if the middle ray is not touching the wall, move down until it is
+                _body.velocity = -transform.up * _maxSpeed;
+                return;
+            }
+            
+            _autoMoveToWall = false;
+            _controller.input.UpdateInputMuting(false);
         }
 
         private void Flip()

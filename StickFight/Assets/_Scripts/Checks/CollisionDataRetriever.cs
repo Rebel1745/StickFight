@@ -33,11 +33,14 @@ namespace StickFight
         [SerializeField] private float _ceilingCheckRayLength = 0.1f;
         [SerializeField] private bool _showCeilingCheckRayGizmos = false;
 
+        private Move _move;
+
         private void Awake()
         {
             OnGroundRays = new bool[_groundCheckRayPoints.Length];
             OnWallRays = new bool[_wallCheckRayPoints.Length];
             OnCeilingRays = new bool[_ceilingCheckRayPoints.Length];
+            _move = GetComponent<Move>();
         }
 
         private void FixedUpdate()
@@ -72,9 +75,12 @@ namespace StickFight
             RaycastHit2D hit;
             bool isHit = false;
 
+            bool isFacingRight = _move.IsFacingRight;
+            Vector3 dir = isFacingRight ? transform.right : -transform.right;
+
             for (int i = 0; i < _wallCheckRayPoints.Length; i++)
             {
-                hit = Physics2D.Raycast(_wallCheckRayPoints[i].position, transform.right, _wallCheckRayLength, _whatIsWall);
+                hit = Physics2D.Raycast(_wallCheckRayPoints[i].position, dir, _wallCheckRayLength, _whatIsWall);
                 if (hit)
                 {
                     isHit = true;
@@ -144,25 +150,24 @@ namespace StickFight
             }
         }
 
-        private void OnDrawGizmos()
+        /*private void OnDrawGizmos()
         {
             if (_showGroundCheckRayGizmos)
             {
                 for (int i = 0; i < _groundCheckRayPoints.Length; i++)
                 {
-                    if (Application.isEditor && OnGroundRays[i] == true) Gizmos.color = Color.green;
-                    else Gizmos.color = Color.red;
-
                     Gizmos.DrawLine(_groundCheckRayPoints[i].position, _groundCheckRayPoints[i].position + (Vector3.down * _groundCheckRayLength));
                 }
             }
 
             if (_showWallCheckRayGizmos)
             {
+                bool isFacingRight = _move.IsFacingRight;
+                Vector3 dir = isFacingRight ? transform.right : -transform.right;
+
                 for (int i = 0; i < _wallCheckRayPoints.Length; i++)
                 {
-                    Gizmos.color = OnWallRays[i] ? Color.green : Color.red;
-                    Gizmos.DrawLine(_wallCheckRayPoints[i].position, _wallCheckRayPoints[i].position + (transform.right * _wallCheckRayLength));
+                    Gizmos.DrawLine(_wallCheckRayPoints[i].position, _wallCheckRayPoints[i].position + (dir * _wallCheckRayLength));
                 }
             }
 
@@ -170,10 +175,9 @@ namespace StickFight
             {
                 for (int i = 0; i < _ceilingCheckRayPoints.Length; i++)
                 {
-                    Gizmos.color = OnCeilingRays[i] ? Color.green : Color.red;
                     Gizmos.DrawLine(_ceilingCheckRayPoints[i].position, _ceilingCheckRayPoints[i].position + (Vector3.up * _ceilingCheckRayLength));
                 }
             }
-        }
+        }*/
     }
 }

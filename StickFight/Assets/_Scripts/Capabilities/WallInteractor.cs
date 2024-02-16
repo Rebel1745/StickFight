@@ -18,9 +18,11 @@ namespace StickFight
         private Controller _controller;
 
         private Vector2 _velocity, _moveInput;
-        private bool _onWall, _onGround, _onCeiling, _jumpInput, _isClinging, _isDashing, _isInputMuted;
+        private bool _onWall, _onGround, _onCeiling, _jumpInput, _isClinging, _isDashing, _isInputMuted, _isAutoMoveToPlatform, _isAutoMoveToCeiling, _isAutoMoveToWall, _autoFlipped;
         private float _wallDirectionX, _gravityScale, _initialGravityScale;
-        private bool[] _onWallRays, _onCeilingRays;
+        private bool[] _onWallRays, _onCeilingRays, _onGroundRays;
+
+        private Move _move;
         
         void Start()
         {
@@ -28,6 +30,7 @@ namespace StickFight
             _collisionDataRetriever = GetComponent<CollisionDataRetriever>();
             _body = GetComponent<Rigidbody2D>();
             _controller = GetComponent<Controller>();
+            _move = GetComponent<Move>();
 
             _initialGravityScale = _body.gravityScale;
         }
@@ -60,10 +63,27 @@ namespace StickFight
 
             _onWallRays = _collisionDataRetriever.OnWallRays;
             _onCeilingRays = _collisionDataRetriever.OnCeilingRays;
+            _onGroundRays = _collisionDataRetriever.OnGroundRays;
         }
 
         void ProcessWallInteraction()
         {
+            // check to see if we are peeking over a wall onto a platform
+            if (_isAutoMoveToPlatform)
+                MoveToPlatformAbove();
+            else
+                CheckWallEdge();
+
+            if (_isAutoMoveToCeiling)
+                MoveToCeilingBelow();
+            else
+                CheckWallEdge();
+
+            if (_isAutoMoveToWall)
+                MoveToWallAbove();
+            else
+                CheckCeilingEdge();
+
             // if we are not in control, we can't do anything on the wall
             if (_isInputMuted) return;
 
@@ -95,10 +115,6 @@ namespace StickFight
                 // Ceiling Interaction - if we are on a wall, but touching the ceiling
                 if(_onCeiling && _isClinging)
                     CeilingInteraction();
-
-                // check to see if we are peeking over a wall onto a platform
-                CheckWallEdge();
-
             }
             else if (_onCeiling)
             {
@@ -111,27 +127,106 @@ namespace StickFight
             }
         }
 
+        private void MoveToWallAbove()
+        {
+            Vector3 dir = _move.IsFacingRight ? transform.right : -transform.right;
+            if (_onCeilingRays[0])
+            {
+                // if we are still on the ceiling move the player forward until they are fully over the edge
+                _body.velocity = dir * _wallClimbMaxSpeed;
+
+                return;
+            }
+            if (!_onWallRays[1])
+            {
+                // if we arent facing the wall, flip the sprite
+                if (!_autoFlipped)
+                {
+                    _move.Flip();
+                    _autoFlipped = true;
+                }
+
+                // if the middle ray is not touching the wall, move up until it is
+                _body.velocity = transform.up * _wallClimbMaxSpeed;
+                return;
+            }
+
+            _isAutoMoveToWall = false;
+            _controller.input.UpdateInputMuting(false);
+        }
+
+        private void MoveToPlatformAbove()
+        {
+            Vector3 dir = _move.IsFacingRight ? transform.right : -transform.right;
+            // if we are still touching the wall with the lowest ray, move the player up
+            if (_onWallRays[2])
+            {
+                _body.velocity = transform.up * _wallClimbMaxSpeed;
+                return;
+            }
+            if (!_onGroundRays[2])
+            {
+                _body.velocity = dir * _wallClimbMaxSpeed;
+                return;
+            }
+
+            _isAutoMoveToPlatform = false;
+            _controller.input.UpdateInputMuting(false);
+        }
+
+        private void MoveToCeilingBelow()
+        {
+            Vector3 dir = _move.IsFacingRight ? transform.right : -transform.right;
+            // if we are still touching the wall with the lowest ray, move the player up
+            if (_onWallRays[0])
+            {
+                _body.velocity = -transform.up * _wallClimbMaxSpeed;
+                return;
+            }
+            if (!_onCeilingRays[2])
+            {
+                _body.velocity = dir * _wallClimbMaxSpeed;
+                return;
+            }
+
+            _isAutoMoveToCeiling = false;
+            _controller.input.UpdateInputMuting(false);
+        }
+
         private void CheckWallEdge()
         {
             // if we are only touching the wall with the lowest raycast, take control from the player and move them to the platform above
-            if(!_onWallRays[1] && _onWallRays[2])
+            if(_onWall && _isClinging && !_onWallRays[1] && _onWallRays[2] && _moveInput.y > 0.1f)
             {
-                print("Auto move to platform above");
+                //print("Auto move to platform above");
+                _isAutoMoveToPlatform = true;
+                _body.velocity = Vector2.zero;
+                // mute the input so control is out of the players hands
+                _controller.input.UpdateInputMuting(true);
             }
 
             // if we are only touching the wall with the highest raycast, take control from the player and move them to the ceiling below them
-            if(!_onWallRays[1] && _onWallRays[0])
+            if(_onWall && _isClinging && !_onWallRays[1] && _onWallRays[0] && _moveInput.y < -0.1f)
             {
-                print("Auto move to ceiling below");
+                //print("Auto move to ceiling below");
+                _isAutoMoveToCeiling = true;
+                _body.velocity = Vector2.zero;
+                // mute the input so control is out of the players hands
+                _controller.input.UpdateInputMuting(true);
             }
         }
 
         private void CheckCeilingEdge()
         {
             // if we are only touching the ceiling with the leftmost (when facing right) raycast, take control from the player and move them to the wall above
-            if(!_onCeilingRays[1] && _onCeilingRays[0])
+            if(_onCeiling && _isClinging && !_onCeilingRays[1] && _onCeilingRays[0] && _moveInput.y > 0.1f)
             {
-                print("Auto move to wall above");
+                //print("Auto move to wall above");
+                _isAutoMoveToWall = true;
+                _autoFlipped = false;
+                _body.velocity = Vector2.zero;
+                // mute the input so control is out of the players hands
+                _controller.input.UpdateInputMuting(true);
             }
         }
 
@@ -141,7 +236,7 @@ namespace StickFight
             _anim.SetBool("isCeiling", false);
             _anim.SetBool("isClinging", false);
 
-            if (!_onGround)
+            if (!_onGround && !_isInputMuted)
                 _anim.SetBool("isJumping", true);
         }
 
@@ -194,7 +289,6 @@ namespace StickFight
             }
 
             ApplyGravityAndVelocity();
-            CheckCeilingEdge();
         }
 
         void ApplyGravityAndVelocity()

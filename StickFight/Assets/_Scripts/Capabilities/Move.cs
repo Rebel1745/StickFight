@@ -16,9 +16,11 @@ namespace StickFight
         private CollisionDataRetriever _collisionDataRetriever;
 
         private float _maxSpeedChange, _acceleration;
-        private bool _onGround, _onWall, _isFacingRight = true, _isInputMuted, _dashInput, _jumpInput, _clingingInput, _autoMoveToWall, _autoFlipped;
+        private bool _onGround, _onWall, _isFacingRight = true, _isInputMuted, _dashInput, _jumpInput, _clingingInput, _isAutoMove, _autoFlipped;
         private float _wallDirectionX;
         private bool[] _onGroundRays, _onWallRays;  // utilises the multiple rays cast in the collisiondataretriever script
+
+        public bool IsFacingRight { get { return _isFacingRight; } }
 
         private void Awake()
         {
@@ -45,7 +47,7 @@ namespace StickFight
 
         private void FixedUpdate()
         {
-            if (_autoMoveToWall)
+            if (_isAutoMove)
                 MoveToWallBelow();
             else
                 CheckPlatformEdge();
@@ -91,7 +93,7 @@ namespace StickFight
             // check to see if only the first ray is on the ground.  If so, we can transition into grabbing the wall
             if (_onGround && _onGroundRays[0] && !_onGroundRays[1] && _clingingInput)
             {
-                _autoMoveToWall = true;
+                _isAutoMove = true;
                 _body.velocity = Vector2.zero;
                 _autoFlipped = false;
                 // mute the input so control is out of the players hands
@@ -122,11 +124,11 @@ namespace StickFight
                 return;
             }
             
-            _autoMoveToWall = false;
+            _isAutoMove = false;
             _controller.input.UpdateInputMuting(false);
         }
 
-        private void Flip()
+        public void Flip()
         {
             // Switch the way the player is labelled as facing.
             _isFacingRight = !_isFacingRight;

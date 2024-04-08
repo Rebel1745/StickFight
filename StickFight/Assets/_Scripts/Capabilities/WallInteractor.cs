@@ -134,7 +134,7 @@ namespace StickFight
             {
                 // if we are still on the ceiling move the player forward until they are fully over the edge
                 _body.velocity = dir * _wallClimbMaxSpeed;
-
+                print("MoveToWallAbove():: Moving across");
                 return;
             }
             if (!_onWallRays[1])
@@ -148,6 +148,8 @@ namespace StickFight
 
                 // if the middle ray is not touching the wall, move up until it is
                 _body.velocity = transform.up * _wallClimbMaxSpeed;
+                _controller.input.UpdateInputMuting(false);
+                print("MoveToWallAbove():: Moving up");
                 return;
             }
 
@@ -155,6 +157,9 @@ namespace StickFight
             _controller.input.UpdateInputMuting(false);
         }
 
+        // TODO: THIS BREAKS IF A DIFFERENT DIRECTION THAN INTENDED IS BEING PRESSED.
+        // E.G. IF WE WANT TO MOVE UP AND RIGHT AND LEFT AND UP IS BEING PRESSED, THE PLAYER SOMETIMES FLOATS TO THE LEFT.
+        // This could be possibly fixed by defining the dir before calling this function in the CheckWallEdge function
         private void MoveToPlatformAbove()
         {
             Vector3 dir = _move.IsFacingRight ? transform.right : -transform.right;
@@ -162,11 +167,14 @@ namespace StickFight
             if (_onWallRays[2])
             {
                 _body.velocity = transform.up * _wallClimbMaxSpeed;
+                print("MoveToPlatformAbove():: Moving up");
                 return;
             }
             if (!_onGroundRays[2])
             {
                 _body.velocity = dir * _wallClimbMaxSpeed;
+                print("MoveToPlatformAbove():: Moving across");
+                _controller.input.UpdateInputMuting(false);
                 return;
             }
 
@@ -180,12 +188,15 @@ namespace StickFight
             // if we are still touching the wall with the lowest ray, move the player up
             if (_onWallRays[0])
             {
+                //print("MoveToCeilingBelow():: Moving up");
                 _body.velocity = -transform.up * _wallClimbMaxSpeed;
                 return;
             }
             if (!_onCeilingRays[2])
             {
+                //print("MoveToCeilingBelow():: Moving across");
                 _body.velocity = dir * _wallClimbMaxSpeed;
+                _controller.input.UpdateInputMuting(false);
                 return;
             }
 

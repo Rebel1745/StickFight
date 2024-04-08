@@ -150,7 +150,7 @@ namespace StickFight
             }
         }
 
-        /*private void OnDrawGizmos()
+        private void OnDrawGizmos()
         {
             if (_showGroundCheckRayGizmos)
             {
@@ -178,6 +178,6 @@ namespace StickFight
                     Gizmos.DrawLine(_ceilingCheckRayPoints[i].position, _ceilingCheckRayPoints[i].position + (Vector3.up * _ceilingCheckRayLength));
                 }
             }
-        }*/
+        }
     }
 }

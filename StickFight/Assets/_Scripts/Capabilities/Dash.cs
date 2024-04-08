@@ -51,9 +51,10 @@ namespace StickFight
             }
 
             // if we are not currently dashing, and we are pressing dash, start dashing
-            if(!_isDashing && _isDashingInput && _currentDashNumber <= _maxDashes && !_isClinging)
+            if (!_isDashing && _isDashingInput && _currentDashNumber <= _maxDashes)
             {
-                StartDash();
+                if (!_isClinging) StartDash();
+                else StopDash();
             }
 
             UpdateDash();

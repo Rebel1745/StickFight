@@ -161,7 +161,7 @@ namespace StickFight
                 {
                     _jumpPhase += 1;
                 }
-
+                //Time.timeScale = 0.1f;
                 _jumpBufferCounter = 0;
                 _coyoteCounter = 0;
                 _jumpSpeed = Mathf.Sqrt(-2f * Physics2D.gravity.y * _jumpHeight * _upwardMovementMultiplier);

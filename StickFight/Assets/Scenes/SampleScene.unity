@@ -1440,7 +1440,7 @@ MonoBehaviour:
   - {fileID: 1777293982}
   - {fileID: 1997307129}
   _groundCheckRayLength: 0.1
-  _showGroundCheckRayGizmos: 1
+  _showGroundCheckRayGizmos: 0
   _whatIsWall:
     serializedVersion: 2
     m_Bits: 64
@@ -1448,8 +1448,8 @@ MonoBehaviour:
   - {fileID: 1713531595}
   - {fileID: 491416250}
   - {fileID: 965658757}
-  _wallCheckRayLength: 0.2
-  _showWallCheckRayGizmos: 1
+  _wallCheckRayLength: 0.3
+  _showWallCheckRayGizmos: 0
   _whatIsCeiling:
     serializedVersion: 2
     m_Bits: 64
@@ -1458,7 +1458,7 @@ MonoBehaviour:
   - {fileID: 1435881691}
   - {fileID: 1879743834}
   _ceilingCheckRayLength: 0.5
-  _showCeilingCheckRayGizmos: 1
+  _showCeilingCheckRayGizmos: 0
 --- !u!61 &876415951
 BoxCollider2D:
   m_ObjectHideFlags: 0

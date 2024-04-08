@@ -81,10 +81,13 @@ namespace StickFight
             }
             else
             {
-                if (_body.velocity.x > 0f && !_isFacingRight)
-                    Flip();
-                else if (_body.velocity.x < 0f && _isFacingRight)
-                    Flip();
+                if (!_isAutoMove)
+                {
+                    if (_body.velocity.x > 0f && !_isFacingRight)
+                        Flip();
+                    else if (_body.velocity.x < 0f && _isFacingRight)
+                        Flip();
+                }
             }
         }
 
@@ -103,27 +106,36 @@ namespace StickFight
 
         private void MoveToWallBelow()
         {
-            if (_onGroundRays[0])
+            //Time.timeScale = 0.1f;
+            Vector3 dir = _isFacingRight ? transform.right : -transform.right;
+            Vector3 newVelocity = Vector3.zero;
+            //print("MoveToWallBelow():: start " + _onGroundRays[0]);
+            if (_onGroundRays[0] && !_autoFlipped)
             {
                 // if we are still grounded move the player forward until they are fully over the edge
-                _body.velocity = _isFacingRight ? transform.right * _maxSpeed : -transform.right * _maxSpeed;
-
+                _body.velocity = dir * _maxSpeed;
+                //print("MoveToWallBelow():: Moving across");
                 return;
             }
             if(!_onWallRays[1])
             {
+                //print(_wallDirectionX);
                 // if we arent facing the wall, flip the sprite
                 if (!_autoFlipped)
                 {
                     Flip();
                     _autoFlipped = true;
                 }
-                
+
                 // if the middle ray is not touching the wall, move down until it is
-                _body.velocity = -transform.up * _maxSpeed;
+                newVelocity = -transform.up * _maxSpeed;
+                newVelocity.x = (_isFacingRight ? 1 : -1) * 0.1f;
+                _body.velocity = newVelocity;
+                //_controller.input.UpdateInputMuting(false);
+                //print("MoveToWallBelow():: Moving down");
                 return;
             }
-            
+            //Time.timeScale = 1f;
             _isAutoMove = false;
             _controller.input.UpdateInputMuting(false);
         }

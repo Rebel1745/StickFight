@@ -66,8 +66,8 @@ namespace StickFight
         public override Vector2 RetrieveMoveInput(bool includeMutedInput)
         {
             if (_isInputMuted && !includeMutedInput) return Vector2.zero;
-
-            return _inputActions.Gameplay.Move.ReadValue<Vector2>();
+            
+            return _inputActions.Gameplay.Move.ReadValue<Vector2>().normalized;
         }
 
         private void JumpCanceled(InputAction.CallbackContext context)

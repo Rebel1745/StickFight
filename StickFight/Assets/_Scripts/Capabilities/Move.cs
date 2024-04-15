@@ -11,12 +11,12 @@ namespace StickFight
 
         private Animator _anim;
         private Controller _controller;
-        private Vector2 _moveInput, _desiredVelocity, _velocity;
+        private Vector2 _moveInput, _desiredVelocity, _velocity, _autoMoveToWallDir;
         private Rigidbody2D _body;
         private CollisionDataRetriever _collisionDataRetriever;
 
         private float _maxSpeedChange, _acceleration;
-        private bool _onGround, _onWall, _isFacingRight = true, _isInputMuted, _dashInput, _jumpInput, _clingingInput, _isAutoMove, _autoFlipped;
+        private bool _onGround, _onWall, _isFacingRight = true, _isInputMuted, _dashInput, _jumpInput, _clingingInput, _isAutoMoveToWall, _autoFlipped;
         private float _wallDirectionX;
         private bool[] _onGroundRays, _onWallRays;  // utilises the multiple rays cast in the collisiondataretriever script
 
@@ -47,10 +47,10 @@ namespace StickFight
 
         private void FixedUpdate()
         {
-            if (_isAutoMove)
-                MoveToWallBelow();
+            if (_isAutoMoveToWall)
+                AutoMoveToWall();
             else
-                CheckPlatformEdge();
+                CheckAutoMoveToWall();
 
             if (_isInputMuted)
                 return;
@@ -81,7 +81,7 @@ namespace StickFight
             }
             else
             {
-                if (!_isAutoMove)
+                if (!_isAutoMoveToWall)
                 {
                     if (_body.velocity.x > 0f && !_isFacingRight)
                         Flip();
@@ -91,35 +91,32 @@ namespace StickFight
             }
         }
 
-        private void CheckPlatformEdge()
+        private void CheckAutoMoveToWall()
         {
             // check to see if only the first ray is on the ground.  If so, we can transition into grabbing the wall
             if (_onGround && _onGroundRays[0] && !_onGroundRays[1] && _clingingInput)
             {
-                _isAutoMove = true;
+                _isAutoMoveToWall = true;
                 _body.velocity = Vector2.zero;
                 _autoFlipped = false;
+                _autoMoveToWallDir = _isFacingRight ? transform.right : -transform.right;
                 // mute the input so control is out of the players hands
                 _controller.input.UpdateInputMuting(true);
             }
         }
 
-        private void MoveToWallBelow()
+        private void AutoMoveToWall()
         {
-            //Time.timeScale = 0.1f;
-            Vector3 dir = _isFacingRight ? transform.right : -transform.right;
             Vector3 newVelocity = Vector3.zero;
-            //print("MoveToWallBelow():: start " + _onGroundRays[0]);
+
             if (_onGroundRays[0] && !_autoFlipped)
             {
                 // if we are still grounded move the player forward until they are fully over the edge
-                _body.velocity = dir * _maxSpeed;
-                //print("MoveToWallBelow():: Moving across");
+                _body.velocity = _autoMoveToWallDir * _maxSpeed;
                 return;
             }
             if(!_onWallRays[1])
             {
-                //print(_wallDirectionX);
                 // if we arent facing the wall, flip the sprite
                 if (!_autoFlipped)
                 {
@@ -129,14 +126,12 @@ namespace StickFight
 
                 // if the middle ray is not touching the wall, move down until it is
                 newVelocity = -transform.up * _maxSpeed;
-                newVelocity.x = (_isFacingRight ? 1 : -1) * 0.1f;
+                newVelocity.x = _autoMoveToWallDir.x * 0.1f;
                 _body.velocity = newVelocity;
-                //_controller.input.UpdateInputMuting(false);
-                //print("MoveToWallBelow():: Moving down");
                 return;
             }
             //Time.timeScale = 1f;
-            _isAutoMove = false;
+            _isAutoMoveToWall = false;
             _controller.input.UpdateInputMuting(false);
         }
 

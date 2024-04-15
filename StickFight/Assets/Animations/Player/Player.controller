@@ -219,9 +219,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: isDashing
     m_EventTreshold: 0
-  - m_ConditionMode: 1
-    m_ConditionEvent: isGround
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 2115262544251596177}
   m_DstState: {fileID: 0}
   m_Solo: 0

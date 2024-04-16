@@ -28,6 +28,7 @@ namespace StickFight
 
         private Animator _anim;
         private Controller _controller;
+        private Gravity _gravity;
 
         private bool _isKicking, _isKickingInput, _isDashingInput, _isDashingMutedInput, _isKickingMutedInput;
         private KickType _KickType;
@@ -36,6 +37,7 @@ namespace StickFight
         {
             _anim = GetComponent<Animator>();
             _controller = GetComponent<Controller>();
+            _gravity = GetComponent<Gravity>();
         }
 
         private void Update()
@@ -64,6 +66,8 @@ namespace StickFight
             _KickType = KickType.Standard;
 
             _currentDuration = 0f;
+
+            _gravity.ZeroGravity(true, true, "Kick::StartStandardKick()");
 
             _anim.SetBool("isKicking", true);
         }
@@ -97,6 +101,7 @@ namespace StickFight
         private void StopKicking()
         {
             _isKicking = false;
+            _gravity.ResetToDefaultGravity(true, false, "Kick::StopKicking()");
             _anim.SetBool("isKicking", false);
             _controller.input.KickFinished();
         }

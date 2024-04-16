@@ -28,6 +28,7 @@ namespace StickFight
 
         private Animator _anim;
         private Controller _controller;
+        private Gravity _gravity;
 
         private bool _isPunching, _isPunchingInput, _isDashingInput, _isDashingMutedInput, _isPunchingMutedInput;
         private PunchType _punchType;
@@ -36,6 +37,7 @@ namespace StickFight
         {
             _anim = GetComponent<Animator>();
             _controller = GetComponent<Controller>();
+            _gravity = GetComponent<Gravity>();
         }
 
         private void Update()
@@ -64,6 +66,8 @@ namespace StickFight
             _punchType = PunchType.Standard;
 
             _currentDuration = 0f;
+
+            _gravity.ZeroGravity(true, true, "Punch::StartStandardPunch()");
 
             _anim.SetBool("isPunching", true);
         }
@@ -97,6 +101,7 @@ namespace StickFight
         private void StopPunching()
         {
             _isPunching = false;
+            _gravity.ResetToDefaultGravity(true, false, "Punch::StopPunching()");
             _anim.SetBool("isPunching", false);
             _controller.input.PunchFinished();
         }

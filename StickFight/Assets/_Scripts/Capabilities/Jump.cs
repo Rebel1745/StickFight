@@ -22,9 +22,10 @@ namespace StickFight
         private Rigidbody2D _body;
         private CollisionDataRetriever _collisionDataRetriever;
         private Vector2 _velocity;
+        private Gravity _gravity;
 
         private int _jumpPhase;
-        private float _defaultGravityScale, _jumpSpeed, _coyoteCounter, _jumpBufferCounter, _wallDirectionX;
+        private float _jumpSpeed, _coyoteCounter, _jumpBufferCounter, _wallDirectionX;
         private bool _jumpInput, _onGround, _onWall, _isJumping, _isJumpReset, _isInputMuted, _dashInput;
         private Vector2 _moveInput;
         
@@ -34,9 +35,9 @@ namespace StickFight
             _body = GetComponent<Rigidbody2D>();
             _collisionDataRetriever = GetComponent<CollisionDataRetriever>();
             _controller = GetComponent<Controller>();
+            _gravity = GetComponent<Gravity>();
 
             _isJumpReset = true;
-            _defaultGravityScale = 1f;
         }
         
         void Update()
@@ -138,15 +139,15 @@ namespace StickFight
             if (!_dashInput) { 
                 if (_jumpInput && _body.velocity.y > 0)
                 {
-                    _body.gravityScale = _upwardMovementMultiplier;
+                    _gravity.SetGravity(_upwardMovementMultiplier, false, false, "Jump");
                 }
                 else if ((!_controller.input.RetrieveJumpInput(false) || _body.velocity.y < 0) && !_controller.input.RetrieveDashInput(false))
                 {
-                    _body.gravityScale = _downwardMovementMultiplier;
+                    _gravity.SetGravity(_downwardMovementMultiplier, false, false, "Jump");
                 }
                 else if (_body.velocity.y == 0)
                 {
-                    _body.gravityScale = _defaultGravityScale;
+                    _gravity.ResetToDefaultGravity(false, false, "Jump::CheckForJump()");
                 }
             }
 
@@ -161,7 +162,7 @@ namespace StickFight
                 {
                     _jumpPhase += 1;
                 }
-                //Time.timeScale = 0.1f;
+
                 _jumpBufferCounter = 0;
                 _coyoteCounter = 0;
                 _jumpSpeed = Mathf.Sqrt(-2f * Physics2D.gravity.y * _jumpHeight * _upwardMovementMultiplier);

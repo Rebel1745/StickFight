@@ -1157,6 +1157,7 @@ GameObject:
   - component: {fileID: 876415954}
   - component: {fileID: 876415958}
   - component: {fileID: 876415957}
+  - component: {fileID: 876415959}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -1598,6 +1599,18 @@ MonoBehaviour:
   _hitCheckOriginDashPunch: {fileID: 1078526551}
   _hitBoxSizeDashPunch: {x: 2.75, y: 0.75}
   _showDashPunchGizmo: 0
+--- !u!114 &876415959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876415942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eba9c2ce305303c4b906c93539ab1743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &926345987
 GameObject:
   m_ObjectHideFlags: 0

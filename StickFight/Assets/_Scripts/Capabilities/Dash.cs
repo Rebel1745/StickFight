@@ -10,7 +10,7 @@ namespace StickFight
         [SerializeField] [Range(0.1f, 5f)] private float _dashDuration = 0.2f;
         [SerializeField] [Range(0, 5)] private int _maxDashes = 1;
         private bool _isDashing, _isInputMuted, _isDashingInput, _isPunchingInputMuted, _isKickingInputMuted, _onGround, _onWall, _onCeiling, _isClinging;
-        private float _originalGravity, _currentDashDuration = 0f, _wallDirectionX;
+        private float _currentDashDuration = 0f, _wallDirectionX;
         private int _currentDashNumber = 0, _dashDirection;
 
         private Animator _anim;
@@ -18,6 +18,7 @@ namespace StickFight
         private Rigidbody2D _body;
         private CollisionDataRetriever _collisionDataRetriever;
         private Vector2 _velocity;
+        private Gravity _gravity;
 
         private void Awake()
         {
@@ -25,11 +26,11 @@ namespace StickFight
             _body = GetComponent<Rigidbody2D>();
             _collisionDataRetriever = GetComponent<CollisionDataRetriever>();
             _controller = GetComponent<Controller>();
+            _gravity = GetComponent<Gravity>();
         }
 
         private void Start()
         {
-            _originalGravity = _body.gravityScale;
             _currentDashNumber = 0;
         }
 
@@ -65,7 +66,7 @@ namespace StickFight
             _anim.SetBool("isDashing", true);
             _currentDashNumber++;
             _isDashing = true;
-            _body.gravityScale = 0f;
+            _gravity.ZeroGravity(true, true, "Dash::StartDash()");
             _currentDashDuration = 0;
             _dashDirection = _controller.input.RetrieveDashDirection(false);
 
@@ -117,7 +118,7 @@ namespace StickFight
             _controller.input.PunchFinished();
             _controller.input.KickFinished();
             _controller.input.UpdateInputMuting(false);
-            _body.gravityScale = _originalGravity;
+            _gravity.ResetToDefaultGravity(true, false, "Dash::StopDash()");
             _isDashing = false;
             _body.velocity = Vector2.zero;
             _anim.SetBool("isDashing", false);

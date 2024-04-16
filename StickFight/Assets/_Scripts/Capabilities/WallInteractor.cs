@@ -16,10 +16,11 @@ namespace StickFight
         private CollisionDataRetriever _collisionDataRetriever;
         private Rigidbody2D _body;
         private Controller _controller;
+        private Gravity _gravity;
 
         private Vector2 _velocity, _moveInput, _autoMoveToPlatformDir, _autoMoveToWallDir, _autoMoveToCeilingDir;
         private bool _onWall, _onGround, _onCeiling, _jumpInput, _isClinging, _isDashing, _isInputMuted, _isAutoMoveToPlatform, _isAutoMoveToCeiling, _isAutoMoveToWall, _autoFlipped;
-        private float _wallDirectionX, _gravityScale, _initialGravityScale;
+        private float _wallDirectionX;
         private bool[] _onWallRays, _onCeilingRays, _onGroundRays;
 
         private Move _move;
@@ -31,8 +32,7 @@ namespace StickFight
             _body = GetComponent<Rigidbody2D>();
             _controller = GetComponent<Controller>();
             _move = GetComponent<Move>();
-
-            _initialGravityScale = _body.gravityScale;
+            _gravity = GetComponent<Gravity>();
         }
         
         void Update()
@@ -56,7 +56,6 @@ namespace StickFight
             _onWall = _collisionDataRetriever.OnWall;
 
             _velocity = _body.velocity;
-            _gravityScale = _body.gravityScale;
             _onGround = _collisionDataRetriever.OnGround;
             _onCeiling = _collisionDataRetriever.OnCeiling;
             _wallDirectionX = _collisionDataRetriever.ContactNormal.x;
@@ -265,7 +264,7 @@ namespace StickFight
         {
             _anim.SetBool("isClinging", true);
             _anim.SetBool("isCeiling", false);
-            _gravityScale = 0f;
+            _gravity.ZeroGravity(true, true, "WallInteractor::WallStick()");
             _velocity.x = 0f;
             _velocity.y = 0f;
             ApplyGravityAndVelocity();
@@ -275,7 +274,7 @@ namespace StickFight
         {
             _anim.SetBool("isClinging", true);
             _anim.SetBool("isCeiling", false);
-            _gravityScale = 0f;
+            _gravity.ZeroGravity(true, true, "WallInteractor::WallClimb()");
             _velocity.x = 0f;
             _velocity.y = _moveInput.y * _wallClimbMaxSpeed;
             ApplyGravityAndVelocity();
@@ -286,7 +285,7 @@ namespace StickFight
             _anim.SetFloat("ClimbSpeed", _body.velocity.y);
             _anim.SetBool("isCeiling", false);
             _anim.SetBool("isClinging", false);
-            _gravityScale = _initialGravityScale;
+            _gravity.ResetToDefaultGravity(true, true, "WallInteractor::WallSlide()");
             _velocity.y = -_wallSlideMaxSpeed;
             ApplyGravityAndVelocity();
         }
@@ -295,7 +294,7 @@ namespace StickFight
         {
             _anim.SetBool("isCeiling", true);
             _anim.SetBool("isJumping", false);
-            _gravityScale = 0f;
+            _gravity.ZeroGravity(true, true, "WallInteractor::CeilingInteraction()");
             _velocity.x = _moveInput.x * _wallClimbMaxSpeed;
             _velocity.y = 0f;
 
@@ -315,7 +314,6 @@ namespace StickFight
         void ApplyGravityAndVelocity()
         {
             _body.velocity = _velocity;
-            _body.gravityScale = _gravityScale;
         }
     }
 }

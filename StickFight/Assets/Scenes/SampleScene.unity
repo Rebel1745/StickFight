@@ -1561,7 +1561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a0ed9bd946472b479853cde3cb335c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _KickDuration: 0.2
+  _kickDuration: 0.2
   _whatIsEnemy:
     serializedVersion: 2
     m_Bits: 256
@@ -1571,6 +1571,7 @@ MonoBehaviour:
   _hitCheckOriginAirKick: {fileID: 1506748022}
   _hitBoxSizeAirKick: {x: 1, y: 1.4}
   _showAirKickGizmo: 0
+  _maximumAirKicks: 2
   _hitCheckOriginDashKick: {fileID: 2140534065}
   _hitBoxSizeDashKick: {x: 1, y: 1.5}
   _showDashKickGizmo: 0
@@ -1596,6 +1597,7 @@ MonoBehaviour:
   _hitCheckOriginAirPunch: {fileID: 1778132855}
   _hitBoxSizeAirPunch: {x: 1, y: 0.75}
   _showAirPunchGizmo: 0
+  _maximumAirPunches: 2
   _hitCheckOriginDashPunch: {fileID: 1078526551}
   _hitBoxSizeDashPunch: {x: 2.75, y: 0.75}
   _showDashPunchGizmo: 0
@@ -2965,7 +2967,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1966947391
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3074,14 +3076,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1966947390}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: 303dfb01903a22843be4b878b3d835f3, type: 2}
   m_Interpolate: 1
   m_SleepingMode: 1
@@ -3095,7 +3097,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1966947390}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.61, y: 6.3, z: 0}
+  m_LocalPosition: {x: -13.61, y: 8.48, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

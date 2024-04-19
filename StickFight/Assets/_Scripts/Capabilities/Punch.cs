@@ -20,6 +20,8 @@ namespace StickFight
         [SerializeField, Tooltip("Location of the center of the box that checks hits for standard punches while jumping")] private Transform _hitCheckOriginAirPunch;
         [SerializeField] private Vector2 _hitBoxSizeAirPunch;
         [SerializeField] private bool _showAirPunchGizmo = false;
+        [SerializeField] private int _maximumAirPunches = 2;
+        private int _currentAirPunches = 0;
 
         [Header("Dash Punch")]
         [SerializeField, Tooltip("Location of the center of the box that checks hits for dash punches")] private Transform _hitCheckOriginDashPunch;
@@ -29,8 +31,9 @@ namespace StickFight
         private Animator _anim;
         private Controller _controller;
         private Gravity _gravity;
+        private CollisionDataRetriever _collisionDataRetriever;
 
-        private bool _isPunching, _isPunchingInput, _isDashingInput, _isDashingMutedInput, _isPunchingMutedInput;
+        private bool _isPunching, _isPunchingInput, _isDashingInput, _isDashingMutedInput, _isPunchingMutedInput, _onGround;
         private PunchType _punchType;
 
         private void Awake()
@@ -38,6 +41,7 @@ namespace StickFight
             _anim = GetComponent<Animator>();
             _controller = GetComponent<Controller>();
             _gravity = GetComponent<Gravity>();
+            _collisionDataRetriever = GetComponent<CollisionDataRetriever>();
         }
 
         private void Update()
@@ -46,10 +50,17 @@ namespace StickFight
             _isDashingInput = _controller.input.RetrieveDashInput(false);
             _isDashingMutedInput = _controller.input.RetrieveDashInput(true);
             _isPunchingMutedInput = _controller.input.RetrievePunchInput(true);
+            _onGround = _collisionDataRetriever.OnGround;
+
+            if (_onGround)
+                _currentAirPunches = 0;
 
             if (!_isPunching && _isPunchingInput && (!_isDashingInput && !_isDashingMutedInput))
             {
-                StartStandardPunch();
+                if (_onGround)
+                    StartStandardPunch();
+                else if (_currentAirPunches < _maximumAirPunches)
+                    StartAirPunch();
             }
             else if(!_isPunching && _isPunchingMutedInput && _isDashingInput)
             {
@@ -60,14 +71,23 @@ namespace StickFight
                 UpdatePunching();
         }
 
+        private void StartAirPunch()
+        {
+            _currentAirPunches++;
+            _isPunching = true;
+            _punchType = PunchType.Air;
+
+            _currentDuration = 0f;
+
+            _anim.SetBool("isPunching", true);
+        }
+
         private void StartStandardPunch()
         {
             _isPunching = true;
             _punchType = PunchType.Standard;
 
             _currentDuration = 0f;
-
-            _gravity.ZeroGravity(true, true, "Punch::StartStandardPunch()");
 
             _anim.SetBool("isPunching", true);
         }
@@ -82,6 +102,9 @@ namespace StickFight
 
         private void UpdatePunching()
         {
+
+            CheckForHit();
+
             if (_punchType == PunchType.Standard || _punchType == PunchType.Air)
             {
                 _currentDuration += Time.deltaTime;
@@ -94,15 +117,13 @@ namespace StickFight
                 if (!_isDashingInput)
                     StopPunching();
             }
-
-            CheckForHit();
         }
 
         private void StopPunching()
         {
             _isPunching = false;
-            _gravity.ResetToDefaultGravity(true, false, "Punch::StopPunching()");
             _anim.SetBool("isPunching", false);
+            _gravity.ResetToDefaultGravity(true, false, "Punch::StopPunching()");
             _controller.input.PunchFinished();
         }
 
@@ -119,11 +140,14 @@ namespace StickFight
 
             if (hits.Length > 0)
             {
-                foreach(Collider2D c in hits)
+                // if we hit something, suspend gravity so we can keep hitting
+                _gravity.ZeroGravity(true, true, "Punch::CheckForHit()");
+                foreach (Collider2D c in hits)
                 {
                     print("Collided with " + c.name);
                 }
             }
+
         }
 
         private void OnDrawGizmos()

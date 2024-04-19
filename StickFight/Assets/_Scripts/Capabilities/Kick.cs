@@ -7,30 +7,33 @@ namespace StickFight
     public class Kick : MonoBehaviour
     {
         [Header("Kicking")]
-        [SerializeField] private float _KickDuration = 0.2f;
+        [SerializeField] private float _kickDuration = 0.2f;
         private float _currentDuration;
         [SerializeField] private LayerMask _whatIsEnemy;
 
         [Header("Standard Kick")]
-        [SerializeField, Tooltip("Location of the center of the box that checks hits for standard Kickes")] private Transform _hitCheckOriginStandardKick;
+        [SerializeField, Tooltip("Location of the center of the box that checks hits for standard kicks")] private Transform _hitCheckOriginStandardKick;
         [SerializeField] private Vector2 _hitBoxSizeStandardKick;
         [SerializeField] private bool _showStandardKickGizmo = false;
 
         [Header("Air Kick")]
-        [SerializeField, Tooltip("Location of the center of the box that checks hits for standard Kickes while jumping")] private Transform _hitCheckOriginAirKick;
+        [SerializeField, Tooltip("Location of the center of the box that checks hits for standard kicks while jumping")] private Transform _hitCheckOriginAirKick;
         [SerializeField] private Vector2 _hitBoxSizeAirKick;
         [SerializeField] private bool _showAirKickGizmo = false;
+        [SerializeField] private int _maximumAirKicks = 2;
+        private int _currentAirKicks = 0;
 
         [Header("Dash Kick")]
-        [SerializeField, Tooltip("Location of the center of the box that checks hits for dash Kickes")] private Transform _hitCheckOriginDashKick;
+        [SerializeField, Tooltip("Location of the center of the box that checks hits for dash kicks")] private Transform _hitCheckOriginDashKick;
         [SerializeField] private Vector2 _hitBoxSizeDashKick;
         [SerializeField] private bool _showDashKickGizmo = false;
 
         private Animator _anim;
         private Controller _controller;
         private Gravity _gravity;
+        private CollisionDataRetriever _collisionDataRetriever;
 
-        private bool _isKicking, _isKickingInput, _isDashingInput, _isDashingMutedInput, _isKickingMutedInput;
+        private bool _isKicking, _isKickingInput, _isDashingInput, _isDashingMutedInput, _isKickingMutedInput, _onGround;
         private KickType _KickType;
 
         private void Awake()
@@ -38,6 +41,7 @@ namespace StickFight
             _anim = GetComponent<Animator>();
             _controller = GetComponent<Controller>();
             _gravity = GetComponent<Gravity>();
+            _collisionDataRetriever = GetComponent<CollisionDataRetriever>();
         }
 
         private void Update()
@@ -46,10 +50,17 @@ namespace StickFight
             _isDashingInput = _controller.input.RetrieveDashInput(false);
             _isDashingMutedInput = _controller.input.RetrieveDashInput(true);
             _isKickingMutedInput = _controller.input.RetrieveKickInput(true);
+            _onGround = _collisionDataRetriever.OnGround;
+
+            if (_onGround)
+                _currentAirKicks = 0;
 
             if (!_isKicking && _isKickingInput && (!_isDashingInput && !_isDashingMutedInput))
             {
-                StartStandardKick();
+                if (_onGround)
+                    StartStandardKick();
+                else if(_currentAirKicks < _maximumAirKicks)
+                    StartAirKick();
             }
             else if (!_isKicking && _isKickingMutedInput && _isDashingInput)
             {
@@ -60,14 +71,23 @@ namespace StickFight
                 UpdateKicking();
         }
 
+        private void StartAirKick()
+        {
+            _currentAirKicks++;
+            _isKicking = true;
+            _KickType = KickType.Air;
+
+            _currentDuration = 0f;
+
+            _anim.SetBool("isKicking", true);
+        }
+
         private void StartStandardKick()
         {
             _isKicking = true;
             _KickType = KickType.Standard;
 
             _currentDuration = 0f;
-
-            _gravity.ZeroGravity(true, true, "Kick::StartStandardKick()");
 
             _anim.SetBool("isKicking", true);
         }
@@ -82,10 +102,12 @@ namespace StickFight
 
         private void UpdateKicking()
         {
+            CheckForHit();
+
             if (_KickType == KickType.Standard || _KickType == KickType.Air)
             {
                 _currentDuration += Time.deltaTime;
-                if (_currentDuration >= _KickDuration)
+                if (_currentDuration >= _kickDuration)
                     StopKicking();
             }
 
@@ -94,15 +116,13 @@ namespace StickFight
                 if (!_isDashingInput)
                     StopKicking();
             }
-
-            CheckForHit();
         }
 
         private void StopKicking()
         {
             _isKicking = false;
-            _gravity.ResetToDefaultGravity(true, false, "Kick::StopKicking()");
             _anim.SetBool("isKicking", false);
+            _gravity.ResetToDefaultGravity(true, false, "Kick::CheckForHit()");
             _controller.input.KickFinished();
         }
 
@@ -119,6 +139,8 @@ namespace StickFight
 
             if (hits.Length > 0)
             {
+                // if we hit an enemy, suspend gravity so we can hit again
+                _gravity.ZeroGravity(true, true, "Kick::CheckForHit()");
                 foreach (Collider2D c in hits)
                 {
                     print("Collided with " + c.name);

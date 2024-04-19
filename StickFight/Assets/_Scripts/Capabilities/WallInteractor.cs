@@ -252,6 +252,7 @@ namespace StickFight
 
         void ResetJumpAnimVariables()
         {
+            //_gravity.ResetToDefaultGravity(false, false, "WallInteractor::ResetJumpVariables()");
             _anim.SetBool("isWall", false);
             _anim.SetBool("isCeiling", false);
             _anim.SetBool("isClinging", false);
@@ -264,7 +265,7 @@ namespace StickFight
         {
             _anim.SetBool("isClinging", true);
             _anim.SetBool("isCeiling", false);
-            _gravity.ZeroGravity(true, true, "WallInteractor::WallStick()");
+            _gravity.ZeroGravity(false, false, "WallInteractor::WallStick()");
             _velocity.x = 0f;
             _velocity.y = 0f;
             ApplyGravityAndVelocity();
@@ -274,7 +275,7 @@ namespace StickFight
         {
             _anim.SetBool("isClinging", true);
             _anim.SetBool("isCeiling", false);
-            _gravity.ZeroGravity(true, true, "WallInteractor::WallClimb()");
+            _gravity.ZeroGravity(false, false, "WallInteractor::WallClimb()");
             _velocity.x = 0f;
             _velocity.y = _moveInput.y * _wallClimbMaxSpeed;
             ApplyGravityAndVelocity();
@@ -285,7 +286,7 @@ namespace StickFight
             _anim.SetFloat("ClimbSpeed", _body.velocity.y);
             _anim.SetBool("isCeiling", false);
             _anim.SetBool("isClinging", false);
-            _gravity.ResetToDefaultGravity(true, true, "WallInteractor::WallSlide()");
+            _gravity.ResetToDefaultGravity(false, false, "WallInteractor::WallSlide()");
             _velocity.y = -_wallSlideMaxSpeed;
             ApplyGravityAndVelocity();
         }
@@ -294,7 +295,7 @@ namespace StickFight
         {
             _anim.SetBool("isCeiling", true);
             _anim.SetBool("isJumping", false);
-            _gravity.ZeroGravity(true, true, "WallInteractor::CeilingInteraction()");
+            _gravity.ZeroGravity(false, false, "WallInteractor::CeilingInteraction()");
             _velocity.x = _moveInput.x * _wallClimbMaxSpeed;
             _velocity.y = 0f;
 

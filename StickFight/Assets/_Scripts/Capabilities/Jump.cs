@@ -105,6 +105,7 @@ namespace StickFight
 
                 _anim.SetBool("isWall", false);
                 _anim.SetBool("isJumping", true);
+                _gravity.ResetToDefaultGravity(false, false, "Jump::CheckForWallJump()");
             }
             else if (!_jumpInput)
             {
@@ -135,8 +136,7 @@ namespace StickFight
             {
                 JumpAction();
             }
-
-            if (!_dashInput) { 
+            
                 if (_jumpInput && _body.velocity.y > 0)
                 {
                     _gravity.SetGravity(_upwardMovementMultiplier, false, false, "Jump");
@@ -149,7 +149,6 @@ namespace StickFight
                 {
                     _gravity.ResetToDefaultGravity(false, false, "Jump::CheckForJump()");
                 }
-            }
 
             _body.velocity = _velocity;
         }

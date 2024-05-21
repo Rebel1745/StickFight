@@ -11,7 +11,7 @@ namespace StickFight
         [SerializeField][Range(0.1f, 5f)] private float _wallSlideMaxSpeed = 2f;
         [Header("Wall Climb")]
         [SerializeField][Range(2f, 10f)] private float _wallClimbMaxSpeed = 4f;
-        
+
         private Animator _anim;
         private CollisionDataRetriever _collisionDataRetriever;
         private Rigidbody2D _body;
@@ -24,7 +24,7 @@ namespace StickFight
         private bool[] _onWallRays, _onCeilingRays, _onGroundRays;
 
         private Move _move;
-        
+
         void Start()
         {
             _anim = GetComponent<Animator>();
@@ -34,7 +34,7 @@ namespace StickFight
             _move = GetComponent<Move>();
             _gravity = GetComponent<Gravity>();
         }
-        
+
         void Update()
         {
             RetrieveInputsAndCollisions();
@@ -109,24 +109,24 @@ namespace StickFight
                 _anim.SetBool("isJumping", false);
 
                 // Wall Stick - if we are clinging to the wall, but not pressing a direction, stay still
-                if (_isClinging && (_moveInput.y > -0.1f && _moveInput.y < 0.1f ) && !_onGround)
+                if (_isClinging && (_moveInput.y > -0.1f && _moveInput.y < 0.1f) && !_onGround)
                     WallStick();
 
                 // Wall Climb - if we are clinging, and pressing up, we climb
-                if(_isClinging && _moveInput.y > 0.1f)
+                if (_isClinging && _moveInput.y > 0.1f)
                     WallClimb();
 
                 // Wall Slide
-                if(((_isClinging && _moveInput.y < -.01f) || !_isClinging) && !_onGround)
+                if (((_isClinging && _moveInput.y < -.01f) || !_isClinging) && !_onGround)
                     WallSlide();
 
                 // Ceiling Interaction - if we are on a wall, but touching the ceiling
-                if(_onCeiling && _isClinging)
+                if (_onCeiling && _isClinging)
                     CeilingInteraction();
             }
             else if (_onCeiling)
             {
-                if(_isClinging)
+                if (_isClinging)
                     CeilingInteraction();
             }
             else
@@ -163,7 +163,7 @@ namespace StickFight
             _isAutoMoveToWall = false;
             _controller.input.UpdateInputMuting(false);
         }
-        
+
         private void AutoMoveToPlatform()
         {
             Vector3 newVelocity = Vector3.zero;
@@ -180,7 +180,7 @@ namespace StickFight
                 newVelocity.y = -transform.up.y * 0.1f;
                 _body.velocity = newVelocity;
                 //_body.velocity = _autoMoveToPlatformDir * _wallClimbMaxSpeed;
-               // _controller.input.UpdateInputMuting(false);
+                // _controller.input.UpdateInputMuting(false);
                 return;
             }
 
@@ -211,7 +211,7 @@ namespace StickFight
         {
             _autoMoveToCeilingDir = Vector2.zero;
             // if we are only touching the wall with the highest raycast, take control from the player and move them to the ceiling below them
-            if(_onWall && _isClinging && !_onWallRays[1] && _onWallRays[0] && _moveInput.y < -0.1f)
+            if (_onWall && _isClinging && !_onWallRays[1] && _onWallRays[0] && _moveInput.y < -0.1f)
             {
                 _isAutoMoveToCeiling = true;
                 _body.velocity = Vector2.zero;
@@ -239,7 +239,7 @@ namespace StickFight
         {
             _autoMoveToWallDir = Vector2.zero;
             // if we are only touching the ceiling with the leftmost (when facing right) raycast, take control from the player and move them to the wall above
-            if(_onCeiling && _isClinging && !_onCeilingRays[1] && _onCeilingRays[0] && _moveInput.y > 0.1f)
+            if (_onCeiling && _isClinging && !_onCeilingRays[1] && _onCeilingRays[0] && _moveInput.y > 0.1f)
             {
                 _isAutoMoveToWall = true;
                 _autoFlipped = false;

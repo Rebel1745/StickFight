@@ -17,17 +17,17 @@ namespace StickFight
         public bool[] OnCeilingRays { get; private set; }
 
         private PhysicsMaterial2D _material;
-        
+
         [SerializeField] private LayerMask _whatIsGround;
         [SerializeField] private Transform[] _groundCheckRayPoints;
         [SerializeField] private float _groundCheckRayLength = 0.1f;
         [SerializeField] private bool _showGroundCheckRayGizmos = false;
-        
+
         [SerializeField] private LayerMask _whatIsWall;
         [SerializeField] private Transform[] _wallCheckRayPoints;
         [SerializeField] private float _wallCheckRayLength = 0.1f;
         [SerializeField] private bool _showWallCheckRayGizmos = false;
-        
+
         [SerializeField] private LayerMask _whatIsCeiling;
         [SerializeField] private Transform[] _ceilingCheckRayPoints;
         [SerializeField] private float _ceilingCheckRayLength = 0.1f;
@@ -142,7 +142,7 @@ namespace StickFight
         {
             Friction = 0;
 
-            if(collision.rigidbody.sharedMaterial != null)
+            if (collision.rigidbody.sharedMaterial != null)
             {
 
                 _material = collision.rigidbody.sharedMaterial;

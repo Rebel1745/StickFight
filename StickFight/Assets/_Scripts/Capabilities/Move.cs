@@ -56,7 +56,7 @@ namespace StickFight
                 return;
 
             // if we arent doing a wall bounce (pressing jump but no direction, we ignore the input
-            if(!(_jumpInput && _moveInput.x > -0.1f && _moveInput.x < 0.1f) || _onGround)
+            if (!(_jumpInput && _moveInput.x > -0.1f && _moveInput.x < 0.1f) || _onGround)
             {
                 _velocity = _body.velocity;
 
@@ -71,7 +71,7 @@ namespace StickFight
             _anim.SetFloat("MovementSpeed", Mathf.Abs(_velocity.x));
             _anim.SetFloat("ClimbSpeed", _moveInput.y);
 
-            if(_onWall)
+            if (_onWall)
             {
                 // wallDirectionX = 1 if wall is on players left, -1 if it is on the right
                 if (_wallDirectionX == 1 && _isFacingRight)
@@ -115,7 +115,7 @@ namespace StickFight
                 _body.velocity = _autoMoveToWallDir * _maxSpeed;
                 return;
             }
-            if(!_onWallRays[1])
+            if (!_onWallRays[1])
             {
                 // if we arent facing the wall, flip the sprite
                 if (!_autoFlipped)
@@ -140,8 +140,8 @@ namespace StickFight
             // Switch the way the player is labelled as facing.
             _isFacingRight = !_isFacingRight;
 
-            if(_isFacingRight)
-                this.transform.localScale = new Vector3(1f, 1f, 1f); 
+            if (_isFacingRight)
+                this.transform.localScale = new Vector3(1f, 1f, 1f);
             else
                 this.transform.localScale = new Vector3(-1f, 1f, 1f);
         }

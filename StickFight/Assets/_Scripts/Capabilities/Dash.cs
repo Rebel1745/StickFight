@@ -6,9 +6,9 @@ namespace StickFight
 {
     public class Dash : MonoBehaviour
     {
-        [SerializeField] [Range(20f, 100f)] private float _dashSpeed = 30f;
-        [SerializeField] [Range(0.1f, 5f)] private float _dashDuration = 0.2f;
-        [SerializeField] [Range(0, 5)] private int _maxDashes = 1;
+        [SerializeField, Range(20f, 100f)] private float _dashSpeed = 30f;
+        [SerializeField, Range(0.1f, 5f)] private float _dashDuration = 0.2f;
+        [SerializeField, Range(0, 5)] private int _maxDashes = 1;
         private bool _isDashing, _isInputMuted, _isDashingInput, _isPunchingInputMuted, _isKickingInputMuted, _onGround, _onWall, _onCeiling, _isClinging;
         private float _currentDashDuration = 0f, _wallDirectionX;
         private int _currentDashNumber = 0, _dashDirection;
@@ -107,7 +107,7 @@ namespace StickFight
                 _wallDirectionX = _collisionDataRetriever.ContactNormal.x;
 
                 // if the dash direction IS in the direction of the wall, stop the dash
-                if(Mathf.Sign(_wallDirectionX) != Mathf.Sign(_dashDirection))
+                if (Mathf.Sign(_wallDirectionX) != Mathf.Sign(_dashDirection))
                     StopDash();
             }
         }

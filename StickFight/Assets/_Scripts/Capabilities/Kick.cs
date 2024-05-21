@@ -59,7 +59,7 @@ namespace StickFight
             {
                 if (_onGround)
                     StartStandardKick();
-                else if(_currentAirKicks < _maximumAirKicks)
+                else if (_currentAirKicks < _maximumAirKicks)
                     StartAirKick();
             }
             else if (!_isKicking && _isKickingMutedInput && _isDashingInput)

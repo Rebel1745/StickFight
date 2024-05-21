@@ -28,7 +28,7 @@ namespace StickFight
         private float _jumpSpeed, _coyoteCounter, _jumpBufferCounter, _wallDirectionX;
         private bool _jumpInput, _onGround, _onWall, _isJumping, _isJumpReset, _isInputMuted, _dashInput;
         private Vector2 _moveInput;
-        
+
         void Awake()
         {
             _anim = GetComponent<Animator>();
@@ -39,7 +39,7 @@ namespace StickFight
 
             _isJumpReset = true;
         }
-        
+
         void Update()
         {
             _jumpInput = _controller.input.RetrieveJumpInput(false);
@@ -74,7 +74,7 @@ namespace StickFight
                 _coyoteCounter -= Time.deltaTime;
             }
 
-            if(_onWall && !_onGround)
+            if (_onWall && !_onGround)
             {
                 CheckForWallJump();
             }
@@ -82,7 +82,7 @@ namespace StickFight
             {
                 CheckForJump();
             }
-            
+
         }
 
         void CheckForWallJump()
@@ -136,19 +136,19 @@ namespace StickFight
             {
                 JumpAction();
             }
-            
-                if (_jumpInput && _body.velocity.y > 0)
-                {
-                    _gravity.SetGravity(_upwardMovementMultiplier, false, false, "Jump");
-                }
-                else if ((!_controller.input.RetrieveJumpInput(false) || _body.velocity.y < 0) && !_controller.input.RetrieveDashInput(false))
-                {
-                    _gravity.SetGravity(_downwardMovementMultiplier, false, false, "Jump");
-                }
-                else if (_body.velocity.y == 0)
-                {
-                    _gravity.ResetToDefaultGravity(false, false, "Jump::CheckForJump()");
-                }
+
+            if (_jumpInput && _body.velocity.y > 0)
+            {
+                _gravity.SetGravity(_upwardMovementMultiplier, false, false, "Jump");
+            }
+            else if ((!_controller.input.RetrieveJumpInput(false) || _body.velocity.y < 0) && !_controller.input.RetrieveDashInput(false))
+            {
+                _gravity.SetGravity(_downwardMovementMultiplier, false, false, "Jump");
+            }
+            else if (_body.velocity.y == 0)
+            {
+                _gravity.ResetToDefaultGravity(false, false, "Jump::CheckForJump()");
+            }
 
             _body.velocity = _velocity;
         }
@@ -157,7 +157,7 @@ namespace StickFight
         {
             if (_coyoteCounter > 0f || (_jumpPhase < _maxAirJumps))
             {
-                if(_isJumping)
+                if (_isJumping)
                 {
                     _jumpPhase += 1;
                 }
@@ -166,7 +166,7 @@ namespace StickFight
                 _coyoteCounter = 0;
                 _jumpSpeed = Mathf.Sqrt(-2f * Physics2D.gravity.y * _jumpHeight * _upwardMovementMultiplier);
                 _isJumping = true;
-                
+
                 if (_velocity.y > 0f)
                 {
                     _jumpSpeed = Mathf.Max(_jumpSpeed - _velocity.y, 0f);
@@ -176,7 +176,7 @@ namespace StickFight
                     _jumpSpeed += Mathf.Abs(_body.velocity.y);
                 }
                 _velocity.y += _jumpSpeed;
-                
+
                 _anim.SetBool("isJumping", true);
             }
         }

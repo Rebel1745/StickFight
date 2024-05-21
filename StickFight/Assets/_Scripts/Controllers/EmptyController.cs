@@ -7,7 +7,7 @@ namespace StickFight
     {
         public override void DashFinished()
         {
-            
+
         }
 
         public override void KickFinished()

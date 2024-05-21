@@ -47,7 +47,7 @@ namespace StickFight
             // wall climb
             _inputActions.Gameplay.WallClimb.started -= WallClimbStarted;
             _inputActions.Gameplay.WallClimb.canceled -= WallClimbCanceled;
-            
+
             // dash
             _inputActions.Gameplay.DashLeft.started -= DashLeftStarted;
             _inputActions.Gameplay.DashRight.started -= DashRightStarted;
@@ -66,7 +66,7 @@ namespace StickFight
         public override Vector2 RetrieveMoveInput(bool includeMutedInput)
         {
             if (_isInputMuted && !includeMutedInput) return Vector2.zero;
-            
+
             return _inputActions.Gameplay.Move.ReadValue<Vector2>().normalized;
         }
 

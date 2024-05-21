@@ -62,12 +62,12 @@ namespace StickFight
                 else if (_currentAirPunches < _maximumAirPunches)
                     StartAirPunch();
             }
-            else if(!_isPunching && _isPunchingMutedInput && _isDashingInput)
+            else if (!_isPunching && _isPunchingMutedInput && _isDashingInput)
             {
                 StartDashPunch();
             }
 
-            if(_isPunching)
+            if (_isPunching)
                 UpdatePunching();
         }
 
@@ -133,7 +133,7 @@ namespace StickFight
 
             if (_punchType == PunchType.Standard)
                 hits = Physics2D.OverlapBoxAll(_hitCheckOriginStandardPunch.position, _hitBoxSizeStandardPunch, 0f, _whatIsEnemy);
-            else if(_punchType == PunchType.Air)
+            else if (_punchType == PunchType.Air)
                 hits = Physics2D.OverlapBoxAll(_hitCheckOriginAirPunch.position, _hitBoxSizeAirPunch, 0f, _whatIsEnemy);
             else
                 hits = Physics2D.OverlapBoxAll(_hitCheckOriginDashPunch.position, _hitBoxSizeDashPunch, 0f, _whatIsEnemy);
@@ -153,11 +153,11 @@ namespace StickFight
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
-            if(_showStandardPunchGizmo)
+            if (_showStandardPunchGizmo)
                 Gizmos.DrawWireCube(_hitCheckOriginStandardPunch.position, new Vector3(_hitBoxSizeStandardPunch.x, _hitBoxSizeStandardPunch.y, 1f));
-            if(_showAirPunchGizmo)
+            if (_showAirPunchGizmo)
                 Gizmos.DrawWireCube(_hitCheckOriginAirPunch.position, new Vector3(_hitBoxSizeAirPunch.x, _hitBoxSizeAirPunch.y, 1f));
-            if(_showDashPunchGizmo)
+            if (_showDashPunchGizmo)
                 Gizmos.DrawWireCube(_hitCheckOriginDashPunch.position, new Vector3(_hitBoxSizeDashPunch.x, _hitBoxSizeDashPunch.y, 1f));
         }
     }

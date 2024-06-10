@@ -24,7 +24,7 @@ namespace StickFight
             {
                 if (!_ignoreLowPriorityGravity || forceChange)
                 {
-                    print("SetGravity()::Source: " + source);
+                    //print("SetGravity()::Source: " + source);
                     _body.gravityScale = amount;
                     _ignoreLowPriorityGravity = ignoreLowPriority;
                 }
@@ -37,7 +37,7 @@ namespace StickFight
             {
                 if (!_ignoreLowPriorityGravity || forceChange)
                 {
-                    print("ZeroGravity()::Source: " + source);
+                    //print("ZeroGravity()::Source: " + source);
                     _body.gravityScale = 0f;
                     _body.velocity = new Vector2(_body.velocity.x, 0f);
                     _ignoreLowPriorityGravity = ignoreLowPriority;
@@ -51,7 +51,7 @@ namespace StickFight
             {
                 if (!_ignoreLowPriorityGravity || forceChange)
                 {
-                    print("ResetToDefaultGravity()::Source: " + source);
+                    //print("ResetToDefaultGravity()::Source: " + source);
                     _body.gravityScale = _defaultGravityScale;
                     _ignoreLowPriorityGravity = ignoreLowPriority;
                 }

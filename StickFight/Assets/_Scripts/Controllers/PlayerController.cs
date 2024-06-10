@@ -10,6 +10,8 @@ namespace StickFight
         private bool _isJumping, _isWallClimb, _isDashing, _isInputMuted, _isPunching, _isKicking;
         private int _dashDirection; // -1 = left, 0 = no dash, 1 = right
 
+        private int _normInputX, _normInputY;
+
         private void OnEnable()
         {
             _inputActions = new PlayerInputActions();
@@ -63,11 +65,15 @@ namespace StickFight
 
         // TODO: make a function to limit movement for a time (while dashing, wall jumping etc)
         // _canMove = true;  void UpdateCanMove(bool canMove); void UpdateCanMove(bool canMove, float delay);
-        public override Vector2 RetrieveMoveInput(bool includeMutedInput)
+        public override Vector2Int RetrieveMoveInput(bool includeMutedInput)
         {
-            if (_isInputMuted && !includeMutedInput) return Vector2.zero;
+            if (_isInputMuted && !includeMutedInput) return Vector2Int.zero;
 
-            return _inputActions.Gameplay.Move.ReadValue<Vector2>().normalized;
+            _normInputX = (int)(_inputActions.Gameplay.Move.ReadValue<Vector2>() * Vector2.right).normalized.x;
+            _normInputY = (int)(_inputActions.Gameplay.Move.ReadValue<Vector2>() * Vector2.up).normalized.y;
+
+            return new Vector2Int(_normInputX, _normInputY);
+            //return _inputActions.Gameplay.Move.ReadValue<Vector2>().normalized;
         }
 
         private void JumpCanceled(InputAction.CallbackContext context)

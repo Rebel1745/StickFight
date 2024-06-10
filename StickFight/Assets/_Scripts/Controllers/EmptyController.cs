@@ -45,9 +45,9 @@ namespace StickFight
             throw new System.NotImplementedException();
         }
 
-        public override Vector2 RetrieveMoveInput(bool includeMutedInput)
+        public override Vector2Int RetrieveMoveInput(bool includeMutedInput)
         {
-            return Vector2.zero;
+            return Vector2Int.zero;
         }
 
         public override bool RetrievePunchInput(bool includeMutedInput)

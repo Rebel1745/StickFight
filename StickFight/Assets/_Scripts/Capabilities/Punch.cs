@@ -102,9 +102,6 @@ namespace StickFight
 
         private void UpdatePunching()
         {
-
-            CheckForHit();
-
             if (_punchType == PunchType.Standard || _punchType == PunchType.Air)
             {
                 _currentDuration += Time.deltaTime;
@@ -117,6 +114,8 @@ namespace StickFight
                 if (!_isDashingInput)
                     StopPunching();
             }
+
+            CheckForHit();
         }
 
         private void StopPunching()
@@ -145,6 +144,7 @@ namespace StickFight
                 foreach (Collider2D c in hits)
                 {
                     print("Collided with " + c.name);
+                    StopPunching();
                 }
             }
 

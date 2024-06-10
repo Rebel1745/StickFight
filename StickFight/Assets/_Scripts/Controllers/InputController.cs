@@ -4,7 +4,7 @@ namespace StickFight
 {
     public abstract class InputController : ScriptableObject
     {
-        public abstract Vector2 RetrieveMoveInput(bool includeMutedInput);
+        public abstract Vector2Int RetrieveMoveInput(bool includeMutedInput);
         public abstract bool RetrieveJumpInput(bool includeMutedInput);
         public abstract bool RetrieveWallClimbInput(bool includeMutedInput);
         public abstract bool RetrieveDashInput(bool includeMutedInput);

@@ -45,9 +45,9 @@ namespace StickFight
 
         private void FixedUpdate()
         {
-            CheckForGroundContactRay();
-            CheckForWallContactRay();
-            CheckForCeilingContactRay();
+            //CheckForGroundContactRay();
+            //CheckForWallContactRay();
+            //CheckForCeilingContactRay();
         }
 
         private void CheckForCeilingContactRay()

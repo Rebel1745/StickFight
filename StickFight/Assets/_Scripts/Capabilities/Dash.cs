@@ -20,6 +20,18 @@ namespace StickFight
         private Vector2 _velocity;
         private Gravity _gravity;
 
+        [SerializeField] private LayerMask _whatIsEnemy;
+
+        [Header("Dash Kick")]
+        [SerializeField, Tooltip("Location of the center of the box that checks hits for dash kicks")] private Transform _hitCheckOriginDashKick;
+        [SerializeField] private Vector2 _hitBoxSizeDashKick;
+        [SerializeField] private bool _showDashKickGizmo = false;
+
+        [Header("Dash Punch")]
+        [SerializeField, Tooltip("Location of the center of the box that checks hits for dash punches")] private Transform _hitCheckOriginDashPunch;
+        [SerializeField] private Vector2 _hitBoxSizeDashPunch;
+        [SerializeField] private bool _showDashPunchGizmo = false;
+
         private void Awake()
         {
             _anim = GetComponent<Animator>();
@@ -90,12 +102,6 @@ namespace StickFight
 
             _currentDashDuration += Time.deltaTime;
 
-            if (_isPunchingInputMuted)
-                _anim.SetBool("isPunching", true);
-
-            if (_isKickingInputMuted)
-                _anim.SetBool("isKicking", true);
-
             // if we have reached or surpassed the intedend duration of the dash, stop it
             if (_currentDashDuration >= _dashDuration)
                 StopDash();
@@ -109,6 +115,19 @@ namespace StickFight
                 // if the dash direction IS in the direction of the wall, stop the dash
                 if (Mathf.Sign(_wallDirectionX) != Mathf.Sign(_dashDirection))
                     StopDash();
+            }
+
+            if (_isPunchingInputMuted)
+            {
+                _anim.SetBool("isPunching", true);
+                CheckForHit("Punch");
+            }
+
+            if (_isKickingInputMuted)
+            {
+                _anim.SetBool("isKicking", true);
+                // we are dash kicking, check for hits
+                CheckForHit("Kick");
             }
         }
 
@@ -124,6 +143,35 @@ namespace StickFight
             _anim.SetBool("isDashing", false);
             _anim.SetBool("isPunching", false);
             _anim.SetBool("isKicking", false);
+        }
+
+        void CheckForHit(string hitType)
+        {
+            Collider2D[] hits;
+
+            if (hitType == "Kick")
+                hits = Physics2D.OverlapBoxAll(_hitCheckOriginDashKick.position, _hitBoxSizeDashKick, 0f, _whatIsEnemy);
+            else if (hitType == "Punch")
+                hits = Physics2D.OverlapBoxAll(_hitCheckOriginDashPunch.position, _hitBoxSizeDashPunch, 0f, _whatIsEnemy);
+            else return;
+
+            if (hits.Length > 0)
+            {
+                foreach (Collider2D c in hits)
+                {
+                    print(hitType + " Collided with " + c.name);
+                    StopDash();
+                }
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            if (_showDashKickGizmo)
+                Gizmos.DrawWireCube(_hitCheckOriginDashKick.position, new Vector3(_hitBoxSizeDashKick.x, _hitBoxSizeDashKick.y, 1f));
+            if (_showDashPunchGizmo)
+                Gizmos.DrawWireCube(_hitCheckOriginDashPunch.position, new Vector3(_hitBoxSizeDashPunch.x, _hitBoxSizeDashPunch.y, 1f));
         }
     }
 }

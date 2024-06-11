@@ -7,6 +7,7 @@ public class PlayerGroundedState : PlayerState
     protected int _xInput;
 
     private bool _jumpInput;
+    private bool _isGrounded;
 
     public PlayerGroundedState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animName) : base(player, stateMachine, playerData, animName)
     {
@@ -15,11 +16,16 @@ public class PlayerGroundedState : PlayerState
     public override void DoChecks()
     {
         base.DoChecks();
+
+        _isGrounded = _player.CheckIfGrounded();
     }
 
     public override void Enter()
     {
         base.Enter();
+
+        // we have touched the ground, we can now jump again
+        _player.JumpState.ResetAmountOfJumpsLeft();
     }
 
     public override void Exit()
@@ -34,10 +40,21 @@ public class PlayerGroundedState : PlayerState
         _xInput = _player.InputHandler.NormInputX;
         _jumpInput = _player.InputHandler.JumpInput;
 
-        if (_jumpInput)
+        if (_jumpInput && _player.JumpState.CanJump())
         {
             _player.InputHandler.UseJumpInput();
             _stateMachine.ChangeState(_player.JumpState);
+        }
+
+        // if we walk of a platform and are no longer grounded
+        // transition to the InAir state
+        else if (!_isGrounded)
+        {
+            // unless we have multiple jumps, we should not be able to jump in this state
+            // however we have coyote time so start it here then when we transition to the In Air state
+            // we can jump if we press the button within the coyote time window
+            _player.InAirState.StartCoyoteTime();
+            _stateMachine.ChangeState(_player.InAirState);
         }
 
     }

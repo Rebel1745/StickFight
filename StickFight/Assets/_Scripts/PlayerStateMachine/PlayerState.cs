@@ -8,6 +8,8 @@ public class PlayerState
     protected PlayerStateMachine _stateMachine;
     protected PlayerData _playerData;
 
+    protected bool _isAnimationFinished;
+
     protected float _startTime;
 
     private string _animName;
@@ -26,6 +28,10 @@ public class PlayerState
         _player.Anim.Play(_animName);
         _startTime = Time.time;
         Debug.Log(_animName);
+        // use isAnimationFinished = false if we want to use it from an animation, for now it is not used so it will just be set as true
+        // see youtube.com/watch?v=dOiOp3DLxZQ
+        //_isAnimationFinished = false;
+        _isAnimationFinished = true;
     }
     public virtual void Exit() { }
     public virtual void LogicUpdate() { }
@@ -34,4 +40,8 @@ public class PlayerState
         DoChecks();
     }
     public virtual void DoChecks() { }
+
+    public virtual void AnimationTrigger() { }
+
+    public virtual void AnimationFinishedTrigger() => _isAnimationFinished = true;
 }

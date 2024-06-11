@@ -31,6 +31,10 @@ public class Player : MonoBehaviour
     private Vector2 _workspace;
     #endregion
 
+    #region CheckTransforms
+    [SerializeField] private Transform _groundCheck;
+    #endregion
+
     #region Unity Callback Functions
     private void Awake()
     {
@@ -67,6 +71,9 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Other Functions
+
+    private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
+    private void AnimationFinishedTrigger() => StateMachine.CurrentState.AnimationFinishedTrigger();
     private void Flip()
     {
         FacingDirection *= -1;
@@ -75,6 +82,12 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Check Functions
+
+    public bool CheckIfGrounded()
+    {
+        return Physics2D.OverlapCircle(_groundCheck.position, _playerData.GroundCheckRadius, _playerData.WhatIsGround);
+    }
+
     public void CheckIfShouldFlip(int xInput)
     {
         if (xInput != 0 && xInput != FacingDirection)

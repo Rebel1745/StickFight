@@ -9,11 +9,17 @@ public class PlayerInAirState : PlayerState
     private int _xInput;
     private bool _isGrounded;
     private bool _isTouchingWall;
+    private bool _isTouchingWallBack;
+    private bool _oldIsTouchingWall;
+    private bool _oldIsTouchingWallBack;
     private bool _jumpInput;
     private bool _jumpInputStop;
     private bool _grabInput;
     private bool _coyoteTime;
+    private bool _wallJumpCoyoteTime;
     private bool _isJumping;
+
+    private float _startWallJumpCoyoteTime;
 
     public PlayerInAirState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animName) : base(player, stateMachine, playerData, animName)
     {
@@ -23,8 +29,17 @@ public class PlayerInAirState : PlayerState
     {
         base.DoChecks();
 
+        _oldIsTouchingWall = _isTouchingWall;
+        _oldIsTouchingWallBack = _isTouchingWallBack;
+
         _isGrounded = _player.CheckIfGrounded();
         _isTouchingWall = _player.CheckIfTouchingWall();
+        _isTouchingWallBack = _player.CheckIfTouchingWallBack();
+
+        if (!_wallJumpCoyoteTime && !_isTouchingWall && !_isTouchingWallBack && (_oldIsTouchingWall || _oldIsTouchingWallBack))
+        {
+            StartWallJumpCoyoteTime();
+        }
     }
 
     public override void Enter()
@@ -42,6 +57,7 @@ public class PlayerInAirState : PlayerState
         base.LogicUpdate();
 
         CheckCoyoteTime();
+        CheckWallJumpCoyoteTime();
 
         _xInput = _player.InputHandler.NormInputX;
         _jumpInput = _player.InputHandler.JumpInput;
@@ -53,6 +69,13 @@ public class PlayerInAirState : PlayerState
         if (_isGrounded && _player.CurrentVelocity.y < 0.01f)
         {
             _stateMachine.ChangeState(_player.LandState);
+        }
+        else if (_jumpInput && (_isTouchingWall || _isTouchingWallBack || _wallJumpCoyoteTime))
+        {
+            StopWallJumpCoyoteTime();
+            _isTouchingWall = _player.CheckIfTouchingWall();
+            _player.WallJumpState.DetermineWallJumpDirection(_isTouchingWall);
+            _stateMachine.ChangeState(_player.WallJumpState);
         }
         else if (_jumpInput && _player.JumpState.CanJump())
         {
@@ -88,6 +111,23 @@ public class PlayerInAirState : PlayerState
     }
 
     public void StartCoyoteTime() => _coyoteTime = true;
+
+    private void CheckWallJumpCoyoteTime()
+    {
+        // TODO: change _playerData.CoyoteTime to a new variable of WallJumpCoyoteTime
+        if (_wallJumpCoyoteTime && _startWallJumpCoyoteTime > _startTime + _playerData.CoyoteTime)
+        {
+            _wallJumpCoyoteTime = false;
+            _player.JumpState.DecreaseAmountOfJumpsLeft();
+        }
+    }
+
+    public void StartWallJumpCoyoteTime()
+    {
+        _startWallJumpCoyoteTime = Time.time;
+        _wallJumpCoyoteTime = true;
+    }
+    public void StopWallJumpCoyoteTime() => _wallJumpCoyoteTime = false;
 
     private void CheckJumpMultiplier()
     {

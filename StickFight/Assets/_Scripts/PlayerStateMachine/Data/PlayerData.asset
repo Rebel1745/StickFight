@@ -19,6 +19,9 @@ MonoBehaviour:
   VariableJumpHeightMultiplier: 0.5
   WallSlideVelocity: 3
   WallClimbVelocity: 3
+  WallJumpVelocity: 10
+  WallJumpTime: 0.4
+  WallJumpAngle: {x: 1, y: 2}
   GroundCheckRadius: 0.3
   WallCheckDistance: 1
   WhatIsGround:

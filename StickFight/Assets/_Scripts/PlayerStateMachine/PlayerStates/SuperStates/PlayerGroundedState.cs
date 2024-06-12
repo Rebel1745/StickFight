@@ -46,7 +46,6 @@ public class PlayerGroundedState : PlayerState
 
         if (_jumpInput && _player.JumpState.CanJump())
         {
-            _player.InputHandler.UseJumpInput();
             _stateMachine.ChangeState(_player.JumpState);
         }
         // if we walk of a platform and are no longer grounded

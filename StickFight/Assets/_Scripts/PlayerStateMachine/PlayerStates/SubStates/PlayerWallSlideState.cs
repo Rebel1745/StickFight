@@ -12,11 +12,15 @@ public class PlayerWallSlideState : PlayerTouchingWallState
     {
         base.LogicUpdate();
 
-        _player.SetVelocityY(-_playerData.WallSlideVelocity);
-
-        if (_grabInput && _yInput == 0)
+        // TODO: change all if(!_isExitingState) checks to if(_isExitingState) return;
+        // this removes unnecessessary(sp!?) indentation
+        if (!_isExitingState)
         {
-            _stateMachine.ChangeState(_player.WallGrabState);
+            _player.SetVelocityY(-_playerData.WallSlideVelocity);
+            if (_grabInput && _yInput == 0)
+            {
+                _stateMachine.ChangeState(_player.WallGrabState);
+            }
         }
     }
 }

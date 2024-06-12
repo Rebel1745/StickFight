@@ -13,6 +13,9 @@ public class Player : MonoBehaviour
     public PlayerJumpState JumpState { get; private set; }
     public PlayerInAirState InAirState { get; private set; }
     public PlayerLandState LandState { get; private set; }
+    public PlayerWallSlideState WallSlideState { get; private set; }
+    public PlayerWallGrabState WallGrabState { get; private set; }
+    public PlayerWallClimbState WallClimbState { get; private set; }
     #endregion
 
     #region Components
@@ -33,6 +36,7 @@ public class Player : MonoBehaviour
 
     #region CheckTransforms
     [SerializeField] private Transform _groundCheck;
+    [SerializeField] private Transform _wallCheck;
     #endregion
 
     #region Unity Callback Functions
@@ -45,6 +49,9 @@ public class Player : MonoBehaviour
         JumpState = new PlayerJumpState(this, StateMachine, _playerData, "Jump");
         InAirState = new PlayerInAirState(this, StateMachine, _playerData, "Jump");
         LandState = new PlayerLandState(this, StateMachine, _playerData, "Idle");
+        WallSlideState = new PlayerWallSlideState(this, StateMachine, _playerData, "Wall_slide");
+        WallGrabState = new PlayerWallGrabState(this, StateMachine, _playerData, "Wall_cling");
+        WallClimbState = new PlayerWallClimbState(this, StateMachine, _playerData, "Wall_climb");
     }
 
     private void Start()
@@ -88,6 +95,11 @@ public class Player : MonoBehaviour
         return Physics2D.OverlapCircle(_groundCheck.position, _playerData.GroundCheckRadius, _playerData.WhatIsGround);
     }
 
+    public bool CheckIfTouchingWall()
+    {
+        return Physics2D.Raycast(_wallCheck.position, Vector2.right * FacingDirection, _playerData.WallCheckDistance, _playerData.WhatIsGround);
+    }
+
     public void CheckIfShouldFlip(int xInput)
     {
         if (xInput != 0 && xInput != FacingDirection)
@@ -112,4 +124,9 @@ public class Player : MonoBehaviour
         CurrentVelocity = _workspace;
     }
     #endregion
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(_wallCheck.position, _wallCheck.position + (Vector3.right * FacingDirection * _playerData.WallCheckDistance));
+    }
 }

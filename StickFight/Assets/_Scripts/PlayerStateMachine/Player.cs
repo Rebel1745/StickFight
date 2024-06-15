@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     public PlayerWallGrabState WallGrabState { get; private set; }
     public PlayerWallClimbState WallClimbState { get; private set; }
     public PlayerWallJumpState WallJumpState { get; private set; }
+    public PlayerLedgeClimbState LedgeClimbState { get; private set; }
     #endregion
 
     #region Components
@@ -38,6 +39,7 @@ public class Player : MonoBehaviour
     #region CheckTransforms
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private Transform _wallCheck;
+    [SerializeField] private Transform _ledgeCheck;
     #endregion
 
     #region Unity Callback Functions
@@ -54,6 +56,7 @@ public class Player : MonoBehaviour
         WallGrabState = new PlayerWallGrabState(this, StateMachine, _playerData, "Wall_cling");
         WallClimbState = new PlayerWallClimbState(this, StateMachine, _playerData, "Wall_climb");
         WallJumpState = new PlayerWallJumpState(this, StateMachine, _playerData, "Jump");
+        LedgeClimbState = new PlayerLedgeClimbState(this, StateMachine, _playerData, "Wall_cling");
     }
 
     private void Start()
@@ -81,6 +84,18 @@ public class Player : MonoBehaviour
 
     #region Other Functions
 
+    public Vector2 DetermineCornerPosition()
+    {
+        RaycastHit2D xHit = Physics2D.Raycast(_wallCheck.position, Vector2.right * FacingDirection, _playerData.WallCheckDistance, _playerData.WhatIsGround);
+        float xDist = xHit.distance;
+        _workspace.Set(xDist * FacingDirection, 0f);
+        RaycastHit2D yHit = Physics2D.Raycast(_ledgeCheck.position + (Vector3)_workspace, Vector2.down, _ledgeCheck.position.y - _wallCheck.position.y, _playerData.WhatIsGround);
+        float yDist = yHit.distance;
+
+        _workspace.Set(_wallCheck.position.x + xDist * FacingDirection, _ledgeCheck.position.y - yDist);
+        return _workspace;
+    }
+
     private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
     private void AnimationFinishedTrigger() => StateMachine.CurrentState.AnimationFinishedTrigger();
     private void Flip()
@@ -107,6 +122,11 @@ public class Player : MonoBehaviour
         return Physics2D.Raycast(_wallCheck.position, Vector2.right * -FacingDirection, _playerData.WallCheckDistance, _playerData.WhatIsGround);
     }
 
+    public bool CheckIfTouchingLedge()
+    {
+        return Physics2D.Raycast(_ledgeCheck.position, Vector2.right * FacingDirection, _playerData.WallCheckDistance, _playerData.WhatIsGround);
+    }
+
     public void CheckIfShouldFlip(int xInput)
     {
         if (xInput != 0 && xInput != FacingDirection)
@@ -117,6 +137,12 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Set Functions
+
+    public void SetVelocityZero()
+    {
+        RB.velocity = Vector2.zero;
+        CurrentVelocity = Vector2.zero;
+    }
     public void SetVelocity(float vel, Vector2 angle, int direction)
     {
         angle.Normalize();
@@ -139,9 +165,5 @@ public class Player : MonoBehaviour
         CurrentVelocity = _workspace;
     }
     #endregion
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(_wallCheck.position, _wallCheck.position + (Vector3.right * FacingDirection * _playerData.WallCheckDistance));
-    }
+
 }

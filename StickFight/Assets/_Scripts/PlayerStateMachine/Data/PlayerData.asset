@@ -22,6 +22,8 @@ MonoBehaviour:
   WallJumpVelocity: 10
   WallJumpTime: 0.4
   WallJumpAngle: {x: 1, y: 2}
+  StartOffset: {x: 0.5, y: 0.75}
+  StopOffset: {x: 1, y: 1}
   GroundCheckRadius: 0.3
   WallCheckDistance: 1
   WhatIsGround:

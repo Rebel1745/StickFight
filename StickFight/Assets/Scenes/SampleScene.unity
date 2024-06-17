@@ -3067,7 +3067,19 @@ MonoBehaviour:
     m_ActionId: 86fcc17b-0c75-4057-946c-f933b83d42d8
     m_ActionName: Gameplay/WallClimb[/XInputControllerWindows/rightShoulder,/Keyboard/shift]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7556918150241957116}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnDashInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 5978fb9e-2522-456f-b5de-247f5fc8abe4
     m_ActionName: Gameplay/DashRight[/XInputControllerWindows/rightTrigger,/Keyboard/e]
   - m_PersistentCalls:

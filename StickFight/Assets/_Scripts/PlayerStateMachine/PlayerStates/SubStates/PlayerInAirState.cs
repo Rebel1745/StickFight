@@ -6,19 +6,26 @@ using UnityEngine.InputSystem.Interactions;
 
 public class PlayerInAirState : PlayerState
 {
-    private int _xInput;
+    #region Checks
     private bool _isGrounded;
     private bool _isTouchingWall;
     private bool _isTouchingWallBack;
     private bool _oldIsTouchingWall;
     private bool _oldIsTouchingWallBack;
+    private bool _isTouchingLedge;
+    #endregion
+
+    #region Inputs
+    private int _xInput;
     private bool _jumpInput;
     private bool _jumpInputStop;
     private bool _grabInput;
+    private bool _dashInput;
+    #endregion
+
     private bool _coyoteTime;
     private bool _wallJumpCoyoteTime;
     private bool _isJumping;
-    private bool _isTouchingLedge;
 
     private float _startWallJumpCoyoteTime;
 
@@ -74,6 +81,7 @@ public class PlayerInAirState : PlayerState
         _jumpInput = _player.InputHandler.JumpInput;
         _jumpInputStop = _player.InputHandler.JumpInputStop;
         _grabInput = _player.InputHandler.GrabInput;
+        _dashInput = _player.InputHandler.DashInput;
 
         CheckJumpMultiplier();
 
@@ -81,7 +89,7 @@ public class PlayerInAirState : PlayerState
         {
             _stateMachine.ChangeState(_player.LandState);
         }
-        else if (_isTouchingWall && !_isTouchingLedge)
+        else if (_isTouchingWall && !_isTouchingLedge && !_isGrounded)
         {
             _stateMachine.ChangeState(_player.LedgeClimbState);
         }
@@ -96,13 +104,17 @@ public class PlayerInAirState : PlayerState
         {
             _stateMachine.ChangeState(_player.JumpState);
         }
-        else if (_isTouchingWall && _grabInput)
+        else if (_isTouchingWall && _grabInput && _isTouchingLedge)
         {
             _stateMachine.ChangeState(_player.WallGrabState);
         }
         else if (_isTouchingWall && (_xInput == _player.FacingDirection || _xInput == 0) && _player.CurrentVelocity.y <= 0)
         {
             _stateMachine.ChangeState(_player.WallSlideState);
+        }
+        else if (_dashInput && _player.DashState.CheckIfCanDash())
+        {
+            _stateMachine.ChangeState(_player.DashState);
         }
         else
         {

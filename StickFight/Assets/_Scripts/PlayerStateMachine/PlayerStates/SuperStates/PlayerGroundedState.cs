@@ -8,8 +8,10 @@ public class PlayerGroundedState : PlayerState
 
     private bool _jumpInput;
     private bool _grabInput;
+    private bool _dashInput;
     private bool _isGrounded;
     private bool _isTouchingWall;
+    private bool _isTouchingLedge;
 
     public PlayerGroundedState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animName) : base(player, stateMachine, playerData, animName)
     {
@@ -21,6 +23,7 @@ public class PlayerGroundedState : PlayerState
 
         _isGrounded = _player.CheckIfGrounded();
         _isTouchingWall = _player.CheckIfTouchingWall();
+        _isTouchingLedge = _player.CheckIfTouchingLedge();
     }
 
     public override void Enter()
@@ -29,6 +32,7 @@ public class PlayerGroundedState : PlayerState
 
         // we have touched the ground, we can now jump again
         _player.JumpState.ResetAmountOfJumpsLeft();
+        _player.DashState.ResetCanDash();
     }
 
     public override void Exit()
@@ -43,6 +47,7 @@ public class PlayerGroundedState : PlayerState
         _xInput = _player.InputHandler.NormInputX;
         _jumpInput = _player.InputHandler.JumpInput;
         _grabInput = _player.InputHandler.GrabInput;
+        _dashInput = _player.InputHandler.DashInput;
 
         if (_jumpInput && _player.JumpState.CanJump())
         {
@@ -58,9 +63,13 @@ public class PlayerGroundedState : PlayerState
             _player.InAirState.StartCoyoteTime();
             _stateMachine.ChangeState(_player.InAirState);
         }
-        else if (_isTouchingWall && _grabInput)
+        else if (_isTouchingWall && _grabInput && _isTouchingLedge)
         {
             _stateMachine.ChangeState(_player.WallGrabState);
+        }
+        else if (_dashInput && _player.DashState.CheckIfCanDash())
+        {
+            _stateMachine.ChangeState(_player.DashState);
         }
 
     }

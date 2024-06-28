@@ -23,7 +23,10 @@ MonoBehaviour:
   WallJumpTime: 0.4
   WallJumpAngle: {x: 1, y: 2}
   StartOffset: {x: 0.5, y: 0.75}
-  StopOffset: {x: 1, y: 1}
+  StopOffset: {x: 0.72, y: 1.07}
+  DashCooldown: 0.5
+  DashTime: 0.3
+  DashVelocity: 30
   GroundCheckRadius: 0.3
   WallCheckDistance: 1
   WhatIsGround:

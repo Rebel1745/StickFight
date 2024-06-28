@@ -10,6 +10,7 @@ public class PlayerInputHandler : MonoBehaviour
     public bool JumpInputStop { get; private set; }
     public bool GrabInput { get; private set; }
     public bool DashInput { get; private set; }
+    public int DashDirection { get; private set; }
     public bool DashInputStop { get; private set; }
 
     [SerializeField] private float _inputHoldTime = 0.2f;
@@ -60,13 +61,29 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
 
-    public void OnDashInput(InputAction.CallbackContext context)
+    public void OnDashInputRight(InputAction.CallbackContext context)
     {
         if (context.started)
         {
             DashInput = true;
             DashInputStop = false;
             _dashInputStartTime = Time.time;
+            DashDirection = 1;
+        }
+        if (context.canceled)
+        {
+            DashInput = false;
+        }
+    }
+
+    public void OnDashInputLeft(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            DashInput = true;
+            DashInputStop = false;
+            _dashInputStartTime = Time.time;
+            DashDirection = -1;
         }
         if (context.canceled)
         {

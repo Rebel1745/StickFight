@@ -11,10 +11,10 @@ public class PlayerLedgeClimbState : PlayerState
     private Vector2 _cornerPosition;
     private Vector2 _startPosition;
     private Vector2 _stopPosition;
-    // _isHanging should default to false if we had an animation for hanging
-    // we don't so for now default it to true
-    private bool _isHanging = true;
+
     private bool _isClimbing;
+    private bool _isClimbingUp;
+    private bool _isMovingAcross;
 
     private int _xInput;
     private int _yInput;
@@ -29,79 +29,64 @@ public class PlayerLedgeClimbState : PlayerState
         base.Enter();
 
         _player.SetVelocityZero();
-        _player.transform.position = _detectedPosition;
         _cornerPosition = _player.DetermineCornerPosition();
-
-        _startPosition.Set(_cornerPosition.x - (_player.FacingDirection * _playerData.StartOffset.x), _cornerPosition.y - _playerData.StartOffset.y);
         _stopPosition.Set(_cornerPosition.x + (_player.FacingDirection * _playerData.StopOffset.x), _cornerPosition.y + _playerData.StopOffset.y);
 
-        _player.transform.position = _startPosition;
+        // start the movement towards the stop position
+        _isClimbing = true;
+        // we start by moving up
+        _isClimbingUp = true;
+        // we then move across
+        _isMovingAcross = false;
     }
 
     public override void Exit()
     {
         base.Exit();
-
-        _isHanging = false;
-        if (_isClimbing)
-        {
-            _player.transform.position = _stopPosition;
-            _isClimbing = false;
-        }
+        _isMovingAcross = false;
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
 
-        // below should be if(isAnimationFinished) if we have a climb animation
-        // we don't atm so if we are climbing, move to the stop position
-        if (_isClimbing)
+        if (!_isClimbing)
         {
-            // TODO: instead of snapping to the position, write function to move smoothly
+            // we have finished climbing, time to transition back to idle
             _stateMachine.ChangeState(_player.IdleState);
+            return;
         }
-        else
+
+        if (_isClimbingUp)
         {
-            _xInput = _player.InputHandler.NormInputX;
-            _yInput = _player.InputHandler.NormInputY;
-            _jumpInput = _player.InputHandler.JumpInput;
-
-            _player.SetVelocityZero();
-            _player.transform.position = _startPosition;
-
-            if (_xInput == _player.FacingDirection && _isHanging && !_isClimbing)
+            _player.SetVelocityY(_playerData.WallClimbVelocity);
+            if (_player.transform.position.y >= _stopPosition.y)
             {
-                _isClimbing = true;
-                // start playing the climbing animation if we had one
-            }
-            else if (_yInput == -1 && _isHanging && !_isClimbing)
-            {
-                _stateMachine.ChangeState(_player.InAirState);
-            }
-            else if (_jumpInput && !_isClimbing)
-            {
-                _player.WallJumpState.DetermineWallJumpDirection(true);
-                _stateMachine.ChangeState(_player.WallJumpState);
+                _isClimbingUp = false;
+                _isMovingAcross = true;
             }
         }
-    }
 
-    public override void AnimationTrigger()
-    {
-        base.AnimationTrigger();
-        // if we had an animation for grabbing the ledge, call this function when the anim completes
-        // in our current case we don't so it will just be hard-coded from the start
-        _isHanging = true;
-    }
+        if (_isMovingAcross)
+        {
+            Debug.Log("Moving across");
+            _player.SetVelocityX(_playerData.MovementVelocity * _player.FacingDirection);
+            if (Mathf.Abs(_player.transform.position.x - _stopPosition.x) < 0.01f)
+            {
+                // if we have reached our stop position, stop climbing
+                _isClimbing = false;
+            }
+        }
 
-    public override void AnimationFinishedTrigger()
-    {
-        base.AnimationFinishedTrigger();
-    }
-
-    public void SetDetectedPosition(Vector2 pos)
-    {
-        _detectedPosition = pos;
+        // if we haven't reached the stop position x value, move at our climb speed towards it
+        /*if (_player.transform.position.x < _stopPosition.x)
+        {
+            _player.SetVelocityX(_playerData.WallClimbVelocity);
+        }
+        // if we haven't reached the stop position y value, move at our movement speed towards it
+        else if (Vector2.Distance(_player.transform.position, _stopPosition) >= 0.01f)
+        {
+            _player.SetVelocityY(_playerData.MovementVelocity);
+        }*/
     }
 }

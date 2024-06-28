@@ -45,10 +45,10 @@ public class PlayerInAirState : PlayerState
         _isTouchingWallBack = _player.CheckIfTouchingWallBack();
         _isTouchingLedge = _player.CheckIfTouchingLedge();
 
-        if (_isTouchingWall && !_isTouchingLedge)
+        /*if (_isTouchingWall && !_isTouchingLedge)
         {
             _player.LedgeClimbState.SetDetectedPosition(_player.transform.position);
-        }
+        }*/
 
         if (!_wallJumpCoyoteTime && !_isTouchingWall && !_isTouchingWallBack && (_oldIsTouchingWall || _oldIsTouchingWallBack))
         {
@@ -89,10 +89,11 @@ public class PlayerInAirState : PlayerState
         {
             _stateMachine.ChangeState(_player.LandState);
         }
-        else if (_isTouchingWall && !_isTouchingLedge && !_isGrounded)
+        // we no longer transition to climbing the ledge unless we are grabbing the wall
+        /*else if (_isTouchingWall && !_isTouchingLedge && !_isGrounded)
         {
             _stateMachine.ChangeState(_player.LedgeClimbState);
-        }
+        }*/
         else if (_jumpInput && (_isTouchingWall || _isTouchingWallBack || _wallJumpCoyoteTime))
         {
             StopWallJumpCoyoteTime();
@@ -112,9 +113,9 @@ public class PlayerInAirState : PlayerState
         {
             _stateMachine.ChangeState(_player.WallSlideState);
         }
-        else if (_dashInput && _player.DashState.CheckIfCanDash())
+        else if (_dashInput && _player.StandardDashState.CheckIfCanDash())
         {
-            _stateMachine.ChangeState(_player.DashState);
+            _stateMachine.ChangeState(_player.StandardDashState);
         }
         else
         {
@@ -162,11 +163,13 @@ public class PlayerInAirState : PlayerState
         {
             if (_jumpInputStop)
             {
-                _player.SetVelocityY(_player.CurrentVelocity.y * _playerData.VariableJumpHeightMultiplier);
+                _player.SetGravityScale(_playerData.DownwardMovementGravityScale);
+                //_player.SetVelocityY(_player.CurrentVelocity.y * _playerData.VariableJumpHeightMultiplier);
                 _isJumping = false;
             }
             else if (_player.CurrentVelocity.y <= 0f)
             {
+                _player.SetGravityScale(_playerData.DownwardMovementGravityScale);
                 _isJumping = false;
             }
         }

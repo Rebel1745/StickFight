@@ -29,10 +29,12 @@ public class PlayerWallGrabState : PlayerTouchingWallState
 
             if (_yInput > 0)
             {
+                // if we are moving up, transition to climbing the wall
                 _stateMachine.ChangeState(_player.WallClimbState);
             }
             else if (_yInput < 0 || !_grabInput)
             {
+                // if we are moving down, transition to sliding down the wall
                 _stateMachine.ChangeState(_player.WallSlideState);
             }
         }

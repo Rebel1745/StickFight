@@ -11,6 +11,9 @@ public class PlayerData : ScriptableObject
     [Header("Jump State")]
     public float JumpVelocity = 15f;
     public int AmountOfJumps = 1;
+    public float DefaultGravityScale = 1f;
+    public float UpwardMovementGravityScale = 1.7f;
+    public float DownwardMovementGravityScale = 3f;
 
     [Header("In Air State")]
     public float CoyoteTime = 0.1f;

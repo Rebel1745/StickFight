@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     public PlayerWallClimbState WallClimbState { get; private set; }
     public PlayerWallJumpState WallJumpState { get; private set; }
     public PlayerLedgeClimbState LedgeClimbState { get; private set; }
-    public PlayerDashState DashState { get; private set; }
+    public PlayerStandardDashState StandardDashState { get; private set; }
     #endregion
 
     #region Components
@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
         WallClimbState = new PlayerWallClimbState(this, StateMachine, _playerData, "Wall_climb");
         WallJumpState = new PlayerWallJumpState(this, StateMachine, _playerData, "Jump");
         LedgeClimbState = new PlayerLedgeClimbState(this, StateMachine, _playerData, "Wall_cling");
-        DashState = new PlayerDashState(this, StateMachine, _playerData, "Dash");
+        StandardDashState = new PlayerStandardDashState(this, StateMachine, _playerData, "Dash");
     }
 
     private void Start()
@@ -139,6 +139,21 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Set Functions
+
+    public void ResetGravityScale()
+    {
+        RB.gravityScale = _playerData.DefaultGravityScale;
+    }
+
+    public void SetGravityScale(float newGravityScale)
+    {
+        RB.gravityScale = newGravityScale;
+    }
+
+    public void SetGravityScaleZero()
+    {
+        RB.gravityScale = 0;
+    }
 
     public void SetVelocityZero()
     {

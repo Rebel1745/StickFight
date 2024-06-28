@@ -24,10 +24,16 @@ public class PlayerTouchingWallState : PlayerState
         _isTouchingWall = _player.CheckIfTouchingWall();
         _isTouchingLedge = _player.CheckIfTouchingLedge();
 
-        if (_isTouchingWall && !_isTouchingLedge)
+        /*if (_isTouchingWall && !_isTouchingLedge)
         {
             _player.LedgeClimbState.SetDetectedPosition(_player.transform.position);
-        }
+        }*/
+    }
+
+    public override void Enter()
+    {
+        base.Enter();
+        _player.ResetGravityScale();
     }
 
     public override void LogicUpdate()
@@ -53,9 +59,9 @@ public class PlayerTouchingWallState : PlayerState
         {
             _stateMachine.ChangeState(_player.InAirState);
         }
-        else if (_isTouchingLedge && !_isTouchingLedge)
+        /*else if (_isTouchingWall && !_isTouchingLedge && _grabInput && _yInput == 1)
         {
             _stateMachine.ChangeState(_player.LedgeClimbState);
-        }
+        }*/
     }
 }

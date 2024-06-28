@@ -176,7 +176,7 @@ namespace StickFight
             }
             if (!_onGroundRays[2])
             {
-                newVelocity = _autoMoveToPlatformDir * _wallClimbMaxSpeed; ;
+                newVelocity = _autoMoveToPlatformDir * _wallClimbMaxSpeed;
                 newVelocity.y = -transform.up.y * 0.1f;
                 _body.velocity = newVelocity;
                 //_body.velocity = _autoMoveToPlatformDir * _wallClimbMaxSpeed;

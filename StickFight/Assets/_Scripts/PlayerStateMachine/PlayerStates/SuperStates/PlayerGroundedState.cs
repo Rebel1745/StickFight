@@ -32,7 +32,8 @@ public class PlayerGroundedState : PlayerState
 
         // we have touched the ground, we can now jump again
         _player.JumpState.ResetAmountOfJumpsLeft();
-        _player.DashState.ResetCanDash();
+        _player.StandardDashState.ResetCanDash();
+        _player.ResetGravityScale();
     }
 
     public override void Exit()
@@ -67,9 +68,11 @@ public class PlayerGroundedState : PlayerState
         {
             _stateMachine.ChangeState(_player.WallGrabState);
         }
-        else if (_dashInput && _player.DashState.CheckIfCanDash())
+        // TODO: when other types of dash are available change this
+        // This should transition to the dash slide state
+        else if (_dashInput && _player.StandardDashState.CheckIfCanDash())
         {
-            _stateMachine.ChangeState(_player.DashState);
+            _stateMachine.ChangeState(_player.StandardDashState);
         }
 
     }

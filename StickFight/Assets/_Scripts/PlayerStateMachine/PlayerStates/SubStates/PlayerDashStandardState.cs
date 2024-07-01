@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerDashStandardState : PlayerAbilityState
 {
     public bool CanDash { get; private set; }
+    public float RemainingDashTime { get; private set; }
 
     private float _lastDashTime;
 
@@ -46,6 +47,9 @@ public class PlayerDashStandardState : PlayerAbilityState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+
+        // if we have to move to a dash attack state, this will tell us how long to remain dashing
+        RemainingDashTime = (_lastDashTime + _playerData.DashTime) - Time.time;
 
         _punchInput = _player.InputHandler.PunchInput;
         _kickInput = _player.InputHandler.KickInput;

@@ -12,6 +12,8 @@ public class PlayerInputHandler : MonoBehaviour
     public bool DashInput { get; private set; }
     public int DashDirection { get; private set; }
     public bool DashInputStop { get; private set; }
+    public bool PunchInput { get; private set; }
+    public bool KickInput { get; private set; }
 
     [SerializeField] private float _inputHoldTime = 0.2f;
 
@@ -91,8 +93,34 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
 
+    public void OnPunchInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            PunchInput = true;
+        }
+        if (context.canceled)
+        {
+            PunchInput = false;
+        }
+    }
+
+    public void OnKickInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            KickInput = true;
+        }
+        if (context.canceled)
+        {
+            KickInput = false;
+        }
+    }
+
     public void UseJumpInput() => JumpInput = false;
     public void UseDashInput() => DashInput = false; // Might not need
+    public void UsePunchInput() => PunchInput = false;
+    public void UseKickInput() => KickInput = false;
 
     private void CheckJumpInputHoldTime()
     {

@@ -9,6 +9,8 @@ public class PlayerGroundedState : PlayerState
     private bool _jumpInput;
     private bool _grabInput;
     private bool _dashInput;
+    private bool _punchInput;
+    private bool _kickInput;
     private bool _isGrounded;
     private bool _isTouchingWall;
     private bool _isTouchingLedge;
@@ -32,7 +34,7 @@ public class PlayerGroundedState : PlayerState
 
         // we have touched the ground, we can now jump again
         _player.JumpState.ResetAmountOfJumpsLeft();
-        _player.StandardDashState.ResetCanDash();
+        _player.DashStandardState.ResetCanDash();
         _player.ResetGravityScale();
     }
 
@@ -49,6 +51,8 @@ public class PlayerGroundedState : PlayerState
         _jumpInput = _player.InputHandler.JumpInput;
         _grabInput = _player.InputHandler.GrabInput;
         _dashInput = _player.InputHandler.DashInput;
+        _punchInput = _player.InputHandler.PunchInput;
+        _kickInput = _player.InputHandler.KickInput;
 
         if (_jumpInput && _player.JumpState.CanJump())
         {
@@ -70,11 +74,18 @@ public class PlayerGroundedState : PlayerState
         }
         // TODO: when other types of dash are available change this
         // This should transition to the dash slide state
-        else if (_dashInput && _player.StandardDashState.CheckIfCanDash())
+        else if (_dashInput && _player.DashStandardState.CheckIfCanDash())
         {
-            _stateMachine.ChangeState(_player.StandardDashState);
+            _stateMachine.ChangeState(_player.DashStandardState);
         }
-
+        else if (_punchInput)
+        {
+            _stateMachine.ChangeState(_player.GroundPunchState);
+        }
+        else if (_kickInput)
+        {
+            _stateMachine.ChangeState(_player.GroundKickState);
+        }
     }
 
     public override void PhysicsUpdate()

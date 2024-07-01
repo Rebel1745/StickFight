@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStandardDashState : PlayerAbilityState
+public class PlayerDashStandardState : PlayerAbilityState
 {
     public bool CanDash { get; private set; }
 
@@ -10,8 +10,18 @@ public class PlayerStandardDashState : PlayerAbilityState
 
     private int _dashDirection;
 
-    public PlayerStandardDashState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animName) : base(player, stateMachine, playerData, animName)
+    private bool _punchInput;
+    private bool _kickInput;
+
+    public PlayerDashStandardState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animName) : base(player, stateMachine, playerData, animName)
     {
+    }
+
+    public override void DoChecks()
+    {
+        base.DoChecks();
+
+        _isGrounded = _player.CheckIfGrounded();
     }
 
     public override void Enter()
@@ -23,6 +33,7 @@ public class PlayerStandardDashState : PlayerAbilityState
         _dashDirection = _player.InputHandler.DashDirection;
 
         _player.SetGravityScaleZero();
+        _player.SetVelocityZero();
         _player.SetVelocityX((Vector2.right * _playerData.DashVelocity).x * _dashDirection);
     }
 
@@ -36,6 +47,9 @@ public class PlayerStandardDashState : PlayerAbilityState
     {
         base.LogicUpdate();
 
+        _punchInput = _player.InputHandler.PunchInput;
+        _kickInput = _player.InputHandler.KickInput;
+
         if (Time.time <= _lastDashTime + _playerData.DashTime)
         {
             _player.SetVelocityX((Vector2.right * _playerData.DashVelocity).x * _dashDirection);
@@ -43,6 +57,18 @@ public class PlayerStandardDashState : PlayerAbilityState
         else
         {
             _isAbilityDone = true;
+        }
+
+        if (_punchInput)
+        {
+            _stateMachine.ChangeState(_player.DashPunchState);
+        }
+        else if (_kickInput)
+        {
+            if (_isGrounded)
+                _stateMachine.ChangeState(_player.DashSlideState);
+            else
+                _stateMachine.ChangeState(_player.DashKickState);
         }
     }
 

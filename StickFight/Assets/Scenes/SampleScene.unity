@@ -3099,11 +3099,35 @@ MonoBehaviour:
     m_ActionId: 2748bc0a-210f-4b44-8ef3-2dc77c7df923
     m_ActionName: Gameplay/DashLeft[/XInputControllerWindows/leftTrigger,/Keyboard/q]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7556918150241957116}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnPunchInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 644bfb89-4cfe-4573-aa91-51adb109e23c
     m_ActionName: Gameplay/Punch[/XInputControllerWindows/buttonWest,/Mouse/leftButton]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7556918150241957116}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnKickInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 459e9387-509d-4433-8c91-d56e96c52c72
     m_ActionName: Gameplay/Kick[/XInputControllerWindows/buttonNorth,/Mouse/rightButton]
   m_NeverAutoSwitchControlSchemes: 0

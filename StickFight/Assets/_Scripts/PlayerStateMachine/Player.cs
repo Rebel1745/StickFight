@@ -18,7 +18,14 @@ public class Player : MonoBehaviour
     public PlayerWallClimbState WallClimbState { get; private set; }
     public PlayerWallJumpState WallJumpState { get; private set; }
     public PlayerLedgeClimbState LedgeClimbState { get; private set; }
-    public PlayerStandardDashState StandardDashState { get; private set; }
+    public PlayerDashStandardState DashStandardState { get; private set; }
+    public PlayerDashPunchState DashPunchState { get; private set; }
+    public PlayerDashKickState DashKickState { get; private set; }
+    public PlayerDashSlideState DashSlideState { get; private set; }
+    public PlayerGroundPunchState GroundPunchState { get; private set; }
+    public PlayerAirPunchState AirPunchState { get; private set; }
+    public PlayerGroundKickState GroundKickState { get; private set; }
+    public PlayerAirKickState AirKickState { get; private set; }
     #endregion
 
     #region Components
@@ -58,7 +65,14 @@ public class Player : MonoBehaviour
         WallClimbState = new PlayerWallClimbState(this, StateMachine, _playerData, "Wall_climb");
         WallJumpState = new PlayerWallJumpState(this, StateMachine, _playerData, "Jump");
         LedgeClimbState = new PlayerLedgeClimbState(this, StateMachine, _playerData, "Wall_cling");
-        StandardDashState = new PlayerStandardDashState(this, StateMachine, _playerData, "Dash");
+        DashStandardState = new PlayerDashStandardState(this, StateMachine, _playerData, "Dash");
+        DashPunchState = new PlayerDashPunchState(this, StateMachine, _playerData, "Dash_punch");
+        DashKickState = new PlayerDashKickState(this, StateMachine, _playerData, "Dash_kick");
+        DashSlideState = new PlayerDashSlideState(this, StateMachine, _playerData, "Dash_slide");
+        GroundPunchState = new PlayerGroundPunchState(this, StateMachine, _playerData, "Punch");
+        AirPunchState = new PlayerAirPunchState(this, StateMachine, _playerData, "Air_punch");
+        GroundKickState = new PlayerGroundKickState(this, StateMachine, _playerData, "Kick");
+        AirKickState = new PlayerAirKickState(this, StateMachine, _playerData, "Air_kick");
     }
 
     private void Start()

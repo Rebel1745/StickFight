@@ -21,6 +21,8 @@ public class PlayerInAirState : PlayerState
     private bool _jumpInputStop;
     private bool _grabInput;
     private bool _dashInput;
+    private bool _punchInput;
+    private bool _kickInput;
     #endregion
 
     private bool _coyoteTime;
@@ -82,6 +84,8 @@ public class PlayerInAirState : PlayerState
         _jumpInputStop = _player.InputHandler.JumpInputStop;
         _grabInput = _player.InputHandler.GrabInput;
         _dashInput = _player.InputHandler.DashInput;
+        _punchInput = _player.InputHandler.PunchInput;
+        _kickInput = _player.InputHandler.KickInput;
 
         CheckJumpMultiplier();
 
@@ -113,9 +117,17 @@ public class PlayerInAirState : PlayerState
         {
             _stateMachine.ChangeState(_player.WallSlideState);
         }
-        else if (_dashInput && _player.StandardDashState.CheckIfCanDash())
+        else if (_dashInput && _player.DashStandardState.CheckIfCanDash())
         {
-            _stateMachine.ChangeState(_player.StandardDashState);
+            _stateMachine.ChangeState(_player.DashStandardState);
+        }
+        else if (_punchInput)
+        {
+            _stateMachine.ChangeState(_player.AirPunchState);
+        }
+        else if (_kickInput)
+        {
+            _stateMachine.ChangeState(_player.AirKickState);
         }
         else
         {

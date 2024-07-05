@@ -48,6 +48,19 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private Transform _wallCheck;
     [SerializeField] private Transform _ledgeCheck;
+    public LayerMask WhatIsEnemy;
+    [Tooltip("Location of the center of the box that checks hits for ground punches")] public Transform HitCheckOriginGroundPunch;
+    public Vector2 HitBoxSizeGroundPunch;
+    [Tooltip("Location of the center of the box that checks hits for punches while jumping")] public Transform HitCheckOriginAirPunch;
+    public Vector2 HitBoxSizeAirPunch;
+    [Tooltip("Location of the center of the box that checks hits for dash punches")] public Transform HitCheckOriginDashPunch;
+    public Vector2 HitBoxSizeDashPunch;
+    [Tooltip("Location of the center of the box that checks hits for ground kicks")] public Transform HitCheckOriginGroundKick;
+    public Vector2 HitBoxSizeGroundKick;
+    [Tooltip("Location of the center of the box that checks hits for kicks while jumping")] public Transform HitCheckOriginAirKick;
+    public Vector2 HitBoxSizeAirKick;
+    [Tooltip("Location of the center of the box that checks hits for dash kicks")] public Transform HitCheckOriginDashKick;
+    public Vector2 HitBoxSizeDashKick;
     #endregion
 
     #region Unity Callback Functions

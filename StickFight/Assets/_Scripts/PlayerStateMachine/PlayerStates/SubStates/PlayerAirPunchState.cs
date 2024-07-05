@@ -11,6 +11,13 @@ public class PlayerAirPunchState : PlayerAbilityState
     {
         base.Enter();
         _player.InputHandler.UsePunchInput();
+        CheckForHit();
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        _player.ResetGravityScale();
     }
 
     public override void LogicUpdate()
@@ -18,5 +25,24 @@ public class PlayerAirPunchState : PlayerAbilityState
         base.LogicUpdate();
         if (Time.time >= _startTime + _playerData.PunchDuration)
             _isAbilityDone = true;
+    }
+
+    private void CheckForHit()
+    {
+        Collider2D[] hits;
+        hits = Physics2D.OverlapBoxAll(_player.HitCheckOriginAirPunch.position, _player.HitBoxSizeAirPunch, 0f, _player.WhatIsEnemy);
+
+        if (hits.Length > 0)
+        {
+            // if we hit something, suspend gravity so we can keep hitting
+            _player.SetVelocityZero();
+            _player.SetGravityScaleZero();
+
+            foreach (Collider2D c in hits)
+            {
+                Debug.Log("Collided with " + c.name);
+                //_player.ResetGravityScale();
+            }
+        }
     }
 }

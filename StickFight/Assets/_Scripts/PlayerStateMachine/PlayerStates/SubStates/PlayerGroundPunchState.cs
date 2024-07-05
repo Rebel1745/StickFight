@@ -12,6 +12,7 @@ public class PlayerGroundPunchState : PlayerAbilityState
     {
         base.Enter();
         _player.InputHandler.UsePunchInput();
+        CheckForHit();
     }
 
     public override void LogicUpdate()
@@ -19,5 +20,19 @@ public class PlayerGroundPunchState : PlayerAbilityState
         base.LogicUpdate();
         if (Time.time >= _startTime + _playerData.PunchDuration)
             _isAbilityDone = true;
+    }
+
+    private void CheckForHit()
+    {
+        Collider2D[] hits;
+        hits = Physics2D.OverlapBoxAll(_player.HitCheckOriginGroundPunch.position, _player.HitBoxSizeGroundPunch, 0f, _player.WhatIsEnemy);
+
+        if (hits.Length > 0)
+        {
+            foreach (Collider2D c in hits)
+            {
+                Debug.Log("Collided with " + c.name);
+            }
+        }
     }
 }

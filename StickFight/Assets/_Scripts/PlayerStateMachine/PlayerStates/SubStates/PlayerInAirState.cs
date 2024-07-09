@@ -176,7 +176,6 @@ public class PlayerInAirState : PlayerState
             if (_jumpInputStop)
             {
                 _player.SetGravityScale(_playerData.DownwardMovementGravityScale);
-                //_player.SetVelocityY(_player.CurrentVelocity.y * _playerData.VariableJumpHeightMultiplier);
                 _isJumping = false;
             }
             else if (_player.CurrentVelocity.y <= 0f)
@@ -184,6 +183,10 @@ public class PlayerInAirState : PlayerState
                 _player.SetGravityScale(_playerData.DownwardMovementGravityScale);
                 _isJumping = false;
             }
+        }
+        else
+        {
+            _player.SetGravityScale(_playerData.DownwardMovementGravityScale);
         }
     }
 

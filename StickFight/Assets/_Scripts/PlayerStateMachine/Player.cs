@@ -208,6 +208,16 @@ public class Player : MonoBehaviour
         RB.velocity = _workspace;
         CurrentVelocity = _workspace;
     }
+
+    public void SetLinearDrag(float val)
+    {
+        RB.drag = val;
+    }
+
+    public void ResetLinearDrag()
+    {
+        RB.drag = _playerData.DefaultLinearDrag;
+    }
     #endregion
 
 }

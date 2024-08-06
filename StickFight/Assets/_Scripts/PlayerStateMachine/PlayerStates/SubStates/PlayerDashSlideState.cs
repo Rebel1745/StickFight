@@ -6,6 +6,7 @@ public class PlayerDashSlideState : PlayerAbilityState
 {
     private float _remainingDashTime;
     private int _dashDirection;
+    private bool _checkForHit;
 
     public PlayerDashSlideState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animName) : base(player, stateMachine, playerData, animName)
     {
@@ -17,13 +18,21 @@ public class PlayerDashSlideState : PlayerAbilityState
         _player.InputHandler.UseKickInput();
         _remainingDashTime = _player.DashStandardState.RemainingDashTime;
         _dashDirection = _player.InputHandler.DashDirection;
+        _checkForHit = true;
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        _player.SetVelocityZero();
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
 
-        CheckForHit();
+        if (_checkForHit)
+            CheckForHit();
 
         if (Time.time <= _startTime + _remainingDashTime)
         {
@@ -42,12 +51,13 @@ public class PlayerDashSlideState : PlayerAbilityState
 
         if (hits.Length > 0)
         {
+            _checkForHit = false;
             foreach (Collider2D c in hits)
             {
-                Debug.Log("Collided with " + c.name);
-                c.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 10f);
+                c.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0f, _playerData.PostKickKnockupPower);
+                Debug.Log("Dash Slide Collided with " + c.name);
+                _isAbilityDone = true;
             }
-            _isAbilityDone = true;
         }
     }
 }

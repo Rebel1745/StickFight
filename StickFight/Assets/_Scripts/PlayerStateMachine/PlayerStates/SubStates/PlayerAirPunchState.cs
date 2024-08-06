@@ -41,7 +41,8 @@ public class PlayerAirPunchState : PlayerAbilityState
             foreach (Collider2D c in hits)
             {
                 Debug.Log("Collided with " + c.name);
-                //_player.ResetGravityScale();
+                c.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0f, _playerData.PostPunchKnockupPower);
+                _player.SetVelocityY(_playerData.PostPunchKnockupPower);
             }
         }
     }

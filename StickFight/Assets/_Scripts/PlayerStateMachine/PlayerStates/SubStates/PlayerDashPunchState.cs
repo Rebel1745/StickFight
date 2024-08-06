@@ -54,7 +54,7 @@ public class PlayerDashPunchState : PlayerAbilityState
 
             foreach (Collider2D c in hits)
             {
-                Debug.Log("Collided with " + c.name);
+                Debug.Log("Dash Punch Collided with " + c.name);
             }
             _isAbilityDone = true;
         }

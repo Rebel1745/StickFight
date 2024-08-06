@@ -38,12 +38,16 @@ public class PlayerData : ScriptableObject
     public float DashCooldown = 0.5f;
     public float DashTime = 0.3f;
     public float DashVelocity = 30f;
+    public float DefaultLinearDrag = 0f;
+    public float PostDashIdleLinearDrag = 10f;
 
     [Header("Punch State")]
     public float PunchDuration = 0.1f;
+    public float PostPunchKnockupPower = 1f;
 
     [Header("Kick State")]
     public float KickDuration = 0.1f;
+    public float PostKickKnockupPower = 5f;
 
     [Header("Check Variables")]
     public float GroundCheckRadius = 0.3f;

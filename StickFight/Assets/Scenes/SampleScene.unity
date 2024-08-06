@@ -830,7 +830,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &736670319
 Transform:
   m_ObjectHideFlags: 0
@@ -1457,7 +1457,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1240938323}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WallCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2028,7 +2028,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1662672954}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LedgeCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2406,7 +2406,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1853590245}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2904,7 +2904,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4406778172705013177}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HitCheckGroundPunchOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2920,7 +2920,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2235789279457652796}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HitCheckAirKickOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2936,7 +2936,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2657904835605250994}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HitCheckGroundKickOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3099,7 +3099,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2404704628050179301}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HitCheckDashKickOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3148,7 +3148,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2298885864360793511}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Checks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3164,7 +3164,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7725293153309761573}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HitCheckDashPunchOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3207,7 +3207,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2734822756861617761}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: KickOrigins
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3223,7 +3223,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8936313251778592958}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HitCheckAirPunchOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3246,7 +3246,7 @@ GameObject:
   - component: {fileID: 7556918150241957117}
   - component: {fileID: 7556918150241957116}
   - component: {fileID: 7556918150241957115}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlayerSM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3533,7 +3533,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8099360936830441369}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PunchOrigins
   m_TagString: Untagged
   m_Icon: {fileID: 0}

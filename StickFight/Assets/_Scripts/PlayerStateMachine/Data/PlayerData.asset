@@ -15,6 +15,9 @@ MonoBehaviour:
   MovementVelocity: 10
   JumpVelocity: 10
   AmountOfJumps: 1
+  DefaultGravityScale: 1
+  UpwardMovementGravityScale: 1.7
+  DownwardMovementGravityScale: 3
   CoyoteTime: 0.1
   VariableJumpHeightMultiplier: 0.5
   WallSlideVelocity: 3
@@ -27,6 +30,12 @@ MonoBehaviour:
   DashCooldown: 0.5
   DashTime: 0.3
   DashVelocity: 30
+  DefaultLinearDrag: 0
+  PostDashIdleLinearDrag: 10
+  PunchDuration: 0.1
+  PostPunchKnockupPower: 1
+  KickDuration: 0.1
+  PostKickKnockupPower: 7
   GroundCheckRadius: 0.3
   WallCheckDistance: 1
   WhatIsGround:

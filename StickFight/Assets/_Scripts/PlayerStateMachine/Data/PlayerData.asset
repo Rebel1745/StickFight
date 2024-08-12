@@ -32,12 +32,13 @@ MonoBehaviour:
   DashVelocity: 30
   DefaultLinearDrag: 0
   PostDashIdleLinearDrag: 10
-  PunchDuration: 0.1
+  PunchDuration: 0.5
   PostPunchKnockupPower: 1
-  KickDuration: 0.1
+  KickDuration: 0.5
   PostKickKnockupPower: 7
   GroundCheckRadius: 0.3
   WallCheckDistance: 1
+  CeilingCheckRadius: 1
   WhatIsGround:
     serializedVersion: 2
     m_Bits: 64

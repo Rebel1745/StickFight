@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     public PlayerWallClimbState WallClimbState { get; private set; }
     public PlayerWallJumpState WallJumpState { get; private set; }
     public PlayerLedgeClimbState LedgeClimbState { get; private set; }
+    public PlayerCeilingClingState CeilingClingState { get; private set; }
+    public PlayerCeilingMoveState CeilingMoveState { get; private set; }
     public PlayerDashStandardState DashStandardState { get; private set; }
     public PlayerDashPunchState DashPunchState { get; private set; }
     public PlayerDashKickState DashKickState { get; private set; }
@@ -29,7 +31,7 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Components
-    public Animator Anim { get; private set; }
+    public Animator Anim;
     public PlayerInputHandler InputHandler { get; private set; }
     public Rigidbody2D RB { get; private set; }
     #endregion
@@ -48,6 +50,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private Transform _wallCheck;
     [SerializeField] private Transform _ledgeCheck;
+    [SerializeField] private Transform _ceilingCheck;
     public LayerMask WhatIsEnemy;
     [Tooltip("Location of the center of the box that checks hits for ground punches")] public Transform HitCheckOriginGroundPunch;
     public Vector2 HitBoxSizeGroundPunch;
@@ -70,27 +73,29 @@ public class Player : MonoBehaviour
 
         IdleState = new PlayerIdleState(this, StateMachine, _playerData, "Idle");
         MoveState = new PlayerMoveState(this, StateMachine, _playerData, "Run");
-        JumpState = new PlayerJumpState(this, StateMachine, _playerData, "Jump");
-        InAirState = new PlayerInAirState(this, StateMachine, _playerData, "Jump");
-        LandState = new PlayerLandState(this, StateMachine, _playerData, "Idle");
+        JumpState = new PlayerJumpState(this, StateMachine, _playerData, "Jump_up");
+        InAirState = new PlayerInAirState(this, StateMachine, _playerData, "Jump_falling");
+        LandState = new PlayerLandState(this, StateMachine, _playerData, "Jump_landing");
         WallSlideState = new PlayerWallSlideState(this, StateMachine, _playerData, "Wall_slide");
         WallGrabState = new PlayerWallGrabState(this, StateMachine, _playerData, "Wall_cling");
         WallClimbState = new PlayerWallClimbState(this, StateMachine, _playerData, "Wall_climb");
         WallJumpState = new PlayerWallJumpState(this, StateMachine, _playerData, "Jump");
         LedgeClimbState = new PlayerLedgeClimbState(this, StateMachine, _playerData, "Wall_cling");
+        CeilingClingState = new PlayerCeilingClingState(this, StateMachine, _playerData, "Hanging");
+        CeilingMoveState = new PlayerCeilingMoveState(this, StateMachine, _playerData, "Hanging_move");
         DashStandardState = new PlayerDashStandardState(this, StateMachine, _playerData, "Dash");
         DashPunchState = new PlayerDashPunchState(this, StateMachine, _playerData, "Dash_punch");
         DashKickState = new PlayerDashKickState(this, StateMachine, _playerData, "Dash_kick");
         DashSlideState = new PlayerDashSlideState(this, StateMachine, _playerData, "Dash_slide");
-        GroundPunchState = new PlayerGroundPunchState(this, StateMachine, _playerData, "Punch");
+        GroundPunchState = new PlayerGroundPunchState(this, StateMachine, _playerData, "Punch_1");
         AirPunchState = new PlayerAirPunchState(this, StateMachine, _playerData, "Air_punch");
-        GroundKickState = new PlayerGroundKickState(this, StateMachine, _playerData, "Kick");
+        GroundKickState = new PlayerGroundKickState(this, StateMachine, _playerData, "Kick_1");
         AirKickState = new PlayerAirKickState(this, StateMachine, _playerData, "Air_kick");
     }
 
     private void Start()
     {
-        Anim = GetComponent<Animator>();
+        //Anim = GetComponent<Animator>();
         InputHandler = GetComponent<PlayerInputHandler>();
         RB = GetComponent<Rigidbody2D>();
 
@@ -154,6 +159,11 @@ public class Player : MonoBehaviour
     public bool CheckIfTouchingLedge()
     {
         return Physics2D.Raycast(_ledgeCheck.position, Vector2.right * FacingDirection, _playerData.WallCheckDistance, _playerData.WhatIsGround);
+    }
+
+    public bool CheckIfTouchingCeiling()
+    {
+        return Physics2D.Raycast(_ceilingCheck.position, Vector2.up, _playerData.CeilingCheckRadius, _playerData.WhatIsGround);
     }
 
     public void CheckIfShouldFlip(int xInput)
@@ -220,4 +230,10 @@ public class Player : MonoBehaviour
     }
     #endregion
 
+    #region Debug Functions
+    private void OnDrawGizmos()
+    {
+
+    }
+    #endregion
 }

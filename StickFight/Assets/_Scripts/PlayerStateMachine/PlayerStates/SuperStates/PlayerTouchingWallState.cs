@@ -6,6 +6,7 @@ public class PlayerTouchingWallState : PlayerState
 {
     protected bool _isGrounded;
     protected bool _isTouchingWall;
+    protected bool _isTouchingCeiling;
     protected bool _isTouchingLedge;
     protected int _xInput;
     protected int _yInput;
@@ -22,6 +23,7 @@ public class PlayerTouchingWallState : PlayerState
 
         _isGrounded = _player.CheckIfGrounded();
         _isTouchingWall = _player.CheckIfTouchingWall();
+        _isTouchingCeiling = _player.CheckIfTouchingCeiling();
         _isTouchingLedge = _player.CheckIfTouchingLedge();
 
         /*if (_isTouchingWall && !_isTouchingLedge)
@@ -45,16 +47,18 @@ public class PlayerTouchingWallState : PlayerState
         _jumpInput = _player.InputHandler.JumpInput;
         _grabInput = _player.InputHandler.GrabInput;
 
+        // if we are jumping, perform a wall jump
         if (_jumpInput)
         {
             _player.WallJumpState.DetermineWallJumpDirection(_isTouchingWall);
             _stateMachine.ChangeState(_player.WallJumpState);
         }
-        else
-                if (_isGrounded && !_grabInput)
+        // if we touch the ground and stop clinging, go idle
+        else if (_isGrounded && !_grabInput)
         {
             _stateMachine.ChangeState(_player.IdleState);
         }
+        // if we aren't touching a wall or if we are trying to move in a direction away from the wall, let go and be airborne
         else if (!_isTouchingWall || (_xInput != 0 && _xInput != _player.FacingDirection && !_grabInput))
         {
             _stateMachine.ChangeState(_player.InAirState);
@@ -63,5 +67,10 @@ public class PlayerTouchingWallState : PlayerState
         {
             _stateMachine.ChangeState(_player.LedgeClimbState);
         }*/
+        // if we are touching the ceiling and moving away from the wall, move along the ceiling
+        else if (_isTouchingCeiling && _xInput != 0 && _xInput != _player.FacingDirection)
+        {
+            _stateMachine.ChangeState(_player.CeilingMoveState);
+        }
     }
 }

@@ -12,6 +12,7 @@ public class PlayerInAirState : PlayerState
     private bool _isTouchingWallBack;
     private bool _oldIsTouchingWall;
     private bool _oldIsTouchingWallBack;
+    private bool _isTouchingCeiling;
     private bool _isTouchingLedge;
     #endregion
 
@@ -45,6 +46,7 @@ public class PlayerInAirState : PlayerState
         _isGrounded = _player.CheckIfGrounded();
         _isTouchingWall = _player.CheckIfTouchingWall();
         _isTouchingWallBack = _player.CheckIfTouchingWallBack();
+        _isTouchingCeiling = _player.CheckIfTouchingCeiling();
         _isTouchingLedge = _player.CheckIfTouchingLedge();
 
         /*if (_isTouchingWall && !_isTouchingLedge)
@@ -108,6 +110,10 @@ public class PlayerInAirState : PlayerState
         else if (_jumpInput && _player.JumpState.CanJump())
         {
             _stateMachine.ChangeState(_player.JumpState);
+        }
+        else if (_isTouchingCeiling && _grabInput)
+        {
+            _stateMachine.ChangeState(_player.CeilingClingState);
         }
         else if (_isTouchingWall && _grabInput && _isTouchingLedge)
         {

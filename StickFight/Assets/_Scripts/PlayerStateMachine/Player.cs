@@ -80,7 +80,7 @@ public class Player : MonoBehaviour
         WallGrabState = new PlayerWallGrabState(this, StateMachine, _playerData, "Wall_cling");
         WallClimbState = new PlayerWallClimbState(this, StateMachine, _playerData, "Wall_climb");
         WallJumpState = new PlayerWallJumpState(this, StateMachine, _playerData, "Jump_falling");
-        LedgeClimbState = new PlayerLedgeClimbState(this, StateMachine, _playerData, "Wall_cling");
+        LedgeClimbState = new PlayerLedgeClimbState(this, StateMachine, _playerData, "Ledge_climb");
         CeilingClingState = new PlayerCeilingClingState(this, StateMachine, _playerData, "Hanging");
         CeilingMoveState = new PlayerCeilingMoveState(this, StateMachine, _playerData, "Hanging_move");
         DashStandardState = new PlayerDashStandardState(this, StateMachine, _playerData, "Dash");

@@ -63,10 +63,10 @@ public class PlayerTouchingWallState : PlayerState
         {
             _stateMachine.ChangeState(_player.InAirState);
         }
-        /*else if (_isTouchingWall && !_isTouchingLedge && _grabInput && _yInput == 1)
+        else if (_isTouchingWall && !_isTouchingLedge && _grabInput && _yInput == 1)
         {
             _stateMachine.ChangeState(_player.LedgeClimbState);
-        }*/
+        }
         // if we are touching the ceiling and moving away from the wall, move along the ceiling
         else if (_isTouchingCeiling && _xInput != 0 && _xInput != _player.FacingDirection)
         {

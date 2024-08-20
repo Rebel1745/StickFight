@@ -36,6 +36,13 @@ public class PlayerTouchingWallState : PlayerState
     {
         base.Enter();
         _player.ResetGravityScale();
+        _player.SetBoxCollider(_playerData.WallHitboxOffset, _playerData.WallHitboxSize);
+    }
+
+    public override void Exit()
+    {
+        _player.SetBoxCollider(_playerData.DefaultHitboxOffset, _playerData.DefaultHitboxSize);
+        base.Exit();
     }
 
     public override void LogicUpdate()

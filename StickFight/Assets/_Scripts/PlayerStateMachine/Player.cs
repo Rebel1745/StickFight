@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
     public Animator Anim;
     public PlayerInputHandler InputHandler { get; private set; }
     public Rigidbody2D RB { get; private set; }
+    public BoxCollider2D Col { get; private set; }
     #endregion
 
     #region Other Variables
@@ -98,6 +99,7 @@ public class Player : MonoBehaviour
         //Anim = GetComponent<Animator>();
         InputHandler = GetComponent<PlayerInputHandler>();
         RB = GetComponent<Rigidbody2D>();
+        Col = GetComponent<BoxCollider2D>();
 
         FacingDirection = 1;
 
@@ -227,6 +229,12 @@ public class Player : MonoBehaviour
     public void ResetLinearDrag()
     {
         RB.drag = _playerData.DefaultLinearDrag;
+    }
+
+    public void SetBoxCollider(Vector2 offset, Vector2 size)
+    {
+        Col.size = size;
+        Col.offset = offset;
     }
     #endregion
 

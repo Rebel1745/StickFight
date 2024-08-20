@@ -12,26 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4fbe1719efd4ad459817e8874df5b63, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
+  DefaultGravityScale: 1
+  DefaultHitboxOffset: {x: 0, y: 0.87}
+  DefaultHitboxSize: {x: 0.75, y: 1.77}
+  DefaultLinearDrag: 0
   MovementVelocity: 10
   JumpVelocity: 10
   AmountOfJumps: 1
-  DefaultGravityScale: 1
   UpwardMovementGravityScale: 1.7
   DownwardMovementGravityScale: 3
+  JumpingHitboxOffset: {x: 0.15, y: 0.9}
+  JumpingHitboxSize: {x: 0.6, y: 1}
   CoyoteTime: 0.1
   VariableJumpHeightMultiplier: 0.5
+  WallHitboxOffset: {x: 0, y: 0.75}
+  WallHitboxSize: {x: 0.6, y: 1}
   WallSlideVelocity: 3
   WallClimbVelocity: 3
   WallJumpVelocity: 10
   WallJumpTime: 0.4
   WallJumpAngle: {x: 1, y: 2}
-  StartOffset: {x: 0.5, y: 0.75}
-  StopOffset: {x: 0.72, y: 1.07}
+  StartOffset: {x: 0, y: 0}
+  StopOffset: {x: 0, y: 0}
   DashCooldown: 0.5
   DashTime: 0.3
   DashVelocity: 30
-  DefaultLinearDrag: 0
   PostDashIdleLinearDrag: 10
+  DashStandardHitboxOffset: {x: 0, y: 0.6}
+  DashStandardHitboxSize: {x: 0.75, y: 1.2}
   PunchDuration: 0.5
   PostPunchKnockupPower: 1
   KickDuration: 0.5

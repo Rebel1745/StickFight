@@ -72,6 +72,7 @@ public class PlayerInAirState : PlayerState
         _isTouchingWallBack = false;
         _oldIsTouchingWall = false;
         _oldIsTouchingWallBack = false;
+        _player.SetBoxCollider(_playerData.DefaultHitboxOffset, _playerData.DefaultHitboxSize);
     }
 
     public override void LogicUpdate()
@@ -93,7 +94,9 @@ public class PlayerInAirState : PlayerState
 
         if (_isGrounded && _player.CurrentVelocity.y < 0.01f)
         {
-            _stateMachine.ChangeState(_player.LandState);
+            // Changed from landed state to grounded state to stop the (perhaps) unnecessary landing animation playing
+            //_stateMachine.ChangeState(_player.LandState);
+            _stateMachine.ChangeState(_player.IdleState);
         }
         // we no longer transition to climbing the ledge unless we are grabbing the wall
         /*else if (_isTouchingWall && !_isTouchingLedge && !_isGrounded)

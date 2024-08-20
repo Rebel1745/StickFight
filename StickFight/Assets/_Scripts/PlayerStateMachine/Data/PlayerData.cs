@@ -5,19 +5,30 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Player Data", menuName = "Data/PlayerData/BaseData")]
 public class PlayerData : ScriptableObject
 {
+    [Header("Defaults")]
+    public float DefaultGravityScale = 1f;
+    public Vector2 DefaultHitboxOffset;
+    public Vector2 DefaultHitboxSize;
+    public float DefaultLinearDrag = 0f;
+
     [Header("Move State")]
     public float MovementVelocity = 10f;
 
     [Header("Jump State")]
     public float JumpVelocity = 15f;
     public int AmountOfJumps = 1;
-    public float DefaultGravityScale = 1f;
     public float UpwardMovementGravityScale = 1.7f;
     public float DownwardMovementGravityScale = 3f;
+    public Vector2 JumpingHitboxOffset;
+    public Vector2 JumpingHitboxSize;
 
     [Header("In Air State")]
     public float CoyoteTime = 0.1f;
     public float VariableJumpHeightMultiplier = 0.5f;
+
+    [Header("Wall States")]
+    public Vector2 WallHitboxOffset;
+    public Vector2 WallHitboxSize;
 
     [Header("Wall Slide State")]
     public float WallSlideVelocity = 3f;
@@ -38,8 +49,9 @@ public class PlayerData : ScriptableObject
     public float DashCooldown = 0.5f;
     public float DashTime = 0.3f;
     public float DashVelocity = 30f;
-    public float DefaultLinearDrag = 0f;
     public float PostDashIdleLinearDrag = 10f;
+    public Vector2 DashStandardHitboxOffset;
+    public Vector2 DashStandardHitboxSize;
 
     [Header("Punch State")]
     public float PunchDuration = 0.1f;

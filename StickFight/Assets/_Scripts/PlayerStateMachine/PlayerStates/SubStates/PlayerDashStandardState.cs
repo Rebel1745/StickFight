@@ -36,11 +36,13 @@ public class PlayerDashStandardState : PlayerAbilityState
         _player.SetGravityScaleZero();
         _player.SetVelocityZero();
         _player.SetVelocityX((Vector2.right * _playerData.DashVelocity).x * _dashDirection);
+        _player.SetBoxCollider(_playerData.DashStandardHitboxOffset, _playerData.DashStandardHitboxSize);
     }
 
     public override void Exit()
     {
         _player.ResetGravityScale();
+        _player.SetBoxCollider(_playerData.DefaultHitboxOffset, _playerData.DefaultHitboxSize);
         base.Exit();
     }
 

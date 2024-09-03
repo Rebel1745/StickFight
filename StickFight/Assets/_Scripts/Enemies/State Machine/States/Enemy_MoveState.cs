@@ -8,6 +8,7 @@ public class Enemy_MoveState : EnemyState
 
     protected bool _isDetectingGround;
     protected bool _isDetectingWall;
+    protected bool _isPlayerInMinAgroRange;
 
     public Enemy_MoveState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, D_MoveStateData stateData) : base(enemy, stateMachine, animBoolName)
     {
@@ -19,6 +20,7 @@ public class Enemy_MoveState : EnemyState
         base.DoChecks();
         _isDetectingGround = _enemy.CheckGround();
         _isDetectingWall = _enemy.CheckWall();
+        _isPlayerInMinAgroRange = _enemy.CheckPlayerInMinAgroRange();
     }
 
     public override void Enter()

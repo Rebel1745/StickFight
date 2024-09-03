@@ -12,8 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efadeec201f3f4146be27d3853fa0fb8, type: 3}
   m_Name: E_Zombie_BaseData
   m_EditorClassIdentifier: 
-  WallCheckDistance: 0.2
+  WallCheckDistance: 1.5
   GroundCheckDistance: 0.4
+  MinAgroDistance: 8
+  MaxAgroDistance: 10
   WhatIsGround:
     serializedVersion: 2
     m_Bits: 64
+  WhatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 128

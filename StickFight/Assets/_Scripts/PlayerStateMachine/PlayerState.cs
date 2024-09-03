@@ -28,7 +28,7 @@ public class PlayerState
         DoChecks();
         _player.Anim.Play(_animName);
         _startTime = Time.time;
-        Debug.Log(_animName);
+
         // use isAnimationFinished = false if we want to use it from an animation, for now it is not used so it will just be set as true
         // see youtube.com/watch?v=dOiOp3DLxZQ
         _isAnimationFinished = false;

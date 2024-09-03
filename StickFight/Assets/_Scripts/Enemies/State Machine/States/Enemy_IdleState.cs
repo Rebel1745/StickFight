@@ -8,6 +8,7 @@ public class Enemy_IdleState : EnemyState
 
     protected bool _flipAfterIdle;
     protected bool _isIdleTimeOver;
+    protected bool _isPlayerInMinAgroRange;
 
     protected float _idleTime;
 
@@ -19,6 +20,7 @@ public class Enemy_IdleState : EnemyState
     public override void DoChecks()
     {
         base.DoChecks();
+        _isPlayerInMinAgroRange = _enemy.CheckPlayerInMinAgroRange();
     }
 
     public override void Enter()

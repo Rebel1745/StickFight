@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private Transform _wallCheck;
     [SerializeField] private Transform _groundCheck;
+    [SerializeField] private Transform _playerCheck;
 
     public int FacingDirection { get; private set; }
     private Vector2 velocityWorkspace;
@@ -48,7 +49,7 @@ public class Enemy : MonoBehaviour
 
     public virtual bool CheckWall()
     {
-        return Physics2D.Raycast(_wallCheck.position, EnemyModelGO.transform.right, EnemyData.WallCheckDistance, EnemyData.WhatIsGround);
+        return Physics2D.Raycast(_wallCheck.position, transform.right, EnemyData.WallCheckDistance, EnemyData.WhatIsGround);
     }
 
     public virtual bool CheckGround()
@@ -56,15 +57,31 @@ public class Enemy : MonoBehaviour
         return Physics2D.Raycast(_groundCheck.position, Vector2.down, EnemyData.GroundCheckDistance, EnemyData.WhatIsGround);
     }
 
+    public virtual bool CheckPlayerInMinAgroRange()
+    {
+        return Physics2D.Raycast(_playerCheck.position, transform.right, EnemyData.MinAgroDistance, EnemyData.WhatIsPlayer);
+    }
+
+    public virtual bool CheckPlayerInMaxAgroRange()
+    {
+        return Physics2D.Raycast(_playerCheck.position, transform.right, EnemyData.MaxAgroDistance, EnemyData.WhatIsPlayer);
+    }
+
     public virtual void Flip()
     {
+        FlipFacingDirection();
+        transform.Rotate(0f, 180f, 0f);
+    }
+
+    public virtual void FlipFacingDirection()
+    {
         FacingDirection *= -1;
-        EnemyModelGO.transform.Rotate(0f, 180f, 0f);
     }
 
     public virtual void OnDrawGizmos()
     {
         Gizmos.DrawLine(_wallCheck.position, _wallCheck.position + (Vector3)(Vector2.right * FacingDirection * EnemyData.WallCheckDistance));
         Gizmos.DrawLine(_groundCheck.position, _groundCheck.position + (Vector3)(Vector2.down * EnemyData.GroundCheckDistance));
+        Gizmos.DrawLine(_playerCheck.position, _playerCheck.position + (Vector3)(Vector2.right * FacingDirection * EnemyData.MinAgroDistance));
     }
 }

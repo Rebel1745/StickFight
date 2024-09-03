@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class E_Zombie_IdleState : Enemy_IdleState
+public class E_Zombie_LookForPlayerState : Enemy_LookForPlayerState
 {
-    public E_Zombie _e_Zombie;
+    private E_Zombie _e_Zombie;
 
-    public E_Zombie_IdleState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, D_IdleStateData stateData, E_Zombie e_Zombie) : base(enemy, stateMachine, animBoolName, stateData)
+    public E_Zombie_LookForPlayerState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, D_LookForPlayerData stateData, E_Zombie e_Zombie) : base(enemy, stateMachine, animBoolName, stateData)
     {
         _e_Zombie = e_Zombie;
     }
@@ -19,7 +19,7 @@ public class E_Zombie_IdleState : Enemy_IdleState
         {
             _stateMachine.ChangeState(_e_Zombie.PlayerDetectedState);
         }
-        else if (_isIdleTimeOver)
+        else if (_isAllTurnTimeDone)
         {
             _stateMachine.ChangeState(_e_Zombie.MoveState);
         }

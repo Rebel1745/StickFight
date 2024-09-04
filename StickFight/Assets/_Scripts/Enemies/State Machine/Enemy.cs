@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour
     public Rigidbody2D RB { get; private set; }
     public Animator Anim { get; private set; }
     public GameObject EnemyModelGO { get; private set; }
+    public AnimationToStateMachineHandler AnimHandler { get; private set; }
 
     [SerializeField] private Transform _wallCheck;
     [SerializeField] private Transform _groundCheck;
@@ -27,6 +28,7 @@ public class Enemy : MonoBehaviour
         EnemyModelGO = transform.Find("EnemyModel").gameObject;
         RB = GetComponent<Rigidbody2D>();
         Anim = EnemyModelGO.GetComponent<Animator>();
+        AnimHandler = EnemyModelGO.GetComponent<AnimationToStateMachineHandler>();
 
         StateMachine = new EnemyStateMachine();
     }
@@ -65,6 +67,11 @@ public class Enemy : MonoBehaviour
     public virtual bool CheckPlayerInMaxAgroRange()
     {
         return Physics2D.Raycast(_playerCheck.position, transform.right, EnemyData.MaxAgroDistance, EnemyData.WhatIsPlayer);
+    }
+
+    public virtual bool CheckPlayerInCloseRangeAction()
+    {
+        return Physics2D.Raycast(_playerCheck.position, transform.right, EnemyData.CloseRangeActionDistance, EnemyData.WhatIsPlayer);
     }
 
     public virtual void Flip()

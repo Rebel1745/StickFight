@@ -15,7 +15,11 @@ public class E_Zombie_ChargeState : Enemy_ChargeState
     {
         base.LogicUpate();
 
-        if (!_isDetectingGround || _isDetectingWall)
+        if (_performCloseRangeAction)
+        {
+            _stateMachine.ChangeState(_e_Zombie.MeleeAttackState);
+        }
+        else if (!_isDetectingGround || _isDetectingWall)
         {
             _stateMachine.ChangeState(_e_Zombie.LookForPlayerState);
         }

@@ -24,7 +24,11 @@ public class E_Zombie_PlayerDetectedState : Enemy_PlayerDetectedState
     {
         base.LogicUpate();
 
-        if (_performLongRangeAction)
+        if (_performCloseRangeAction)
+        {
+            _stateMachine.ChangeState(_e_Zombie.MeleeAttackState);
+        }
+        else if (_performLongRangeAction)
         {
             _stateMachine.ChangeState(_e_Zombie.ChargeState);
         }

@@ -9,6 +9,7 @@ public class Enemy_PlayerDetectedState : EnemyState
     protected bool _isPlayerInMinAgroRange;
     protected bool _isPlayerInMaxAgroRange;
     protected bool _performLongRangeAction;
+    protected bool _performCloseRangeAction;
 
     public Enemy_PlayerDetectedState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, D_PlayerDetectedStateData stateData) : base(enemy, stateMachine, animBoolName)
     {
@@ -20,6 +21,8 @@ public class Enemy_PlayerDetectedState : EnemyState
         base.DoChecks();
         _isPlayerInMinAgroRange = _enemy.CheckPlayerInMinAgroRange();
         _isPlayerInMaxAgroRange = _enemy.CheckPlayerInMaxAgroRange();
+
+        _performCloseRangeAction = _enemy.CheckPlayerInCloseRangeAction();
     }
 
     public override void Enter()

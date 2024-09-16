@@ -7,7 +7,7 @@ public class E_Zombie_MoveState : Enemy_MoveState
 {
     private E_Zombie _e_Zombie;
 
-    public E_Zombie_MoveState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, D_MoveStateData stateData, E_Zombie e_Zombie) : base(enemy, stateMachine, animBoolName, stateData)
+    public E_Zombie_MoveState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, D_MoveState stateData, E_Zombie e_Zombie) : base(enemy, stateMachine, animBoolName, stateData)
     {
         _e_Zombie = e_Zombie;
     }

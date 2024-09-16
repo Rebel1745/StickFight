@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Enemy_PlayerDetectedState : EnemyState
 {
-    protected D_PlayerDetectedStateData _stateData;
+    protected D_PlayerDetectedState _stateData;
 
     protected bool _isPlayerInMinAgroRange;
     protected bool _isPlayerInMaxAgroRange;
     protected bool _performLongRangeAction;
     protected bool _performCloseRangeAction;
 
-    public Enemy_PlayerDetectedState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, D_PlayerDetectedStateData stateData) : base(enemy, stateMachine, animBoolName)
+    public Enemy_PlayerDetectedState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, D_PlayerDetectedState stateData) : base(enemy, stateMachine, animBoolName)
     {
         _stateData = stateData;
     }

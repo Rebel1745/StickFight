@@ -6,7 +6,7 @@ public class E_Zombie_MeleeAttackState : Enemy_MeleeAttackState
 {
     private E_Zombie _e_Zombie;
 
-    public E_Zombie_MeleeAttackState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, Transform attackPosition, D_MeleeAttackStateData stateData, E_Zombie e_Zombie) : base(enemy, stateMachine, animBoolName, attackPosition, stateData)
+    public E_Zombie_MeleeAttackState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, Transform attackPosition, D_MeleeAttackState stateData, E_Zombie e_Zombie) : base(enemy, stateMachine, animBoolName, attackPosition, stateData)
     {
         _e_Zombie = e_Zombie;
     }

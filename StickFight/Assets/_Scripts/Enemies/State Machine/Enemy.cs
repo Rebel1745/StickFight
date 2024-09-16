@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
     public AnimationToStateMachineHandler AnimHandler { get; private set; }
 
     [SerializeField] private Transform _wallCheck;
+    [SerializeField] private Transform _ledgeCheck;
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private Transform _playerCheck;
 
@@ -54,6 +55,11 @@ public class Enemy : MonoBehaviour
         return Physics2D.Raycast(_wallCheck.position, transform.right, EnemyData.WallCheckDistance, EnemyData.WhatIsGround);
     }
 
+    public virtual bool CheckLedge()
+    {
+        return Physics2D.Raycast(_ledgeCheck.position, Vector2.down, EnemyData.LedgeCheckDistance, EnemyData.WhatIsGround);
+    }
+
     public virtual bool CheckGround()
     {
         return Physics2D.Raycast(_groundCheck.position, Vector2.down, EnemyData.GroundCheckDistance, EnemyData.WhatIsGround);
@@ -88,7 +94,11 @@ public class Enemy : MonoBehaviour
     public virtual void OnDrawGizmos()
     {
         Gizmos.DrawLine(_wallCheck.position, _wallCheck.position + (Vector3)(Vector2.right * FacingDirection * EnemyData.WallCheckDistance));
+        Gizmos.color = Color.blue;
         Gizmos.DrawLine(_groundCheck.position, _groundCheck.position + (Vector3)(Vector2.down * EnemyData.GroundCheckDistance));
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(_ledgeCheck.position, _ledgeCheck.position + (Vector3)(Vector2.down * EnemyData.LedgeCheckDistance));
+        Gizmos.color = Color.yellow;
         Gizmos.DrawLine(_playerCheck.position, _playerCheck.position + (Vector3)(Vector2.right * FacingDirection * EnemyData.MinAgroDistance));
     }
 }

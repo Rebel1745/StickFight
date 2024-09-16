@@ -6,7 +6,7 @@ public class E_Zombie_IdleState : Enemy_IdleState
 {
     public E_Zombie _e_Zombie;
 
-    public E_Zombie_IdleState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, D_IdleStateData stateData, E_Zombie e_Zombie) : base(enemy, stateMachine, animBoolName, stateData)
+    public E_Zombie_IdleState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, D_IdleState stateData, E_Zombie e_Zombie) : base(enemy, stateMachine, animBoolName, stateData)
     {
         _e_Zombie = e_Zombie;
     }

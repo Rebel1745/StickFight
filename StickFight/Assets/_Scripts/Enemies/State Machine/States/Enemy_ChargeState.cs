@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy_ChargeState : EnemyState
 {
-    protected D_ChargeStateData _stateData;
+    protected D_ChargeState _stateData;
 
     protected bool _isPlayerInMinAgroRange;
     protected bool _isDetectingWall;
@@ -12,7 +12,7 @@ public class Enemy_ChargeState : EnemyState
     protected bool _isChargeTimeOver;
     protected bool _performCloseRangeAction;
 
-    public Enemy_ChargeState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, D_ChargeStateData stateData) : base(enemy, stateMachine, animBoolName)
+    public Enemy_ChargeState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, D_ChargeState stateData) : base(enemy, stateMachine, animBoolName)
     {
         _stateData = stateData;
     }
@@ -22,7 +22,7 @@ public class Enemy_ChargeState : EnemyState
         base.DoChecks();
 
         _isPlayerInMinAgroRange = _enemy.CheckPlayerInMinAgroRange();
-        _isDetectingGround = _enemy.CheckGround();
+        _isDetectingGround = _enemy.CheckLedge();
         _isDetectingWall = _enemy.CheckWall();
 
         _performCloseRangeAction = _enemy.CheckPlayerInCloseRangeAction();

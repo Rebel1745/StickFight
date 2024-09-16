@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Enemy_MoveState : EnemyState
 {
-    protected D_MoveStateData _stateData;
+    protected D_MoveState _stateData;
 
     protected bool _isDetectingGround;
     protected bool _isDetectingWall;
     protected bool _isPlayerInMinAgroRange;
 
-    public Enemy_MoveState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, D_MoveStateData stateData) : base(enemy, stateMachine, animBoolName)
+    public Enemy_MoveState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, D_MoveState stateData) : base(enemy, stateMachine, animBoolName)
     {
         _stateData = stateData;
     }
@@ -18,7 +18,7 @@ public class Enemy_MoveState : EnemyState
     public override void DoChecks()
     {
         base.DoChecks();
-        _isDetectingGround = _enemy.CheckGround();
+        _isDetectingGround = _enemy.CheckLedge();
         _isDetectingWall = _enemy.CheckWall();
         _isPlayerInMinAgroRange = _enemy.CheckPlayerInMinAgroRange();
     }

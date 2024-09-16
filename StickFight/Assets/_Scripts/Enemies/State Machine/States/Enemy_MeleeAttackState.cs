@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Enemy_MeleeAttackState : Enemy_AttackState
 {
-    protected D_MeleeAttackStateData _stateData;
+    protected D_MeleeAttackState _stateData;
 
     protected AttackDetails _attackDetails;
 
-    public Enemy_MeleeAttackState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, Transform attackPosition, D_MeleeAttackStateData stateData) : base(enemy, stateMachine, animBoolName, attackPosition)
+    public Enemy_MeleeAttackState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, Transform attackPosition, D_MeleeAttackState stateData) : base(enemy, stateMachine, animBoolName, attackPosition)
     {
         _stateData = stateData;
     }

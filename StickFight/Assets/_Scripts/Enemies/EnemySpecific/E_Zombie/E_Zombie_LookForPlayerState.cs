@@ -6,7 +6,7 @@ public class E_Zombie_LookForPlayerState : Enemy_LookForPlayerState
 {
     private E_Zombie _e_Zombie;
 
-    public E_Zombie_LookForPlayerState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, D_LookForPlayerData stateData, E_Zombie e_Zombie) : base(enemy, stateMachine, animBoolName, stateData)
+    public E_Zombie_LookForPlayerState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, D_LookForPlayer stateData, E_Zombie e_Zombie) : base(enemy, stateMachine, animBoolName, stateData)
     {
         _e_Zombie = e_Zombie;
     }

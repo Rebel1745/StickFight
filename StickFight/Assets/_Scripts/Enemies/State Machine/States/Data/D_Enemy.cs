@@ -6,7 +6,8 @@ using UnityEngine;
 public class D_Enemy : ScriptableObject
 {
     public float WallCheckDistance = 0.2f;
-    public float GroundCheckDistance = 0.4f;
+    public float LedgeCheckDistance = 0.4f;
+    public float GroundCheckDistance = 0.2f;
 
     public float MinAgroDistance = 3f;
     public float MaxAgroDistance = 4f;

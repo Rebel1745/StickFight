@@ -11,13 +11,15 @@ public class E_Zombie : Enemy
     public E_Zombie_ChargeState ChargeState { get; private set; }
     public E_Zombie_LookForPlayerState LookForPlayerState { get; private set; }
     public E_Zombie_MeleeAttackState MeleeAttackState { get; private set; }
+    public E_Zombie_TurnState TurnState { get; private set; }
 
-    [SerializeField] private D_IdleStateData _idleStateData;
-    [SerializeField] private D_MoveStateData _moveStateData;
-    [SerializeField] private D_PlayerDetectedStateData _playerDetectedStateData;
-    [SerializeField] private D_ChargeStateData _chargeStateData;
-    [SerializeField] private D_LookForPlayerData _lookForPlayerStateData;
-    [SerializeField] private D_MeleeAttackStateData _meleeAttackStateData;
+    [SerializeField] private D_IdleState _idleStateData;
+    [SerializeField] private D_MoveState _moveStateData;
+    [SerializeField] private D_PlayerDetectedState _playerDetectedStateData;
+    [SerializeField] private D_ChargeState _chargeStateData;
+    [SerializeField] private D_LookForPlayer _lookForPlayerStateData;
+    [SerializeField] private D_MeleeAttackState _meleeAttackStateData;
+    [SerializeField] private D_TurnState _turnStateData;
 
     [SerializeField] private Transform _meleeAttackPosition;
 
@@ -31,16 +33,10 @@ public class E_Zombie : Enemy
         ChargeState = new E_Zombie_ChargeState(this, StateMachine, "charge", _chargeStateData, this);
         LookForPlayerState = new E_Zombie_LookForPlayerState(this, StateMachine, "lookForPlayer", _lookForPlayerStateData, this);
         MeleeAttackState = new E_Zombie_MeleeAttackState(this, StateMachine, "meleeAttack", _meleeAttackPosition, _meleeAttackStateData, this);
+        TurnState = new E_Zombie_TurnState(this, StateMachine, "turn", _turnStateData, this);
 
         StateMachine.Initialise(MoveState);
     }
-
-    // TODO: create a TurnState which just animates the zombie turning around
-    /*public override void Flip()
-    {
-        FlipFacingDirection();
-        Anim.Play("Turn");
-    }*/
 
     public override void OnDrawGizmos()
     {

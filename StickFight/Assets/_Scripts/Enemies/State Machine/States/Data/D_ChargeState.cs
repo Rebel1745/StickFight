@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "newChargeDetectedStateData", menuName = "Data/Enemy State Data/Charge State Data")]
-public class D_ChargeStateData : ScriptableObject
+public class D_ChargeState : ScriptableObject
 {
     public float ChargeSpeed = 3f;
 

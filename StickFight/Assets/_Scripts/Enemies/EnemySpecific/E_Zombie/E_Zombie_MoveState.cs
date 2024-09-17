@@ -35,10 +35,14 @@ public class E_Zombie_MoveState : Enemy_MoveState
         {
             _stateMachine.ChangeState(_e_Zombie.PlayerDetectedState);
         }
-        else if (_isDetectingWall || !_isDetectingGround)
+        /*else if (_isDetectingWall || !_isDetectingGround)
         {
             _e_Zombie.IdleState.SetFlipAfterIdle(true);
             _stateMachine.ChangeState(_e_Zombie.IdleState);
+        }*/
+        else if (_isDetectingWall || !_isDetectingGround)
+        {
+            _stateMachine.ChangeState(_e_Zombie.TurnState);
         }
     }
 }

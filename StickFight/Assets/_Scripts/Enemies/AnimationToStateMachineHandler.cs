@@ -5,6 +5,7 @@ using UnityEngine;
 public class AnimationToStateMachineHandler : MonoBehaviour
 {
     public Enemy_AttackState AttackState;
+    public Enemy_TurnState TurnState;
 
     public void TriggerAttack()
     {
@@ -14,5 +15,10 @@ public class AnimationToStateMachineHandler : MonoBehaviour
     public void FinishAttack()
     {
         AttackState.FinishAttack();
+    }
+
+    public void TurnAnimationFinished()
+    {
+        TurnState.AnimationFinished();
     }
 }

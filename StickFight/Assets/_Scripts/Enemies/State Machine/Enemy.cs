@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour
     public Rigidbody2D RB { get; private set; }
     public Animator Anim { get; private set; }
     public GameObject EnemyModelGO { get; private set; }
+    public GameObject EnemyModelBones { get; private set; } // these are the bones controlled by the individual animations
     public AnimationToStateMachineHandler AnimHandler { get; private set; }
 
     [SerializeField] private Transform _wallCheck;
@@ -27,6 +28,7 @@ public class Enemy : MonoBehaviour
         FacingDirection = 1;
 
         EnemyModelGO = transform.Find("EnemyModel").gameObject;
+        EnemyModelBones = EnemyModelGO.transform.GetChild(0).gameObject;
         RB = GetComponent<Rigidbody2D>();
         Anim = EnemyModelGO.GetComponent<Animator>();
         AnimHandler = EnemyModelGO.GetComponent<AnimationToStateMachineHandler>();
@@ -82,13 +84,13 @@ public class Enemy : MonoBehaviour
 
     public virtual void Flip()
     {
-        FlipFacingDirection();
+        FacingDirection *= -1;
         transform.Rotate(0f, 180f, 0f);
     }
 
-    public virtual void FlipFacingDirection()
+    public virtual void ChangeRotationOfModelBones(Quaternion angle)
     {
-        FacingDirection *= -1;
+        EnemyModelBones.transform.rotation = angle;
     }
 
     public virtual void OnDrawGizmos()

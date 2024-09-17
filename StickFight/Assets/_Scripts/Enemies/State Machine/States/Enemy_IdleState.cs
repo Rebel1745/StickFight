@@ -6,6 +6,7 @@ public class Enemy_IdleState : EnemyState
 {
     protected D_IdleState _stateData;
 
+    protected bool _flipBeforeIdle;
     protected bool _flipAfterIdle;
     protected bool _isIdleTimeOver;
     protected bool _isPlayerInMinAgroRange;
@@ -26,6 +27,11 @@ public class Enemy_IdleState : EnemyState
     public override void Enter()
     {
         base.Enter();
+
+        if (_flipBeforeIdle)
+        {
+            _enemy.Flip();
+        }
 
         _enemy.SetVelocityX(0);
         _isIdleTimeOver = false;
@@ -50,6 +56,11 @@ public class Enemy_IdleState : EnemyState
         {
             _isIdleTimeOver = true;
         }
+    }
+
+    public void SetFlipBeforeIdle(bool flipBeforeIdle)
+    {
+        _flipBeforeIdle = flipBeforeIdle;
     }
 
     public void SetFlipAfterIdle(bool flipAfterIdle)

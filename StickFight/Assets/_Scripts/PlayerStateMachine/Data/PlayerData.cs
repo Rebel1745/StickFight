@@ -60,10 +60,4 @@ public class PlayerData : ScriptableObject
     [Header("Kick State")]
     public float KickDuration = 0.1f;
     public float PostKickKnockupPower = 5f;
-
-    [Header("Check Variables")]
-    public float GroundCheckRadius = 0.3f;
-    public float WallCheckDistance = 0.5f;
-    public float CeilingCheckRadius = 0.3f;
-    public LayerMask WhatIsGround;
 }

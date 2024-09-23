@@ -24,7 +24,7 @@ public class PlayerDashSlideState : PlayerAbilityState
     public override void Exit()
     {
         base.Exit();
-        _player.SetVelocityZero();
+        _core.Movement.SetVelocityZero();
     }
 
     public override void LogicUpdate()
@@ -36,7 +36,7 @@ public class PlayerDashSlideState : PlayerAbilityState
 
         if (Time.time <= _startTime + _remainingDashTime)
         {
-            _player.SetVelocityX((Vector2.right * _playerData.DashVelocity).x * _dashDirection);
+            _core.Movement.SetVelocityX((Vector2.right * _playerData.DashVelocity).x * _dashDirection);
         }
         else
         {

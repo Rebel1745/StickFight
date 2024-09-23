@@ -11,6 +11,7 @@ public class PlayerLedgeClimbState : PlayerState
     private Vector2 _cornerPosition;
     private Vector2 _startPosition;
     private Vector2 _stopPosition;
+    private Vector2 _workspace;
 
     private bool _isClimbing;
     private bool _isClimbingUp;
@@ -28,9 +29,9 @@ public class PlayerLedgeClimbState : PlayerState
     {
         base.Enter();
 
-        _player.SetVelocityZero();
-        _cornerPosition = _player.DetermineCornerPosition();
-        _stopPosition.Set(_cornerPosition.x + (_player.FacingDirection * _playerData.StopOffset.x), _cornerPosition.y + _playerData.StopOffset.y);
+        _core.Movement.SetVelocityZero();
+        _cornerPosition = DetermineCornerPosition();
+        _stopPosition.Set(_cornerPosition.x + (_core.Movement.FacingDirection * _playerData.StopOffset.x), _cornerPosition.y + _playerData.StopOffset.y);
 
         // start the movement towards the stop position
         _isClimbing = true;
@@ -59,7 +60,7 @@ public class PlayerLedgeClimbState : PlayerState
 
         if (_isClimbingUp)
         {
-            _player.SetVelocityY(_playerData.WallClimbVelocity);
+            _core.Movement.SetVelocityY(_playerData.WallClimbVelocity);
             if (_player.transform.position.y >= _stopPosition.y)
             {
                 _isClimbingUp = false;
@@ -70,7 +71,7 @@ public class PlayerLedgeClimbState : PlayerState
         if (_isMovingAcross)
         {
             Debug.Log("Moving across");
-            _player.SetVelocityX(_playerData.MovementVelocity * _player.FacingDirection);
+            _core.Movement.SetVelocityX(_playerData.MovementVelocity * _core.Movement.FacingDirection);
             if (Mathf.Abs(_player.transform.position.x - _stopPosition.x) < 0.01f)
             {
                 // if we have reached our stop position, stop climbing
@@ -88,5 +89,17 @@ public class PlayerLedgeClimbState : PlayerState
         {
             _player.SetVelocityY(_playerData.MovementVelocity);
         }*/
+    }
+
+    private Vector2 DetermineCornerPosition()
+    {
+        RaycastHit2D xHit = Physics2D.Raycast(_core.CollisionSenses.WallCheck.position, Vector2.right * _core.Movement.FacingDirection, _core.CollisionSenses.WallCheckDistance, _core.CollisionSenses.WhatIsGround);
+        float xDist = xHit.distance;
+        _workspace.Set(xDist * _core.Movement.FacingDirection, 0f);
+        RaycastHit2D yHit = Physics2D.Raycast(_core.CollisionSenses.LedgeCheck.position + (Vector3)_workspace, Vector2.down, _core.CollisionSenses.LedgeCheck.position.y - _core.CollisionSenses.WallCheck.position.y, _core.CollisionSenses.WhatIsGround);
+        float yDist = yHit.distance;
+
+        _workspace.Set(_core.CollisionSenses.WallCheck.position.x + xDist * _core.Movement.FacingDirection, _core.CollisionSenses.LedgeCheck.position.y - yDist);
+        return _workspace;
     }
 }

@@ -16,7 +16,7 @@ public class PlayerAbilityState : PlayerState
     {
         base.DoChecks();
 
-        _isGrounded = _player.CheckIfGrounded();
+        _isGrounded = _core.CollisionSenses.Ground;
     }
 
     public override void Enter()
@@ -38,7 +38,7 @@ public class PlayerAbilityState : PlayerState
         if (_isAbilityDone)
         {
             // for the first frame or so after jumping we are still 'technically' grounded, so only transition if we are not jumping (i.e. dont have a positive y velocity)
-            if (_isGrounded && _player.CurrentVelocity.y < 0.01f)
+            if (_isGrounded && _core.Movement.CurrentVelocity.y < 0.01f)
                 _stateMachine.ChangeState(_player.IdleState);
             else
                 _stateMachine.ChangeState(_player.InAirState);

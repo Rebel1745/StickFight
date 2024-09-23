@@ -22,7 +22,7 @@ public class PlayerDashStandardState : PlayerAbilityState
     {
         base.DoChecks();
 
-        _isGrounded = _player.CheckIfGrounded();
+        _isGrounded = _core.CollisionSenses.Ground;
     }
 
     public override void Enter()
@@ -33,16 +33,16 @@ public class PlayerDashStandardState : PlayerAbilityState
         _lastDashTime = Time.time;
         _dashDirection = _player.InputHandler.DashDirection;
 
-        _player.SetGravityScaleZero();
-        _player.SetVelocityZero();
-        _player.SetVelocityX((Vector2.right * _playerData.DashVelocity).x * _dashDirection);
-        _player.SetBoxCollider(_playerData.DashStandardHitboxOffset, _playerData.DashStandardHitboxSize);
+        _core.Movement.SetGravityScaleZero();
+        _core.Movement.SetVelocityZero();
+        _core.Movement.SetVelocityX((Vector2.right * _playerData.DashVelocity).x * _dashDirection);
+        _core.Movement.SetBoxCollider(_playerData.DashStandardHitboxOffset, _playerData.DashStandardHitboxSize);
     }
 
     public override void Exit()
     {
-        _player.ResetGravityScale();
-        _player.SetBoxCollider(_playerData.DefaultHitboxOffset, _playerData.DefaultHitboxSize);
+        _core.Movement.ResetGravityScale();
+        _core.Movement.SetBoxCollider(_playerData.DefaultHitboxOffset, _playerData.DefaultHitboxSize);
         base.Exit();
     }
 
@@ -58,7 +58,7 @@ public class PlayerDashStandardState : PlayerAbilityState
 
         if (Time.time <= _lastDashTime + _playerData.DashTime)
         {
-            _player.SetVelocityX((Vector2.right * _playerData.DashVelocity).x * _dashDirection);
+            _core.Movement.SetVelocityX((Vector2.right * _playerData.DashVelocity).x * _dashDirection);
         }
         else
         {

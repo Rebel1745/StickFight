@@ -28,12 +28,12 @@ public class PlayerLedgeClimbState_old : PlayerState
     {
         base.Enter();
 
-        _player.SetVelocityZero();
+        _core.Movement.SetVelocityZero();
         _player.transform.position = _detectedPosition;
-        _cornerPosition = _player.DetermineCornerPosition();
+        //_cornerPosition = _player.DetermineCornerPosition();
 
-        _startPosition.Set(_cornerPosition.x - (_player.FacingDirection * _playerData.StartOffset.x), _cornerPosition.y - _playerData.StartOffset.y);
-        _stopPosition.Set(_cornerPosition.x + (_player.FacingDirection * _playerData.StopOffset.x), _cornerPosition.y + _playerData.StopOffset.y);
+        _startPosition.Set(_cornerPosition.x - (_core.Movement.FacingDirection * _playerData.StartOffset.x), _cornerPosition.y - _playerData.StartOffset.y);
+        _stopPosition.Set(_cornerPosition.x + (_core.Movement.FacingDirection * _playerData.StopOffset.x), _cornerPosition.y + _playerData.StopOffset.y);
 
         _player.transform.position = _startPosition;
     }
@@ -67,10 +67,10 @@ public class PlayerLedgeClimbState_old : PlayerState
             _yInput = _player.InputHandler.NormInputY;
             _jumpInput = _player.InputHandler.JumpInput;
 
-            _player.SetVelocityZero();
+            _core.Movement.SetVelocityZero();
             _player.transform.position = _startPosition;
 
-            if (_xInput == _player.FacingDirection && _isHanging && !_isClimbing)
+            if (_xInput == _core.Movement.FacingDirection && _isHanging && !_isClimbing)
             {
                 _isClimbing = true;
                 // start playing the climbing animation if we had one

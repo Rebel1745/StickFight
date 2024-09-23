@@ -21,10 +21,10 @@ public class PlayerTouchingWallState : PlayerState
     {
         base.DoChecks();
 
-        _isGrounded = _player.CheckIfGrounded();
-        _isTouchingWall = _player.CheckIfTouchingWall();
-        _isTouchingCeiling = _player.CheckIfTouchingCeiling();
-        _isTouchingLedge = _player.CheckIfTouchingLedge();
+        _isGrounded = _core.CollisionSenses.Ground;
+        _isTouchingWall = _core.CollisionSenses.WallFront;
+        _isTouchingCeiling = _core.CollisionSenses.Ceiling;
+        _isTouchingLedge = _core.CollisionSenses.Ledge;
 
         /*if (_isTouchingWall && !_isTouchingLedge)
         {
@@ -35,13 +35,13 @@ public class PlayerTouchingWallState : PlayerState
     public override void Enter()
     {
         base.Enter();
-        _player.ResetGravityScale();
-        _player.SetBoxCollider(_playerData.WallHitboxOffset, _playerData.WallHitboxSize);
+        _core.Movement.ResetGravityScale();
+        _core.Movement.SetBoxCollider(_playerData.WallHitboxOffset, _playerData.WallHitboxSize);
     }
 
     public override void Exit()
     {
-        _player.SetBoxCollider(_playerData.DefaultHitboxOffset, _playerData.DefaultHitboxSize);
+        _core.Movement.SetBoxCollider(_playerData.DefaultHitboxOffset, _playerData.DefaultHitboxSize);
         base.Exit();
     }
 
@@ -66,7 +66,7 @@ public class PlayerTouchingWallState : PlayerState
             _stateMachine.ChangeState(_player.IdleState);
         }
         // if we aren't touching a wall or if we are trying to move in a direction away from the wall, let go and be airborne
-        else if (!_isTouchingWall || (_xInput != 0 && _xInput != _player.FacingDirection && !_grabInput))
+        else if (!_isTouchingWall || (_xInput != 0 && _xInput != _core.Movement.FacingDirection && !_grabInput))
         {
             _stateMachine.ChangeState(_player.InAirState);
         }
@@ -75,7 +75,7 @@ public class PlayerTouchingWallState : PlayerState
             _stateMachine.ChangeState(_player.LedgeClimbState);
         }
         // if we are touching the ceiling and moving away from the wall, move along the ceiling
-        else if (_isTouchingCeiling && _xInput != 0 && _xInput != _player.FacingDirection)
+        else if (_isTouchingCeiling && _xInput != 0 && _xInput != _core.Movement.FacingDirection)
         {
             _stateMachine.ChangeState(_player.CeilingMoveState);
         }

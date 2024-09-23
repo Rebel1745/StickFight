@@ -17,7 +17,7 @@ public class PlayerAirKickState : PlayerAbilityState
     public override void Exit()
     {
         base.Exit();
-        _player.ResetGravityScale();
+        _core.Movement.ResetGravityScale();
     }
 
     public override void LogicUpdate()
@@ -35,8 +35,8 @@ public class PlayerAirKickState : PlayerAbilityState
         if (hits.Length > 0)
         {
             // if we hit something, suspend gravity so we can keep hitting
-            _player.SetVelocityZero();
-            _player.SetGravityScaleZero();
+            _core.Movement.SetVelocityZero();
+            _core.Movement.SetGravityScaleZero();
 
             foreach (Collider2D c in hits)
             {

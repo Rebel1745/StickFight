@@ -17,19 +17,19 @@ public class PlayerCeilingClingState : PlayerState
     {
         base.DoChecks();
 
-        _isTouchingWall = _player.CheckIfTouchingWall();
+        _isTouchingWall = _core.CollisionSenses.WallFront;
     }
 
     public override void Enter()
     {
         base.Enter();
-        _player.SetGravityScaleZero();
+        _core.Movement.SetGravityScaleZero();
     }
 
     public override void Exit()
     {
         base.Exit();
-        _player.ResetGravityScale();
+        _core.Movement.ResetGravityScale();
     }
 
     public override void LogicUpdate()

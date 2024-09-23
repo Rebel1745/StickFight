@@ -17,7 +17,7 @@ public class PlayerAirPunchState : PlayerAbilityState
     public override void Exit()
     {
         base.Exit();
-        _player.ResetGravityScale();
+        _core.Movement.ResetGravityScale();
     }
 
     public override void LogicUpdate()
@@ -35,14 +35,14 @@ public class PlayerAirPunchState : PlayerAbilityState
         if (hits.Length > 0)
         {
             // if we hit something, suspend gravity so we can keep hitting
-            _player.SetVelocityZero();
-            _player.SetGravityScaleZero();
+            _core.Movement.SetVelocityZero();
+            _core.Movement.SetGravityScaleZero();
 
             foreach (Collider2D c in hits)
             {
                 Debug.Log("Collided with " + c.name);
                 c.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0f, _playerData.PostPunchKnockupPower);
-                _player.SetVelocityY(_playerData.PostPunchKnockupPower);
+                _core.Movement.SetVelocityY(_playerData.PostPunchKnockupPower);
             }
         }
     }

@@ -9,27 +9,21 @@ public class Enemy : MonoBehaviour
 
     public D_Enemy EnemyData;
 
-    public Rigidbody2D RB { get; private set; }
     public Animator Anim { get; private set; }
     public GameObject EnemyModelGO { get; private set; }
     public GameObject EnemyModelBones { get; private set; } // these are the bones controlled by the individual animations
     public AnimationToStateMachineHandler AnimHandler { get; private set; }
+    public Core Core { get; private set; }
 
-    [SerializeField] private Transform _wallCheck;
-    [SerializeField] private Transform _ledgeCheck;
-    [SerializeField] private Transform _groundCheck;
     [SerializeField] private Transform _playerCheck;
 
-    public int FacingDirection { get; private set; }
-    private Vector2 velocityWorkspace;
-
-    public virtual void Start()
+    public virtual void Awake()
     {
-        FacingDirection = 1;
+        Core = GetComponentInChildren<Core>();
 
         EnemyModelGO = transform.Find("EnemyModel").gameObject;
         EnemyModelBones = EnemyModelGO.transform.GetChild(0).gameObject;
-        RB = GetComponent<Rigidbody2D>();
+
         Anim = EnemyModelGO.GetComponent<Animator>();
         AnimHandler = EnemyModelGO.GetComponent<AnimationToStateMachineHandler>();
 
@@ -44,27 +38,6 @@ public class Enemy : MonoBehaviour
     public virtual void FixedUpdate()
     {
         StateMachine.CurrentState.PhysicsUpdate();
-    }
-
-    public void SetVelocityX(float velocityX)
-    {
-        velocityWorkspace.Set(FacingDirection * velocityX, RB.velocity.y);
-        RB.velocity = velocityWorkspace;
-    }
-
-    public virtual bool CheckWall()
-    {
-        return Physics2D.Raycast(_wallCheck.position, transform.right, EnemyData.WallCheckDistance, EnemyData.WhatIsGround);
-    }
-
-    public virtual bool CheckLedge()
-    {
-        return Physics2D.Raycast(_ledgeCheck.position, Vector2.down, EnemyData.LedgeCheckDistance, EnemyData.WhatIsGround);
-    }
-
-    public virtual bool CheckGround()
-    {
-        return Physics2D.Raycast(_groundCheck.position, Vector2.down, EnemyData.GroundCheckDistance, EnemyData.WhatIsGround);
     }
 
     public virtual bool CheckPlayerInMinAgroRange()
@@ -82,12 +55,6 @@ public class Enemy : MonoBehaviour
         return Physics2D.Raycast(_playerCheck.position, transform.right, EnemyData.CloseRangeActionDistance, EnemyData.WhatIsPlayer);
     }
 
-    public virtual void Flip()
-    {
-        FacingDirection *= -1;
-        transform.Rotate(0f, 180f, 0f);
-    }
-
     public virtual void ChangeRotationOfModelBones(Quaternion angle)
     {
         EnemyModelBones.transform.rotation = angle;
@@ -95,12 +62,15 @@ public class Enemy : MonoBehaviour
 
     public virtual void OnDrawGizmos()
     {
-        Gizmos.DrawLine(_wallCheck.position, _wallCheck.position + (Vector3)(Vector2.right * FacingDirection * EnemyData.WallCheckDistance));
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(_groundCheck.position, _groundCheck.position + (Vector3)(Vector2.down * EnemyData.GroundCheckDistance));
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(_ledgeCheck.position, _ledgeCheck.position + (Vector3)(Vector2.down * EnemyData.LedgeCheckDistance));
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(_playerCheck.position, _playerCheck.position + (Vector3)(Vector2.right * FacingDirection * EnemyData.MinAgroDistance));
+        if (Core)
+        {
+            Gizmos.DrawLine(Core.CollisionSenses.WallCheck.position, Core.CollisionSenses.WallCheck.position + (Vector3)(Vector2.right * Core.Movement.FacingDirection * Core.CollisionSenses.WallCheckDistance));
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(Core.CollisionSenses.GroundCheck.position, Core.CollisionSenses.GroundCheck.position + (Vector3)(Vector2.down * Core.CollisionSenses.GroundCheckRadius));
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(Core.CollisionSenses.LedgeCheckVertical.position, Core.CollisionSenses.LedgeCheckVertical.position + (Vector3)(Vector2.down * Core.CollisionSenses.GroundCheckRadius));
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(_playerCheck.position, _playerCheck.position + (Vector3)(Vector2.right * Core.Movement.FacingDirection * EnemyData.MinAgroDistance));
+        }
     }
 }

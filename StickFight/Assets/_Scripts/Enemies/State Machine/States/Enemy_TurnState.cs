@@ -24,7 +24,7 @@ public class Enemy_TurnState : EnemyState
 
         _enemy.AnimHandler.TurnState = this;
         _isAnimationFinished = false;
-        _enemy.SetVelocityX(0f);
+        _core.Movement.SetVelocityX(0f);
     }
 
     public virtual void AnimationFinished()

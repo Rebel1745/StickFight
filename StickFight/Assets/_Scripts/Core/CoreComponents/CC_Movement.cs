@@ -89,7 +89,7 @@ public class CC_Movement : CoreComponent
         Col.offset = offset;
     }
 
-    private void Flip()
+    public void Flip()
     {
         FacingDirection *= -1;
         RB.transform.Rotate(0.0f, 180.0f, 0.0f);

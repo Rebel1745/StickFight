@@ -23,9 +23,9 @@ public class E_Zombie : Enemy
 
     [SerializeField] private Transform _meleeAttackPosition;
 
-    public override void Start()
+    public override void Awake()
     {
-        base.Start();
+        base.Awake();
 
         IdleState = new E_Zombie_IdleState(this, StateMachine, "idle", _idleStateData, this);
         MoveState = new E_Zombie_MoveState(this, StateMachine, "move", _moveStateData, this);

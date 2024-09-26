@@ -24,7 +24,7 @@ public class PlayerTouchingWallState : PlayerState
         _isGrounded = _core.CollisionSenses.Ground;
         _isTouchingWall = _core.CollisionSenses.WallFront;
         _isTouchingCeiling = _core.CollisionSenses.Ceiling;
-        _isTouchingLedge = _core.CollisionSenses.Ledge;
+        _isTouchingLedge = _core.CollisionSenses.LedgeHorizontal;
 
         /*if (_isTouchingWall && !_isTouchingLedge)
         {

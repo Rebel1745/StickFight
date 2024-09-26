@@ -22,8 +22,8 @@ public class Enemy_ChargeState : EnemyState
         base.DoChecks();
 
         _isPlayerInMinAgroRange = _enemy.CheckPlayerInMinAgroRange();
-        _isDetectingGround = _enemy.CheckLedge();
-        _isDetectingWall = _enemy.CheckWall();
+        _isDetectingGround = _core.CollisionSenses.LedgeVertical;
+        _isDetectingWall = _core.CollisionSenses.WallFront;
 
         _performCloseRangeAction = _enemy.CheckPlayerInCloseRangeAction();
     }
@@ -33,7 +33,7 @@ public class Enemy_ChargeState : EnemyState
         base.Enter();
 
         _isChargeTimeOver = false;
-        _enemy.SetVelocityX(_stateData.ChargeSpeed);
+        _core.Movement.SetVelocityX(_stateData.ChargeSpeed * _core.Movement.FacingDirection);
     }
 
     public override void Exit()

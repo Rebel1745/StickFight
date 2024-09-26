@@ -25,7 +25,7 @@ public class PlayerGroundedState : PlayerState
 
         _isGrounded = _core.CollisionSenses.Ground;
         _isTouchingWall = _core.CollisionSenses.WallFront;
-        _isTouchingLedge = _core.CollisionSenses.Ledge;
+        _isTouchingLedge = _core.CollisionSenses.LedgeHorizontal;
     }
 
     public override void Enter()

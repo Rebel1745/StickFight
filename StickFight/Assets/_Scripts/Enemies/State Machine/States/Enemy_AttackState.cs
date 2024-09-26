@@ -27,7 +27,7 @@ public class Enemy_AttackState : EnemyState
 
         _enemy.AnimHandler.AttackState = this;
         _isAnimationFinished = false;
-        _enemy.SetVelocityX(0f);
+        _core.Movement.SetVelocityX(0f);
     }
 
     public override void Exit()

@@ -6,6 +6,7 @@ public class EnemyState
 {
     protected EnemyStateMachine _stateMachine;
     protected Enemy _enemy;
+    protected Core _core;
 
     protected float _startTime;
 
@@ -16,6 +17,7 @@ public class EnemyState
         _enemy = enemy;
         _stateMachine = stateMachine;
         _animBoolName = animBoolName;
+        _core = _enemy.Core;
     }
 
     public virtual void Enter()

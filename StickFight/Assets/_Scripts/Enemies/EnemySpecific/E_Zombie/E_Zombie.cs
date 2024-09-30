@@ -34,7 +34,10 @@ public class E_Zombie : Enemy
         LookForPlayerState = new E_Zombie_LookForPlayerState(this, StateMachine, "lookForPlayer", _lookForPlayerStateData, this);
         MeleeAttackState = new E_Zombie_MeleeAttackState(this, StateMachine, "meleeAttack", _meleeAttackPosition, _meleeAttackStateData, this);
         TurnState = new E_Zombie_TurnState(this, StateMachine, "turn", _turnStateData, this);
+    }
 
+    private void Start()
+    {
         StateMachine.Initialise(MoveState);
     }
 

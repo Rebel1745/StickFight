@@ -7,57 +7,27 @@ public class CC_CollisionSenses : CoreComponent
 {
     public Transform GroundCheck
     {
-        get
-        {
-            if (_groundCheck) return _groundCheck;
-
-            Debug.LogError("No GroundCheck Defined for " + transform.parent.name);
-            return null;
-        }
+        get => GenericNotImplementedError<Transform>.TryGet(_groundCheck, _core.transform.parent.name);
         set => _groundCheck = value;
     }
     public Transform WallCheck
     {
-        get
-        {
-            if (_wallCheck) return _wallCheck;
-
-            Debug.LogError("No WallCheck Defined for " + transform.parent.name);
-            return null;
-        }
+        get => GenericNotImplementedError<Transform>.TryGet(_wallCheck, _core.transform.parent.name);
         set => _wallCheck = value;
     }
     public Transform LedgeCheckHorizontal
     {
-        get
-        {
-            if (_ledgeCheckHorizontal) return _ledgeCheckHorizontal;
-
-            Debug.LogError("No LedgeCheckHorizontal Defined for " + transform.parent.name);
-            return null;
-        }
+        get => GenericNotImplementedError<Transform>.TryGet(_ledgeCheckHorizontal, _core.transform.parent.name);
         set => _ledgeCheckHorizontal = value;
     }
     public Transform LedgeCheckVertical
     {
-        get
-        {
-            if (_ledgeCheckVertical) return _ledgeCheckVertical;
-
-            Debug.LogError("No LedgeCheckVertical Defined for " + transform.parent.name);
-            return null;
-        }
+        get => GenericNotImplementedError<Transform>.TryGet(_ledgeCheckVertical, _core.transform.parent.name);
         set => _ledgeCheckVertical = value;
     }
     public Transform CeilingCheck
     {
-        get
-        {
-            if (_ceilingCheck) return _ceilingCheck;
-
-            Debug.LogError("No ceilingCheck Defined for " + transform.parent.name);
-            return null;
-        }
+        get => GenericNotImplementedError<Transform>.TryGet(_ceilingCheck, _core.transform.parent.name);
         set => _ceilingCheck = value;
     }
 

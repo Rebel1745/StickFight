@@ -31,7 +31,7 @@ public class PlayerGroundPunchState : PlayerAbilityState
         {
             foreach (Collider2D c in hits)
             {
-                Debug.Log("Collided with " + c.name);
+                if (c.TryGetComponent<IDamageable>(out var hit)) hit.Damage(10f);
             }
         }
     }

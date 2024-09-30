@@ -32,6 +32,7 @@ public class Enemy : MonoBehaviour
 
     public virtual void Update()
     {
+        Core.LogicUpdate();
         StateMachine.CurrentState.LogicUpate();
     }
 

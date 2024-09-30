@@ -120,7 +120,7 @@ public class Player : MonoBehaviour
     #region Debug Functions
     private void OnDrawGizmos()
     {
-
+        Gizmos.DrawWireCube(HitCheckOriginGroundKick.position, HitBoxSizeGroundKick);
     }
     #endregion
 }

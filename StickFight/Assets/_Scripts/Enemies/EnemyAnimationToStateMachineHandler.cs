@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimationToStateMachineHandler : MonoBehaviour
+public class EnemyAnimationToStateMachineHandler : MonoBehaviour
 {
     public Enemy_AttackState AttackState;
     public Enemy_TurnState TurnState;

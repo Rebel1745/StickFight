@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
     public Core Core { get; private set; }
     public Animator Anim;
     public PlayerInputHandler InputHandler { get; private set; }
+    public PlayerAnimationToStateMachineHandler AnimHandler { get; private set; }
     #endregion
 
     #region Other Variables
@@ -93,6 +94,8 @@ public class Player : MonoBehaviour
     {
         //Anim = GetComponent<Animator>();
         InputHandler = GetComponent<PlayerInputHandler>();
+        AnimHandler = GetComponentInChildren<PlayerAnimationToStateMachineHandler>();
+        AnimHandler.Player = this;
 
         StateMachine.Initialise(IdleState);
     }
@@ -111,8 +114,8 @@ public class Player : MonoBehaviour
 
     #region Other Functions
 
-    private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
-    private void AnimationFinishedTrigger() => StateMachine.CurrentState.AnimationFinishedTrigger();
+    public void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
+    public void AnimationFinishedTrigger() => StateMachine.CurrentState.AnimationFinishedTrigger();
     #endregion
 
 

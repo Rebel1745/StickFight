@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     public Animator Anim { get; private set; }
     public GameObject EnemyModelGO { get; private set; }
     public GameObject EnemyModelBones { get; private set; } // these are the bones controlled by the individual animations
-    public AnimationToStateMachineHandler AnimHandler { get; private set; }
+    public EnemyAnimationToStateMachineHandler AnimHandler { get; private set; }
     public Core Core { get; private set; }
 
     [SerializeField] private Transform _playerCheck;
@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour
         EnemyModelBones = EnemyModelGO.transform.GetChild(0).gameObject;
 
         Anim = EnemyModelGO.GetComponent<Animator>();
-        AnimHandler = EnemyModelGO.GetComponent<AnimationToStateMachineHandler>();
+        AnimHandler = EnemyModelGO.GetComponent<EnemyAnimationToStateMachineHandler>();
 
         StateMachine = new EnemyStateMachine();
     }

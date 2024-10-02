@@ -29,6 +29,11 @@ public class Enemy_MoveState : EnemyState
         _core.Movement.SetVelocityX(_stateData.MovementSpeed * _core.Movement.FacingDirection);
     }
 
+    public override void LogicUpate()
+    {
+        base.LogicUpate();
+    }
+
     public override void Exit()
     {
         base.Exit();

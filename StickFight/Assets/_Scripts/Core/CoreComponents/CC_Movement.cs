@@ -14,6 +14,8 @@ public class CC_Movement : CoreComponent
 
     public int FacingDirection { get; private set; }
 
+    public bool CanSetVelocity;
+
     protected override void Awake()
     {
         base.Awake();
@@ -22,6 +24,7 @@ public class CC_Movement : CoreComponent
         Col = GetComponentInParent<BoxCollider2D>();
 
         FacingDirection = 1;
+        CanSetVelocity = true;
     }
 
     public void LogicUpdate()
@@ -47,29 +50,35 @@ public class CC_Movement : CoreComponent
 
     public void SetVelocityZero()
     {
-        RB.velocity = Vector2.zero;
-        CurrentVelocity = Vector2.zero;
+        _workspace = Vector2.zero;
+        SetFinalVelocity();
     }
     public void SetVelocity(float vel, Vector2 angle, int direction)
     {
         angle.Normalize();
         _workspace.Set(angle.x * vel * direction, angle.y * vel);
-        RB.velocity = _workspace;
-        CurrentVelocity = _workspace;
+        SetFinalVelocity();
     }
 
     public void SetVelocityX(float vel)
     {
         _workspace.Set(vel, CurrentVelocity.y);
-        RB.velocity = _workspace;
-        CurrentVelocity = _workspace;
+        SetFinalVelocity();
     }
 
     public void SetVelocityY(float vel)
     {
         _workspace.Set(CurrentVelocity.x, vel);
-        RB.velocity = _workspace;
-        CurrentVelocity = _workspace;
+        SetFinalVelocity();
+    }
+
+    private void SetFinalVelocity()
+    {
+        if (CanSetVelocity)
+        {
+            RB.velocity = _workspace;
+            CurrentVelocity = _workspace;
+        }
     }
 
     public void SetLinearDrag(float val)

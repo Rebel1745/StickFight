@@ -46,9 +46,27 @@ public class Enemy_MeleeAttackState : Enemy_AttackState
 
         foreach (Collider2D detectedObject in detectedObjects)
         {
-            Debug.Log("Damaged " + detectedObject.gameObject.name);
+            IDamageable damageable = detectedObject.gameObject.GetComponentInChildren<IDamageable>();
 
-            // TODO: watch tutorial on sending AttackDetails to the player to actually damage it
+            if (damageable != null)
+            {
+                damageable.Damage(_stateData.AttackDamage);
+            }
+            else
+            {
+                Debug.Log("Damageable is null?!");
+            }
+
+            IKnockbackable knockbackable = detectedObject.gameObject.GetComponentInChildren<IKnockbackable>();
+
+            if (knockbackable != null)
+            {
+                knockbackable.Knockback(_stateData.KnockbackAngle, _stateData.KnockbackStrength, _core.Movement.FacingDirection);
+            }
+            else
+            {
+                Debug.Log("Knockbackable is null?!");
+            }
         }
     }
 

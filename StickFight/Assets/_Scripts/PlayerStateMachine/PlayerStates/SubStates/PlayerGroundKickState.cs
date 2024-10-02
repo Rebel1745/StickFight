@@ -11,17 +11,35 @@ public class PlayerGroundKickState : PlayerAbilityState
     public override void Enter()
     {
         base.Enter();
+        _core.Movement.SetVelocityZero();
+        _core.Movement.CanSetVelocity = false;
         _player.InputHandler.UseKickInput();
-        CheckForHit();
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (Time.time >= _startTime + _playerData.KickDuration)
-            _isAbilityDone = true;
     }
 
+    public override void AnimationTrigger()
+    {
+        base.AnimationTrigger();
+        CheckForHit();
+    }
+
+    public override void AnimationFinishedTrigger()
+    {
+        base.AnimationFinishedTrigger();
+        _isAbilityDone = true;
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        _core.Movement.CanSetVelocity = true;
+    }
+
+    // TODO: use the below code on all the different attacks.  Only use knockback for dash slide and air punch/kick
     private void CheckForHit()
     {
         Collider2D[] hits;

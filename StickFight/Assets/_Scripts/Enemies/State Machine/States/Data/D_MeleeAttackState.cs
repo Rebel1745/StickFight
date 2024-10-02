@@ -7,6 +7,8 @@ public class D_MeleeAttackState : ScriptableObject
 {
     public float AttackRadius = 0.5f;
     public float AttackDamage = 10f;
+    public Vector2 KnockbackAngle = Vector2.one;
+    public float KnockbackStrength = 0;
 
     public LayerMask WhatIsPlayer;
 }

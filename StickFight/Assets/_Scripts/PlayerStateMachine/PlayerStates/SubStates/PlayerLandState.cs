@@ -8,9 +8,9 @@ public class PlayerLandState : PlayerGroundedState
     {
     }
 
-    public override void LogicUpdate()
+    public override void AnimationFinishedTrigger()
     {
-        base.LogicUpdate();
+        base.AnimationFinishedTrigger();
 
         if (!_isExitingState)
         {

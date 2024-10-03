@@ -11,28 +11,31 @@ public class PlayerGroundPunchState : PlayerAbilityState
     public override void Enter()
     {
         base.Enter();
+        _core.Movement.SetVelocityZero();
+        _core.Movement.CanSetVelocity = false;
         _player.InputHandler.UsePunchInput();
-        CheckForHit();
     }
 
-    public override void LogicUpdate()
+    public override void AnimationTrigger()
     {
-        base.LogicUpdate();
-        if (Time.time >= _startTime + _playerData.PunchDuration)
-            _isAbilityDone = true;
+        base.AnimationTrigger();
+        _hits = GetHits(_player.HitCheckOriginGroundPunch.position, _player.HitBoxSizeGroundPunch, _player.WhatIsEnemy);
+
+        if (_hits.Length == 0) return;
+
+        ApplyKnockbackToHits(_playerData.GroundPunchKnockbackAngle, _playerData.GroundPunchKnockbackForce, _core.Movement.FacingDirection);
+        ApplyDamageToHits(_playerData.GroundPunchDamage);
     }
 
-    private void CheckForHit()
+    public override void AnimationFinishedTrigger()
     {
-        Collider2D[] hits;
-        hits = Physics2D.OverlapBoxAll(_player.HitCheckOriginGroundPunch.position, _player.HitBoxSizeGroundPunch, 0f, _player.WhatIsEnemy);
+        base.AnimationFinishedTrigger();
+        _isAbilityDone = true;
+    }
 
-        if (hits.Length > 0)
-        {
-            foreach (Collider2D c in hits)
-            {
-                if (c.TryGetComponent<IDamageable>(out var hit)) hit.Damage(10f);
-            }
-        }
+    public override void Exit()
+    {
+        base.Exit();
+        _core.Movement.CanSetVelocity = true;
     }
 }

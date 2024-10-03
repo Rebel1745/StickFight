@@ -5,8 +5,9 @@ using UnityEngine;
 public class PlayerAbilityState : PlayerState
 {
     protected bool _isAbilityDone;
-
     protected bool _isGrounded;
+
+    protected Collider2D[] _hits;
 
     public PlayerAbilityState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animName) : base(player, stateMachine, playerData, animName)
     {
@@ -48,5 +49,48 @@ public class PlayerAbilityState : PlayerState
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+    }
+
+    public Collider2D[] GetHits(Vector2 origin, Vector2 size, LayerMask mask)
+    {
+        return Physics2D.OverlapBoxAll(origin, size, 0f, mask);
+    }
+
+    public void ApplyDamageToHits(float damage)
+    {
+        foreach (Collider2D c in _hits)
+        {
+            Debug.Log("Hit " + c.gameObject.name);
+
+            IDamageable damageable = c.gameObject.GetComponentInChildren<IDamageable>();
+
+            if (damageable != null)
+            {
+                damageable.Damage(damage);
+            }
+            else
+            {
+                Debug.Log("Damageable is null?!");
+            }
+        }
+    }
+
+    public void ApplyKnockbackToHits(Vector2 angle, float force, int direction)
+    {
+        foreach (Collider2D c in _hits)
+        {
+            Debug.Log("Knockback " + c.gameObject.name);
+
+            IKnockbackable knockbackable = c.gameObject.GetComponentInChildren<IKnockbackable>();
+
+            if (knockbackable != null)
+            {
+                knockbackable.Knockback(angle, force, direction);
+            }
+            else
+            {
+                Debug.Log("Knockbackable is null?!");
+            }
+        }
     }
 }

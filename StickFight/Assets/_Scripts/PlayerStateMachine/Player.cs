@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     public PlayerMoveState MoveState { get; private set; }
     public PlayerJumpState JumpState { get; private set; }
     public PlayerInAirState InAirState { get; private set; }
-    public PlayerLandState LandState { get; private set; }
+    //public PlayerLandState LandState { get; private set; }
     public PlayerWallSlideState WallSlideState { get; private set; }
     public PlayerWallGrabState WallGrabState { get; private set; }
     public PlayerWallClimbState WallClimbState { get; private set; }
@@ -72,7 +72,7 @@ public class Player : MonoBehaviour
         MoveState = new PlayerMoveState(this, StateMachine, _playerData, "Run");
         JumpState = new PlayerJumpState(this, StateMachine, _playerData, "Jump_up");
         InAirState = new PlayerInAirState(this, StateMachine, _playerData, "Jump_falling");
-        LandState = new PlayerLandState(this, StateMachine, _playerData, "Jump_landing");
+        //LandState = new PlayerLandState(this, StateMachine, _playerData, "Jump_landing");
         WallSlideState = new PlayerWallSlideState(this, StateMachine, _playerData, "Wall_slide");
         WallGrabState = new PlayerWallGrabState(this, StateMachine, _playerData, "Wall_cling");
         WallClimbState = new PlayerWallClimbState(this, StateMachine, _playerData, "Wall_climb");
@@ -87,7 +87,7 @@ public class Player : MonoBehaviour
         GroundPunchState = new PlayerGroundPunchState(this, StateMachine, _playerData, "Punch_1");
         AirPunchState = new PlayerAirPunchState(this, StateMachine, _playerData, "Air_punch");
         GroundKickState = new PlayerGroundKickState(this, StateMachine, _playerData, "Kick_1");
-        AirKickState = new PlayerAirKickState(this, StateMachine, _playerData, "Air_kick");
+        AirKickState = new PlayerAirKickState(this, StateMachine, _playerData, "Dash_kick");
     }
 
     private void Start()

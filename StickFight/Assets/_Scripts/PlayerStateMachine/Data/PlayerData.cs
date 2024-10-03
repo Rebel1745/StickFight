@@ -56,8 +56,14 @@ public class PlayerData : ScriptableObject
     [Header("Punch State")]
     public float PunchDuration = 0.1f;
     public float PostPunchKnockupPower = 1f;
+    public Vector2 GroundPunchKnockbackAngle = Vector2.one;
+    public float GroundPunchKnockbackForce = 10f;
+    public float GroundPunchDamage = 10f;
 
     [Header("Kick State")]
     public float KickDuration = 0.1f;
     public float PostKickKnockupPower = 5f;
+    public Vector2 GroundKickKnockbackAngle = Vector2.one;
+    public float GroundKickKnockbackForce = 10f;
+    public float GroundKickDamage = 20f;
 }

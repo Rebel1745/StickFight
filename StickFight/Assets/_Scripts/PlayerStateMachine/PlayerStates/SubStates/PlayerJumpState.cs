@@ -18,10 +18,16 @@ public class PlayerJumpState : PlayerAbilityState
         _core.Movement.SetVelocityY(_playerData.JumpVelocity);
         _core.Movement.SetGravityScale(_playerData.UpwardMovementGravityScale);
         _core.Movement.SetBoxCollider(_playerData.JumpingHitboxOffset, _playerData.JumpingHitboxSize);
-        _isAbilityDone = true;
+
         // as we are jumping straight away, decrease the number of jumps left
         DecreaseAmountOfJumpsLeft();
         _player.InAirState.SetIsJumping();
+    }
+
+    public override void AnimationFinishedTrigger()
+    {
+        base.AnimationFinishedTrigger();
+        _isAbilityDone = true;
     }
 
     public bool CanJump()

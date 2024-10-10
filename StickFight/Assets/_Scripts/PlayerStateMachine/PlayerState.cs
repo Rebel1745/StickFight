@@ -30,13 +30,14 @@ public class PlayerState
     {
         DoChecks();
 
-        _player.Anim.Play(_animName);
+        _player.Anim.SetBool(_animName, true);
         _startTime = Time.time;
         _isAnimationFinished = false;
         _isExitingState = false;
     }
     public virtual void Exit()
     {
+        _player.Anim.SetBool(_animName, false);
         _isExitingState = true;
     }
     public virtual void LogicUpdate() { }

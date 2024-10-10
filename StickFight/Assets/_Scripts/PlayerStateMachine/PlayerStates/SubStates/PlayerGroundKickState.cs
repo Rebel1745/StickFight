@@ -6,6 +6,9 @@ public class PlayerGroundKickState : PlayerAbilityState
 {
     public PlayerGroundKickState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animName) : base(player, stateMachine, playerData, animName)
     {
+        _isMultiAbility = playerData.IsKickMultiAbility;
+        _maxAbilityCount = playerData.MaxKickCount;
+        _abilityCountResetTime = playerData.MultiKickResetTime;
     }
 
     public override void Enter()
@@ -14,6 +17,7 @@ public class PlayerGroundKickState : PlayerAbilityState
         _core.Movement.SetVelocityZero();
         _core.Movement.CanSetVelocity = false;
         _player.InputHandler.UseKickInput();
+        _player.Anim.SetInteger("Kick_Count", _currentAbilityCount);
     }
 
     public override void AnimationTrigger()

@@ -70,24 +70,24 @@ public class Player : MonoBehaviour
 
         IdleState = new PlayerIdleState(this, StateMachine, _playerData, "Idle");
         MoveState = new PlayerMoveState(this, StateMachine, _playerData, "Run");
-        JumpState = new PlayerJumpState(this, StateMachine, _playerData, "Jump_up");
-        InAirState = new PlayerInAirState(this, StateMachine, _playerData, "Jump_falling");
+        JumpState = new PlayerJumpState(this, StateMachine, _playerData, "Jump");
+        InAirState = new PlayerInAirState(this, StateMachine, _playerData, "Falling");
         //LandState = new PlayerLandState(this, StateMachine, _playerData, "Jump_landing");
-        WallSlideState = new PlayerWallSlideState(this, StateMachine, _playerData, "Wall_slide");
-        WallGrabState = new PlayerWallGrabState(this, StateMachine, _playerData, "Wall_cling");
-        WallClimbState = new PlayerWallClimbState(this, StateMachine, _playerData, "Wall_climb");
-        WallJumpState = new PlayerWallJumpState(this, StateMachine, _playerData, "Jump_falling");
-        LedgeClimbState = new PlayerLedgeClimbState(this, StateMachine, _playerData, "Ledge_climb");
+        WallSlideState = new PlayerWallSlideState(this, StateMachine, _playerData, "Wall_Slide");
+        WallGrabState = new PlayerWallGrabState(this, StateMachine, _playerData, "Wall_Cling");
+        WallClimbState = new PlayerWallClimbState(this, StateMachine, _playerData, "Wall_Climb");
+        WallJumpState = new PlayerWallJumpState(this, StateMachine, _playerData, "Falling");
+        LedgeClimbState = new PlayerLedgeClimbState(this, StateMachine, _playerData, "Ledge_Climb");
         CeilingClingState = new PlayerCeilingClingState(this, StateMachine, _playerData, "Hanging");
-        CeilingMoveState = new PlayerCeilingMoveState(this, StateMachine, _playerData, "Hanging_move");
+        CeilingMoveState = new PlayerCeilingMoveState(this, StateMachine, _playerData, "Hanging_Move");
         DashStandardState = new PlayerDashStandardState(this, StateMachine, _playerData, "Dash");
-        DashPunchState = new PlayerDashPunchState(this, StateMachine, _playerData, "Dash_punch_air");
-        DashKickState = new PlayerDashKickState(this, StateMachine, _playerData, "Dash_kick");
-        DashSlideState = new PlayerDashSlideState(this, StateMachine, _playerData, "Dash_slide");
-        GroundPunchState = new PlayerGroundPunchState(this, StateMachine, _playerData, "Punch_1");
-        AirPunchState = new PlayerAirPunchState(this, StateMachine, _playerData, "Air_punch");
-        GroundKickState = new PlayerGroundKickState(this, StateMachine, _playerData, "Kick_1");
-        AirKickState = new PlayerAirKickState(this, StateMachine, _playerData, "Dash_kick");
+        DashPunchState = new PlayerDashPunchState(this, StateMachine, _playerData, "Dash_Punch");
+        DashKickState = new PlayerDashKickState(this, StateMachine, _playerData, "Dash_Kick");
+        DashSlideState = new PlayerDashSlideState(this, StateMachine, _playerData, "Dash_Slide");
+        GroundPunchState = new PlayerGroundPunchState(this, StateMachine, _playerData, "Punch");
+        AirPunchState = new PlayerAirPunchState(this, StateMachine, _playerData, "Air_Punch");
+        GroundKickState = new PlayerGroundKickState(this, StateMachine, _playerData, "Kick");
+        AirKickState = new PlayerAirKickState(this, StateMachine, _playerData, "Air_Kick");
     }
 
     private void Start()

@@ -7,6 +7,12 @@ public class PlayerAbilityState : PlayerState
     protected bool _isAbilityDone;
     protected bool _isGrounded;
 
+    protected bool _isMultiAbility = false;
+    protected int _maxAbilityCount; // number of different animations to loop through for an ability
+    protected int _currentAbilityCount;
+    protected float _abilityCountResetTime;
+    protected float _lastAbilityTime;
+
     protected Collider2D[] _hits;
 
     public PlayerAbilityState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animName) : base(player, stateMachine, playerData, animName)
@@ -25,10 +31,28 @@ public class PlayerAbilityState : PlayerState
         base.Enter();
 
         _isAbilityDone = false;
+
+        // check to see if we have a multi-animation ability, if so, reset if the time has elapsed
+        if (!_isMultiAbility) return;
+
+        // only reset the count if we have actually done an ability
+        if (_currentAbilityCount == 0) return;
+
+        if (Time.time >= _lastAbilityTime + _abilityCountResetTime)
+        {
+            ResetAbilityCount();
+        }
     }
 
     public override void Exit()
     {
+        if (_isMultiAbility)
+        {
+            // we have done an ability, increment the count and set the last ability time as the current time
+            _lastAbilityTime = Time.time;
+            IncrementAbilityCount();
+        }
+
         base.Exit();
     }
 
@@ -51,10 +75,7 @@ public class PlayerAbilityState : PlayerState
         base.PhysicsUpdate();
     }
 
-    public Collider2D[] GetHits(Vector2 origin, Vector2 size, LayerMask mask)
-    {
-        return Physics2D.OverlapBoxAll(origin, size, 0f, mask);
-    }
+    public Collider2D[] GetHits(Vector2 origin, Vector2 size, LayerMask mask) => Physics2D.OverlapBoxAll(origin, size, 0f, mask);
 
     public void ApplyDamageToHits(float damage)
     {
@@ -93,4 +114,8 @@ public class PlayerAbilityState : PlayerState
             }
         }
     }
+
+    public void ResetAbilityCount() => _currentAbilityCount = 0;
+
+    public void IncrementAbilityCount() => _currentAbilityCount = (_currentAbilityCount + 1) % _maxAbilityCount;
 }

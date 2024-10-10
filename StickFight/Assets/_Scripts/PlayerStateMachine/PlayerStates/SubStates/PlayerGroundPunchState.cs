@@ -6,6 +6,9 @@ public class PlayerGroundPunchState : PlayerAbilityState
 {
     public PlayerGroundPunchState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animName) : base(player, stateMachine, playerData, animName)
     {
+        _isMultiAbility = playerData.IsPunchMultiAbility;
+        _maxAbilityCount = playerData.MaxPunchCount;
+        _abilityCountResetTime = playerData.MultiPunchResetTime;
     }
 
     public override void Enter()
@@ -14,6 +17,7 @@ public class PlayerGroundPunchState : PlayerAbilityState
         _core.Movement.SetVelocityZero();
         _core.Movement.CanSetVelocity = false;
         _player.InputHandler.UsePunchInput();
+        _player.Anim.SetInteger("Punch_Count", _currentAbilityCount);
     }
 
     public override void AnimationTrigger()

@@ -42,5 +42,17 @@ MonoBehaviour:
   DashStandardHitboxSize: {x: 0.75, y: 1.2}
   PunchDuration: 0.5
   PostPunchKnockupPower: 1
+  GroundPunchKnockbackAngle: {x: 1, y: 1}
+  GroundPunchKnockbackForce: 10
+  GroundPunchDamage: 10
+  IsPunchMultiAbility: 1
+  MaxPunchCount: 2
+  MultiPunchResetTime: 0.5
   KickDuration: 0.5
   PostKickKnockupPower: 7
+  GroundKickKnockbackAngle: {x: 1, y: 1}
+  GroundKickKnockbackForce: 10
+  GroundKickDamage: 20
+  IsKickMultiAbility: 1
+  MaxKickCount: 2
+  MultiKickResetTime: 1

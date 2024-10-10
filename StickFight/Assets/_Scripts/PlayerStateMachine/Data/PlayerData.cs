@@ -59,6 +59,9 @@ public class PlayerData : ScriptableObject
     public Vector2 GroundPunchKnockbackAngle = Vector2.one;
     public float GroundPunchKnockbackForce = 10f;
     public float GroundPunchDamage = 10f;
+    public bool IsPunchMultiAbility = true;
+    public int MaxPunchCount = 2;
+    public float MultiPunchResetTime = 1f;
 
     [Header("Kick State")]
     public float KickDuration = 0.1f;
@@ -66,4 +69,7 @@ public class PlayerData : ScriptableObject
     public Vector2 GroundKickKnockbackAngle = Vector2.one;
     public float GroundKickKnockbackForce = 10f;
     public float GroundKickDamage = 20f;
+    public bool IsKickMultiAbility = true;
+    public int MaxKickCount = 2;
+    public float MultiKickResetTime = 1f;
 }

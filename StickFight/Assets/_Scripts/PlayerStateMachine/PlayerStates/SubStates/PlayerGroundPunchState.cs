@@ -27,7 +27,7 @@ public class PlayerGroundPunchState : PlayerAbilityState
 
         if (_hits.Length == 0) return;
 
-        ApplyKnockbackToHits(_playerData.GroundPunchKnockbackAngle, _playerData.GroundPunchKnockbackForce, _core.Movement.FacingDirection);
+        ApplyKnockbackToHits(_playerData.GroundPunchKnockbackAngle, _playerData.GroundPunchKnockbackForce, _core.Movement.FacingDirection, 0f, false);
         ApplyDamageToHits(_playerData.GroundPunchDamage);
     }
 

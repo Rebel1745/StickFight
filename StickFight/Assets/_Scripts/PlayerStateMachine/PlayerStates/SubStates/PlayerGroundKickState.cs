@@ -27,7 +27,7 @@ public class PlayerGroundKickState : PlayerAbilityState
 
         if (_hits.Length == 0) return;
 
-        ApplyKnockbackToHits(_playerData.GroundKickKnockbackAngle, _playerData.GroundKickKnockbackForce, _core.Movement.FacingDirection);
+        ApplyKnockbackToHits(_playerData.GroundKickKnockbackAngle, _playerData.GroundKickKnockbackForce, _core.Movement.FacingDirection, 0f, false);
         ApplyDamageToHits(_playerData.GroundKickDamage);
     }
 

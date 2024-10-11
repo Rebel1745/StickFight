@@ -6,7 +6,6 @@ public class PlayerDashSlideState : PlayerAbilityState
 {
     private float _remainingDashTime;
     private int _dashDirection;
-    private bool _checkForHit;
 
     public PlayerDashSlideState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animName) : base(player, stateMachine, playerData, animName)
     {
@@ -18,7 +17,6 @@ public class PlayerDashSlideState : PlayerAbilityState
         _player.InputHandler.UseKickInput();
         _remainingDashTime = _player.DashStandardState.RemainingDashTime;
         _dashDirection = _player.InputHandler.DashDirection;
-        _checkForHit = true;
     }
 
     public override void Exit()
@@ -31,31 +29,23 @@ public class PlayerDashSlideState : PlayerAbilityState
     {
         base.LogicUpdate();
 
-        if (_checkForHit)
-            CheckForHit();
+        _hits = GetHits(_player.HitCheckOriginDashKick.position, _player.HitBoxSizeDashKick, _player.WhatIsEnemy);
 
-        if (Time.time <= _startTime + _remainingDashTime)
+        if (_hits.Length > 0)
         {
-            _core.Movement.SetVelocityX((Vector2.right * _playerData.DashVelocity).x * _dashDirection);
+            _core.Movement.SetVelocityZero();
+            ApplyKnockbackToHits(_playerData.DashSlideKnockbackAngle, _playerData.DashSlideKnockbackForce, _core.Movement.FacingDirection, 0f, false);
+            ApplyDamageToHits(_playerData.DashSlideDamage);
+            _isAbilityDone = true;
         }
         else
         {
-            _isAbilityDone = true;
-        }
-    }
-
-    private void CheckForHit()
-    {
-        Collider2D[] hits;
-        hits = Physics2D.OverlapBoxAll(_player.HitCheckOriginDashKick.position, _player.HitBoxSizeDashKick, 0f, _player.WhatIsEnemy);
-
-        if (hits.Length > 0)
-        {
-            _checkForHit = false;
-            foreach (Collider2D c in hits)
+            if (Time.time <= _startTime + _remainingDashTime)
             {
-                c.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0f, _playerData.PostKickKnockupPower);
-                Debug.Log("Dash Slide Collided with " + c.name);
+                _core.Movement.SetVelocityX((Vector2.right * _playerData.DashVelocity).x * _dashDirection);
+            }
+            else
+            {
                 _isAbilityDone = true;
             }
         }

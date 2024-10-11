@@ -11,7 +11,7 @@ public class PlayerAirPunchState : PlayerAbilityState
     {
         base.Enter();
         _player.InputHandler.UsePunchInput();
-        CheckForHit();
+        //CheckForHit();
     }
 
     public override void Exit()

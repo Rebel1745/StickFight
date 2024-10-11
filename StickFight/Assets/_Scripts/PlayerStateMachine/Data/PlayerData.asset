@@ -56,3 +56,10 @@ MonoBehaviour:
   IsKickMultiAbility: 1
   MaxKickCount: 2
   MultiKickResetTime: 1
+  DashSlideDamage: 5
+  DashSlideKnockbackAngle: {x: 0.2, y: 2}
+  DashSlideKnockbackForce: 10
+  DashKickDamage: 5
+  DashKickKnockbackAngle: {x: 2, y: 0}
+  DashKickKnockbackForce: 30
+  DashKickDuration: 0.25

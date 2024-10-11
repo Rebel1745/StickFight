@@ -96,7 +96,7 @@ public class PlayerAbilityState : PlayerState
         }
     }
 
-    public void ApplyKnockbackToHits(Vector2 angle, float force, int direction)
+    public void ApplyKnockbackToHits(Vector2 angle, float force, int direction, float duration, bool ignoreGravity)
     {
         foreach (Collider2D c in _hits)
         {
@@ -106,7 +106,7 @@ public class PlayerAbilityState : PlayerState
 
             if (knockbackable != null)
             {
-                knockbackable.Knockback(angle, force, direction);
+                knockbackable.Knockback(angle, force, direction, duration, ignoreGravity);
             }
             else
             {

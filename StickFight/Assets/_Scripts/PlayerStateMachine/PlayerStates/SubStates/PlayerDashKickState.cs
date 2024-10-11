@@ -29,15 +29,25 @@ public class PlayerDashKickState : PlayerAbilityState
     {
         base.LogicUpdate();
 
-        CheckForHit();
+        _hits = GetHits(_player.HitCheckOriginDashKick.position, _player.HitBoxSizeDashKick, _player.WhatIsEnemy);
 
-        if (Time.time <= _startTime + _remainingDashTime)
+        if (_hits.Length > 0)
         {
-            _core.Movement.SetVelocityX((Vector2.right * _playerData.DashVelocity).x * _dashDirection);
+            _core.Movement.SetVelocityZero();
+            ApplyKnockbackToHits(_playerData.DashKickKnockbackAngle, _playerData.DashKickKnockbackForce, _core.Movement.FacingDirection, _playerData.DashKickDuration, true);
+            ApplyDamageToHits(_playerData.DashSlideDamage);
+            _isAbilityDone = true;
         }
         else
         {
-            _isAbilityDone = true;
+            if (Time.time <= _startTime + _remainingDashTime)
+            {
+                _core.Movement.SetVelocityX((Vector2.right * _playerData.DashVelocity).x * _dashDirection);
+            }
+            else
+            {
+                _isAbilityDone = true;
+            }
         }
     }
 

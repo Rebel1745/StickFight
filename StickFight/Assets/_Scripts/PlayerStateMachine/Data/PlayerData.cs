@@ -63,7 +63,7 @@ public class PlayerData : ScriptableObject
     public int MaxPunchCount = 2;
     public float MultiPunchResetTime = 1f;
 
-    [Header("Kick State")]
+    [Header("Ground Kick State")]
     public float KickDuration = 0.1f;
     public float PostKickKnockupPower = 5f;
     public Vector2 GroundKickKnockbackAngle = Vector2.one;
@@ -72,4 +72,15 @@ public class PlayerData : ScriptableObject
     public bool IsKickMultiAbility = true;
     public int MaxKickCount = 2;
     public float MultiKickResetTime = 1f;
+
+    [Header("Dash Slide State")]
+    public float DashSlideDamage = 5f;
+    public Vector2 DashSlideKnockbackAngle = new(0.2f, 2f);
+    public float DashSlideKnockbackForce = 10f;
+
+    [Header("Dash Kick State")]
+    public float DashKickDamage = 5f;
+    public Vector2 DashKickKnockbackAngle = new(2f, 0f);
+    public float DashKickKnockbackForce = 10f;
+    public float DashKickDuration = 1f;
 }

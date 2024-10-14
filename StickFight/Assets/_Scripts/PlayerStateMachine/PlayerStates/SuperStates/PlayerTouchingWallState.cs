@@ -55,7 +55,7 @@ public class PlayerTouchingWallState : PlayerState
         _grabInput = _player.InputHandler.GrabInput;
 
         // if we are jumping, perform a wall jump
-        if (_jumpInput)
+        if (_playerData.CanWallJump && _jumpInput)
         {
             _player.WallJumpState.DetermineWallJumpDirection(_isTouchingWall);
             _stateMachine.ChangeState(_player.WallJumpState);
@@ -70,12 +70,12 @@ public class PlayerTouchingWallState : PlayerState
         {
             _stateMachine.ChangeState(_player.InAirState);
         }
-        else if (_isTouchingWall && !_isTouchingLedge && _grabInput && _yInput == 1)
+        else if (_playerData.CanLedgeClimb && _isTouchingWall && !_isTouchingLedge && _grabInput && _yInput == 1)
         {
             _stateMachine.ChangeState(_player.LedgeClimbState);
         }
         // if we are touching the ceiling and moving away from the wall, move along the ceiling
-        else if (_isTouchingCeiling && _xInput != 0 && _xInput != _core.Movement.FacingDirection)
+        else if (_playerData.CanCeilingMove && _isTouchingCeiling && _xInput != 0 && _xInput != _core.Movement.FacingDirection)
         {
             _stateMachine.ChangeState(_player.CeilingMoveState);
         }

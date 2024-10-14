@@ -103,7 +103,7 @@ public class PlayerInAirState : PlayerState
         {
             _stateMachine.ChangeState(_player.LedgeClimbState);
         }*/
-        else if (_jumpInput && (_isTouchingWall || _isTouchingWallBack || _wallJumpCoyoteTime))
+        else if (_playerData.CanWallJump && _jumpInput && (_isTouchingWall || _isTouchingWallBack || _wallJumpCoyoteTime))
         {
             StopWallJumpCoyoteTime();
             _isTouchingWall = _core.CollisionSenses.WallFront;
@@ -114,27 +114,27 @@ public class PlayerInAirState : PlayerState
         {
             _stateMachine.ChangeState(_player.JumpState);
         }
-        else if (_isTouchingCeiling && _grabInput)
+        else if (_playerData.CanCeilingCling && _isTouchingCeiling && _grabInput)
         {
             _stateMachine.ChangeState(_player.CeilingClingState);
         }
-        else if (_isTouchingWall && _grabInput && _isTouchingLedge)
+        else if (_playerData.CanWallCling && _isTouchingWall && _grabInput && _isTouchingLedge)
         {
             _stateMachine.ChangeState(_player.WallGrabState);
         }
-        else if (_isTouchingWall && (_xInput == _core.Movement.FacingDirection || _xInput == 0) && _core.Movement.CurrentVelocity.y <= 0)
+        else if (_playerData.CanWallSlide && _isTouchingWall && (_xInput == _core.Movement.FacingDirection || _xInput == 0) && _core.Movement.CurrentVelocity.y <= 0)
         {
             _stateMachine.ChangeState(_player.WallSlideState);
         }
-        else if (_dashInput && _player.DashStandardState.CheckIfCanDash())
+        else if (_playerData.CanDash && _dashInput && _player.DashStandardState.CheckIfCanDash())
         {
             _stateMachine.ChangeState(_player.DashStandardState);
         }
-        else if (_punchInput)
+        else if (_playerData.CanAirPunch && _punchInput)
         {
             _stateMachine.ChangeState(_player.AirPunchState);
         }
-        else if (_kickInput)
+        else if (_playerData.CanAirKick && _kickInput)
         {
             _stateMachine.ChangeState(_player.AirKickState);
         }

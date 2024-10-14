@@ -11,6 +11,23 @@ public class PlayerData : ScriptableObject
     public Vector2 DefaultHitboxSize;
     public float DefaultLinearDrag = 0f;
 
+    [Header("Abilities")]
+    public bool CanDash = false;
+    public bool CanDashSlide = false;
+    public bool CanDashPunch = false;
+    public bool CanDashKick = false;
+    public bool CanPunch = false;
+    public bool CanAirPunch = false;
+    public bool CanKick = false;
+    public bool CanAirKick = false;
+    public bool CanWallJump = false;
+    public bool CanWallCling = false;
+    public bool CanWallClimb = false;
+    public bool CanWallSlide = false;
+    public bool CanCeilingCling = false;
+    public bool CanCeilingMove = false;
+    public bool CanLedgeClimb = false;
+
     [Header("Move State")]
     public float MovementVelocity = 10f;
 
@@ -53,8 +70,7 @@ public class PlayerData : ScriptableObject
     public Vector2 DashStandardHitboxOffset;
     public Vector2 DashStandardHitboxSize;
 
-    [Header("Punch State")]
-    public float PunchDuration = 0.1f;
+    [Header("Ground Punch State")]
     public float PostPunchKnockupPower = 1f;
     public Vector2 GroundPunchKnockbackAngle = Vector2.one;
     public float GroundPunchKnockbackForce = 10f;
@@ -63,8 +79,13 @@ public class PlayerData : ScriptableObject
     public int MaxPunchCount = 2;
     public float MultiPunchResetTime = 1f;
 
+    [Header("Air Punch State")]
+    public float AirPunchDuration = 0.1f;
+    public Vector2 AirPunchKnockbackAngle = new(0.1f, 0.1f);
+    public float AirPunchKnockbackForce = 10f;
+    public float AirPunchDamage = 10f;
+
     [Header("Ground Kick State")]
-    public float KickDuration = 0.1f;
     public float PostKickKnockupPower = 5f;
     public Vector2 GroundKickKnockbackAngle = Vector2.one;
     public float GroundKickKnockbackForce = 10f;
@@ -72,6 +93,12 @@ public class PlayerData : ScriptableObject
     public bool IsKickMultiAbility = true;
     public int MaxKickCount = 2;
     public float MultiKickResetTime = 1f;
+
+    [Header("Air Kick State")]
+    public float AirKickDuration = 0.1f;
+    public Vector2 AirKickKnockbackAngle = new(0.1f, 0.1f);
+    public float AirKickKnockbackForce = 10f;
+    public float AirKickDamage = 10f;
 
     [Header("Dash Slide State")]
     public float DashSlideDamage = 5f;

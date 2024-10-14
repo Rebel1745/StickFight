@@ -11,7 +11,6 @@ public class PlayerAirKickState : PlayerAbilityState
     {
         base.Enter();
         _player.InputHandler.UseKickInput();
-        CheckForHit();
     }
 
     public override void Exit()
@@ -23,26 +22,23 @@ public class PlayerAirKickState : PlayerAbilityState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (Time.time >= _startTime + _playerData.KickDuration)
+        if (Time.time >= _startTime + _playerData.AirKickDuration)
             _isAbilityDone = true;
+
+        CheckForHits();
     }
 
-    private void CheckForHit()
+    private void CheckForHits()
     {
-        Collider2D[] hits;
-        hits = Physics2D.OverlapBoxAll(_player.HitCheckOriginAirKick.position, _player.HitBoxSizeAirKick, 0f, _player.WhatIsEnemy);
+        _hits = GetHits(_player.HitCheckOriginAirPunch.position, _player.HitBoxSizeAirPunch, _player.WhatIsEnemy);
 
-        if (hits.Length > 0)
-        {
-            // if we hit something, suspend gravity so we can keep hitting
-            _core.Movement.SetVelocityZero();
-            _core.Movement.SetGravityScaleZero();
+        if (_hits.Length == 0) return;
 
-            foreach (Collider2D c in hits)
-            {
-                Debug.Log("Collided with " + c.name);
-                //_player.ResetGravityScale();
-            }
-        }
+        ApplyKnockbackToHits(_playerData.AirPunchKnockbackAngle, _playerData.AirPunchKnockbackForce, _core.Movement.FacingDirection, 0f, false);
+        ApplyDamageToHits(_playerData.AirPunchDamage);
+
+        // if we hit something, suspend gravity so we can keep hitting
+        _core.Movement.SetVelocityZero();
+        _core.Movement.SetGravityScaleZero();
     }
 }

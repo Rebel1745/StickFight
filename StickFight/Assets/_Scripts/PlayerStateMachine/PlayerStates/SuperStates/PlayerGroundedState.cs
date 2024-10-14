@@ -68,21 +68,21 @@ public class PlayerGroundedState : PlayerState
             _player.InAirState.StartCoyoteTime();
             _stateMachine.ChangeState(_player.InAirState);
         }
-        else if (_isTouchingWall && _grabInput && _isTouchingLedge)
+        else if (_playerData.CanWallCling && _isTouchingWall && _grabInput && _isTouchingLedge)
         {
             _stateMachine.ChangeState(_player.WallGrabState);
         }
         // TODO: when other types of dash are available change this
         // This should transition to the dash slide state
-        else if (_dashInput && _player.DashStandardState.CheckIfCanDash())
+        else if (_playerData.CanDash && _dashInput && _player.DashStandardState.CheckIfCanDash())
         {
             _stateMachine.ChangeState(_player.DashStandardState);
         }
-        else if (_punchInput)
+        else if (_playerData.CanPunch && _punchInput)
         {
             _stateMachine.ChangeState(_player.GroundPunchState);
         }
-        else if (_kickInput)
+        else if (_playerData.CanKick && _kickInput)
         {
             _stateMachine.ChangeState(_player.GroundKickState);
         }

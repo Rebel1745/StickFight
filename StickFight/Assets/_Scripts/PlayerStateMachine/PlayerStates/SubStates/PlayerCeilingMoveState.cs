@@ -52,12 +52,12 @@ public class PlayerCeilingMoveState : PlayerState
             _stateMachine.ChangeState(_player.InAirState);
         }
         // if we are touching a wall and holding down, start sliding down the wall
-        else if (_isTouchingWall && _yInput < -0.1f)
+        else if (_playerData.CanWallSlide && _isTouchingWall && _yInput < -0.1f)
         {
             _stateMachine.ChangeState(_player.WallSlideState);
         }
         // if we stop moving, cling to the ceiling
-        else if (_xInput == 0)
+        else if (_playerData.CanCeilingCling && _xInput == 0)
         {
             _stateMachine.ChangeState(_player.CeilingClingState);
         }

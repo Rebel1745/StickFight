@@ -16,6 +16,21 @@ MonoBehaviour:
   DefaultHitboxOffset: {x: 0, y: 0.87}
   DefaultHitboxSize: {x: 0.75, y: 1.77}
   DefaultLinearDrag: 0
+  CanDash: 1
+  CanDashSlide: 1
+  CanDashPunch: 1
+  CanDashKick: 1
+  CanPunch: 1
+  CanAirPunch: 1
+  CanKick: 1
+  CanAirKick: 1
+  CanWallJump: 1
+  CanWallCling: 1
+  CanWallClimb: 1
+  CanWallSlide: 1
+  CanCeilingCling: 1
+  CanCeilingMove: 1
+  CanLedgeClimb: 0
   MovementVelocity: 10
   JumpVelocity: 10
   AmountOfJumps: 1
@@ -40,7 +55,6 @@ MonoBehaviour:
   PostDashIdleLinearDrag: 10
   DashStandardHitboxOffset: {x: 0, y: 0.6}
   DashStandardHitboxSize: {x: 0.75, y: 1.2}
-  PunchDuration: 0.5
   PostPunchKnockupPower: 1
   GroundPunchKnockbackAngle: {x: 1, y: 1}
   GroundPunchKnockbackForce: 10
@@ -48,7 +62,10 @@ MonoBehaviour:
   IsPunchMultiAbility: 1
   MaxPunchCount: 2
   MultiPunchResetTime: 0.5
-  KickDuration: 0.5
+  AirPunchDuration: 0.25
+  AirPunchKnockbackAngle: {x: 0.1, y: 0.1}
+  AirPunchKnockbackForce: 10
+  AirPunchDamage: 10
   PostKickKnockupPower: 7
   GroundKickKnockbackAngle: {x: 1, y: 1}
   GroundKickKnockbackForce: 10
@@ -56,6 +73,10 @@ MonoBehaviour:
   IsKickMultiAbility: 1
   MaxKickCount: 2
   MultiKickResetTime: 1
+  AirKickDuration: 0.25
+  AirKickKnockbackAngle: {x: 0.1, y: 0.1}
+  AirKickKnockbackForce: 10
+  AirKickDamage: 10
   DashSlideDamage: 5
   DashSlideKnockbackAngle: {x: 0.2, y: 2}
   DashSlideKnockbackForce: 10

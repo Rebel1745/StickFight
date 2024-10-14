@@ -65,15 +65,15 @@ public class PlayerDashStandardState : PlayerAbilityState
             _isAbilityDone = true;
         }
 
-        if (_punchInput)
+        if (_playerData.CanDashPunch && _punchInput)
         {
             _stateMachine.ChangeState(_player.DashPunchState);
         }
         else if (_kickInput)
         {
-            if (_isGrounded)
+            if (_playerData.CanDashSlide && _isGrounded)
                 _stateMachine.ChangeState(_player.DashSlideState);
-            else
+            else if (_playerData.CanDashKick)
                 _stateMachine.ChangeState(_player.DashKickState);
         }
     }

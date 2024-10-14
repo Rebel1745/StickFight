@@ -11,7 +11,6 @@ public class PlayerAirPunchState : PlayerAbilityState
     {
         base.Enter();
         _player.InputHandler.UsePunchInput();
-        //CheckForHit();
     }
 
     public override void Exit()
@@ -23,27 +22,26 @@ public class PlayerAirPunchState : PlayerAbilityState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (Time.time >= _startTime + _playerData.PunchDuration)
+        if (Time.time >= _startTime + _playerData.AirPunchDuration)
             _isAbilityDone = true;
+
+        CheckForHits();
     }
 
-    private void CheckForHit()
+    private void CheckForHits()
     {
+        _hits = GetHits(_player.HitCheckOriginAirPunch.position, _player.HitBoxSizeAirPunch, _player.WhatIsEnemy);
+
+        if (_hits.Length == 0) return;
+
+        ApplyKnockbackToHits(_playerData.AirPunchKnockbackAngle, _playerData.AirPunchKnockbackForce, _core.Movement.FacingDirection, 0f, false);
+        ApplyDamageToHits(_playerData.AirPunchDamage);
+
         Collider2D[] hits;
         hits = Physics2D.OverlapBoxAll(_player.HitCheckOriginAirPunch.position, _player.HitBoxSizeAirPunch, 0f, _player.WhatIsEnemy);
 
-        if (hits.Length > 0)
-        {
-            // if we hit something, suspend gravity so we can keep hitting
-            _core.Movement.SetVelocityZero();
-            _core.Movement.SetGravityScaleZero();
-
-            foreach (Collider2D c in hits)
-            {
-                Debug.Log("Collided with " + c.name);
-                c.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0f, _playerData.PostPunchKnockupPower);
-                _core.Movement.SetVelocityY(_playerData.PostPunchKnockupPower);
-            }
-        }
+        // if we hit something, suspend gravity so we can keep hitting
+        _core.Movement.SetVelocityZero();
+        _core.Movement.SetGravityScaleZero();
     }
 }

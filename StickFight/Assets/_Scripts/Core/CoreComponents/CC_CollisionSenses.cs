@@ -55,18 +55,18 @@ public class CC_CollisionSenses : CoreComponent
 
     public bool WallFront
     {
-        get => Physics2D.Raycast(WallCheck.position, Vector2.right * _core.Movement.FacingDirection, WallCheckDistance, WhatIsGround);
+        get => Physics2D.Raycast(WallCheck.position, Vector2.right * Movement.FacingDirection, WallCheckDistance, WhatIsGround);
     }
 
     public bool WallBack
     {
-        get => Physics2D.Raycast(WallCheck.position, Vector2.right * -_core.Movement.FacingDirection, WallCheckDistance, WhatIsGround);
+        get => Physics2D.Raycast(WallCheck.position, Vector2.right * -Movement.FacingDirection, WallCheckDistance, WhatIsGround);
     }
 
     // LedgeHorizontal is the check for the player to check if there is a ledge in front of them to climb on
     public bool LedgeHorizontal
     {
-        get => Physics2D.Raycast(LedgeCheckHorizontal.position, Vector2.right * _core.Movement.FacingDirection, WallCheckDistance, WhatIsGround);
+        get => Physics2D.Raycast(LedgeCheckHorizontal.position, Vector2.right * Movement.FacingDirection, WallCheckDistance, WhatIsGround);
     }
 
     // LedgeVertical is the check for the enemy to check if there is a ledge below them so they don't walk off ledges

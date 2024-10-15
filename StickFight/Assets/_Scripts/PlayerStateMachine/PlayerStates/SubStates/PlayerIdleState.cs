@@ -17,16 +17,16 @@ public class PlayerIdleState : PlayerGroundedState
     {
         base.Enter();
         // stop all X movement as we are idle
-        _core.Movement.SetVelocityZero();
+        Movement?.SetVelocityZero();
         // Here we set linear drag becuase for some reason (no idea why) after a dash attack hits we keep moving forever
         // this value will be reset when we exit the idle state
-        _core.Movement.SetLinearDrag(_playerData.PostDashIdleLinearDrag);
+        Movement?.SetLinearDrag(_playerData.PostDashIdleLinearDrag);
     }
 
     public override void Exit()
     {
         base.Exit();
-        _core.Movement.ResetLinearDrag();
+        Movement?.ResetLinearDrag();
     }
 
     public override void LogicUpdate()

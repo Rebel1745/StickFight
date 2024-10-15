@@ -37,7 +37,7 @@ public class Enemy_LookForPlayerState : EnemyState
         _lastTurnTime = _startTime;
         _amountOfTurnsDone = 0;
 
-        _core.Movement.SetVelocityX(0f);
+        Movement?.SetVelocityX(0f);
     }
 
     public override void Exit()
@@ -51,14 +51,14 @@ public class Enemy_LookForPlayerState : EnemyState
 
         if (_turnImmediately)
         {
-            _core.Movement.Flip();
+            Movement?.Flip();
             _lastTurnTime = Time.time;
             _amountOfTurnsDone++;
             _turnImmediately = false;
         }
         else if (Time.time >= _lastTurnTime + _stateData.TimeBetweenTurns && !_isAllTurnsDone)
         {
-            _core.Movement.Flip();
+            Movement?.Flip();
             _lastTurnTime = Time.time;
             _amountOfTurnsDone++;
         }

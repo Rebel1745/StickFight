@@ -23,9 +23,12 @@ public class PlayerGroundedState : PlayerState
     {
         base.DoChecks();
 
-        _isGrounded = _core.CollisionSenses.Ground;
-        _isTouchingWall = _core.CollisionSenses.WallFront;
-        _isTouchingLedge = _core.CollisionSenses.LedgeHorizontal;
+        if (CollisionSenses)
+        {
+            _isGrounded = CollisionSenses.Ground;
+            _isTouchingWall = CollisionSenses.WallFront;
+            _isTouchingLedge = CollisionSenses.LedgeHorizontal;
+        }
     }
 
     public override void Enter()
@@ -35,7 +38,7 @@ public class PlayerGroundedState : PlayerState
         // we have touched the ground, we can now jump again
         _player.JumpState.ResetAmountOfJumpsLeft();
         _player.DashStandardState.ResetCanDash();
-        _core.Movement.ResetGravityScale();
+        if (Movement) Movement.ResetGravityScale();
     }
 
     public override void Exit()

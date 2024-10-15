@@ -29,7 +29,7 @@ public class Enemy_PlayerDetectedState : EnemyState
     {
         base.Enter();
 
-        _core.Movement.SetVelocityX(0);
+        Movement?.SetVelocityX(0);
         _performLongRangeAction = false;
     }
 

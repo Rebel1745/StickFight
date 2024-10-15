@@ -60,18 +60,4 @@ public class Enemy : MonoBehaviour
     {
         EnemyModelBones.transform.rotation = angle;
     }
-
-    public virtual void OnDrawGizmos()
-    {
-        if (Core)
-        {
-            Gizmos.DrawLine(Core.CollisionSenses.WallCheck.position, Core.CollisionSenses.WallCheck.position + (Vector3)(Vector2.right * Core.Movement.FacingDirection * Core.CollisionSenses.WallCheckDistance));
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(Core.CollisionSenses.GroundCheck.position, Core.CollisionSenses.GroundCheck.position + (Vector3)(Vector2.down * Core.CollisionSenses.GroundCheckRadius));
-            Gizmos.color = Color.green;
-            Gizmos.DrawLine(Core.CollisionSenses.LedgeCheckVertical.position, Core.CollisionSenses.LedgeCheckVertical.position + (Vector3)(Vector2.down * Core.CollisionSenses.GroundCheckRadius));
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(_playerCheck.position, _playerCheck.position + (Vector3)(Vector2.right * Core.Movement.FacingDirection * EnemyData.MinAgroDistance));
-        }
-    }
 }

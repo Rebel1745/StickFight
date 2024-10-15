@@ -30,10 +30,10 @@ public class Enemy_IdleState : EnemyState
 
         if (_flipBeforeIdle)
         {
-            _core.Movement.Flip();
+            Movement?.Flip();
         }
 
-        _core.Movement.SetVelocityX(0);
+        Movement?.SetVelocityX(0);
         _isIdleTimeOver = false;
         SetRandomIdleTime();
     }
@@ -44,7 +44,7 @@ public class Enemy_IdleState : EnemyState
 
         if (_flipAfterIdle)
         {
-            _core.Movement.Flip();
+            Movement?.Flip();
         }
     }
 

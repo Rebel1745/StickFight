@@ -22,7 +22,7 @@ public class PlayerDashPunchState : PlayerAbilityState
     public override void Exit()
     {
         base.Exit();
-        _core.Movement.ResetGravityScale();
+        Movement?.ResetGravityScale();
     }
 
     public override void LogicUpdate()
@@ -33,7 +33,7 @@ public class PlayerDashPunchState : PlayerAbilityState
 
         if (Time.time <= _startTime + _remainingDashTime)
         {
-            _core.Movement.SetVelocityX((Vector2.right * _playerData.DashVelocity).x * _dashDirection);
+            Movement?.SetVelocityX((Vector2.right * _playerData.DashVelocity).x * _dashDirection);
         }
         else
         {
@@ -49,8 +49,8 @@ public class PlayerDashPunchState : PlayerAbilityState
         if (hits.Length > 0)
         {
             // if we hit something, suspend gravity so we can keep hitting
-            _core.Movement.SetVelocityZero();
-            _core.Movement.SetGravityScaleZero();
+            Movement?.SetVelocityZero();
+            Movement?.SetGravityScaleZero();
 
             foreach (Collider2D c in hits)
             {

@@ -10,6 +10,13 @@ public class PlayerState
     protected PlayerStateMachine _stateMachine;
     protected PlayerData _playerData;
 
+    protected CC_Movement Movement { get => _movement ??= _core.GetCoreComponent<CC_Movement>(); }
+    private CC_Movement _movement;
+    protected CC_CollisionSenses CollisionSenses { get => _collisionSenses ??= _core.GetCoreComponent<CC_CollisionSenses>(); }
+    private CC_CollisionSenses _collisionSenses;
+    protected CC_Stats Stats { get => _stats ??= _core.GetCoreComponent<CC_Stats>(); }
+    private CC_Stats _stats;
+
     protected bool _isAnimationFinished;
     protected bool _isExitingState;
 

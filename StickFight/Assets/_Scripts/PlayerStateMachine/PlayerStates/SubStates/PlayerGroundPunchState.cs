@@ -14,8 +14,8 @@ public class PlayerGroundPunchState : PlayerAbilityState
     public override void Enter()
     {
         base.Enter();
-        _core.Movement.SetVelocityZero();
-        _core.Movement.CanSetVelocity = false;
+        Movement?.SetVelocityZero();
+        Movement.CanSetVelocity = false;
         _player.InputHandler.UsePunchInput();
         _player.Anim.SetInteger("Punch_Count", _currentAbilityCount);
     }
@@ -27,7 +27,7 @@ public class PlayerGroundPunchState : PlayerAbilityState
 
         if (_hits.Length == 0) return;
 
-        ApplyKnockbackToHits(_playerData.GroundPunchKnockbackAngle, _playerData.GroundPunchKnockbackForce, _core.Movement.FacingDirection, 0f, false);
+        ApplyKnockbackToHits(_playerData.GroundPunchKnockbackAngle, _playerData.GroundPunchKnockbackForce, Movement.FacingDirection, 0f, false);
         ApplyDamageToHits(_playerData.GroundPunchDamage);
     }
 
@@ -40,6 +40,6 @@ public class PlayerGroundPunchState : PlayerAbilityState
     public override void Exit()
     {
         base.Exit();
-        _core.Movement.CanSetVelocity = true;
+        Movement.CanSetVelocity = true;
     }
 }

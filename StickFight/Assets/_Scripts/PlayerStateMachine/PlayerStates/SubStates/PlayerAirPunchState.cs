@@ -16,7 +16,7 @@ public class PlayerAirPunchState : PlayerAbilityState
     public override void Exit()
     {
         base.Exit();
-        _core.Movement.ResetGravityScale();
+        Movement?.ResetGravityScale();
     }
 
     public override void LogicUpdate()
@@ -34,14 +34,14 @@ public class PlayerAirPunchState : PlayerAbilityState
 
         if (_hits.Length == 0) return;
 
-        ApplyKnockbackToHits(_playerData.AirPunchKnockbackAngle, _playerData.AirPunchKnockbackForce, _core.Movement.FacingDirection, 0f, false);
+        ApplyKnockbackToHits(_playerData.AirPunchKnockbackAngle, _playerData.AirPunchKnockbackForce, Movement.FacingDirection, 0f, false);
         ApplyDamageToHits(_playerData.AirPunchDamage);
 
         Collider2D[] hits;
         hits = Physics2D.OverlapBoxAll(_player.HitCheckOriginAirPunch.position, _player.HitBoxSizeAirPunch, 0f, _player.WhatIsEnemy);
 
         // if we hit something, suspend gravity so we can keep hitting
-        _core.Movement.SetVelocityZero();
-        _core.Movement.SetGravityScaleZero();
+        Movement?.SetVelocityZero();
+        Movement?.SetGravityScaleZero();
     }
 }

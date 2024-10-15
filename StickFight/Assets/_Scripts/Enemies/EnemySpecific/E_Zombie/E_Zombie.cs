@@ -40,11 +40,4 @@ public class E_Zombie : Enemy
     {
         StateMachine.Initialise(MoveState);
     }
-
-    public override void OnDrawGizmos()
-    {
-        base.OnDrawGizmos();
-
-        Gizmos.DrawWireSphere(_meleeAttackPosition.position, _meleeAttackStateData.AttackRadius);
-    }
 }

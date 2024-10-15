@@ -15,9 +15,9 @@ public class PlayerJumpState : PlayerAbilityState
     {
         base.Enter();
         _player.InputHandler.UseJumpInput();
-        _core.Movement.SetVelocityY(_playerData.JumpVelocity);
-        _core.Movement.SetGravityScale(_playerData.UpwardMovementGravityScale);
-        _core.Movement.SetBoxCollider(_playerData.JumpingHitboxOffset, _playerData.JumpingHitboxSize);
+        Movement?.SetVelocityY(_playerData.JumpVelocity);
+        Movement?.SetGravityScale(_playerData.UpwardMovementGravityScale);
+        Movement?.SetBoxCollider(_playerData.JumpingHitboxOffset, _playerData.JumpingHitboxSize);
 
         // as we are jumping straight away, decrease the number of jumps left
         DecreaseAmountOfJumpsLeft();

@@ -43,11 +43,14 @@ public class PlayerInAirState : PlayerState
         _oldIsTouchingWall = _isTouchingWall;
         _oldIsTouchingWallBack = _isTouchingWallBack;
 
-        _isGrounded = _core.CollisionSenses.Ground;
-        _isTouchingWall = _core.CollisionSenses.WallFront;
-        _isTouchingWallBack = _core.CollisionSenses.WallBack;
-        _isTouchingCeiling = _core.CollisionSenses.Ceiling;
-        _isTouchingLedge = _core.CollisionSenses.LedgeHorizontal;
+        if (CollisionSenses)
+        {
+            _isGrounded = CollisionSenses.Ground;
+            _isTouchingWall = CollisionSenses.WallFront;
+            _isTouchingWallBack = CollisionSenses.WallBack;
+            _isTouchingCeiling = CollisionSenses.Ceiling;
+            _isTouchingLedge = CollisionSenses.LedgeHorizontal;
+        }
 
         /*if (_isTouchingWall && !_isTouchingLedge)
         {
@@ -72,7 +75,7 @@ public class PlayerInAirState : PlayerState
         _isTouchingWallBack = false;
         _oldIsTouchingWall = false;
         _oldIsTouchingWallBack = false;
-        _core.Movement.SetBoxCollider(_playerData.DefaultHitboxOffset, _playerData.DefaultHitboxSize);
+        Movement?.SetBoxCollider(_playerData.DefaultHitboxOffset, _playerData.DefaultHitboxSize);
     }
 
     public override void LogicUpdate()
@@ -92,7 +95,7 @@ public class PlayerInAirState : PlayerState
 
         CheckJumpMultiplier();
 
-        if (_isGrounded && _core.Movement.CurrentVelocity.y < 0.01f)
+        if (_isGrounded && Movement?.CurrentVelocity.y < 0.01f)
         {
             // Changed from landed state to grounded state to stop the (perhaps) unnecessary landing animation playing
             //_stateMachine.ChangeState(_player.LandState);
@@ -106,7 +109,7 @@ public class PlayerInAirState : PlayerState
         else if (_playerData.CanWallJump && _jumpInput && (_isTouchingWall || _isTouchingWallBack || _wallJumpCoyoteTime))
         {
             StopWallJumpCoyoteTime();
-            _isTouchingWall = _core.CollisionSenses.WallFront;
+            _isTouchingWall = CollisionSenses.WallFront;
             _player.WallJumpState.DetermineWallJumpDirection(_isTouchingWall);
             _stateMachine.ChangeState(_player.WallJumpState);
         }
@@ -122,7 +125,7 @@ public class PlayerInAirState : PlayerState
         {
             _stateMachine.ChangeState(_player.WallGrabState);
         }
-        else if (_playerData.CanWallSlide && _isTouchingWall && (_xInput == _core.Movement.FacingDirection || _xInput == 0) && _core.Movement.CurrentVelocity.y <= 0)
+        else if (_playerData.CanWallSlide && _isTouchingWall && (_xInput == Movement.FacingDirection || _xInput == 0) && Movement.CurrentVelocity.y <= 0)
         {
             _stateMachine.ChangeState(_player.WallSlideState);
         }
@@ -140,8 +143,8 @@ public class PlayerInAirState : PlayerState
         }
         else
         {
-            _core.Movement.CheckIfShouldFlip(_xInput);
-            _core.Movement.SetVelocityX(_playerData.MovementVelocity * _xInput);
+            Movement?.CheckIfShouldFlip(_xInput);
+            Movement?.SetVelocityX(_playerData.MovementVelocity * _xInput);
         }
     }
 
@@ -184,18 +187,18 @@ public class PlayerInAirState : PlayerState
         {
             if (_jumpInputStop)
             {
-                _core.Movement.SetGravityScale(_playerData.DownwardMovementGravityScale);
+                Movement?.SetGravityScale(_playerData.DownwardMovementGravityScale);
                 _isJumping = false;
             }
-            else if (_core.Movement.CurrentVelocity.y <= 0f)
+            else if (Movement?.CurrentVelocity.y <= 0f)
             {
-                _core.Movement.SetGravityScale(_playerData.DownwardMovementGravityScale);
+                Movement?.SetGravityScale(_playerData.DownwardMovementGravityScale);
                 _isJumping = false;
             }
         }
         else
         {
-            _core.Movement.SetGravityScale(_playerData.DownwardMovementGravityScale);
+            Movement?.SetGravityScale(_playerData.DownwardMovementGravityScale);
         }
     }
 

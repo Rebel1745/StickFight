@@ -22,7 +22,7 @@ public class PlayerDashSlideState : PlayerAbilityState
     public override void Exit()
     {
         base.Exit();
-        _core.Movement.SetVelocityZero();
+        Movement?.SetVelocityZero();
     }
 
     public override void LogicUpdate()
@@ -33,8 +33,8 @@ public class PlayerDashSlideState : PlayerAbilityState
 
         if (_hits.Length > 0)
         {
-            _core.Movement.SetVelocityZero();
-            ApplyKnockbackToHits(_playerData.DashSlideKnockbackAngle, _playerData.DashSlideKnockbackForce, _core.Movement.FacingDirection, 0f, false);
+            Movement?.SetVelocityZero();
+            ApplyKnockbackToHits(_playerData.DashSlideKnockbackAngle, _playerData.DashSlideKnockbackForce, Movement.FacingDirection, 0f, false);
             ApplyDamageToHits(_playerData.DashSlideDamage);
             _isAbilityDone = true;
         }
@@ -42,7 +42,7 @@ public class PlayerDashSlideState : PlayerAbilityState
         {
             if (Time.time <= _startTime + _remainingDashTime)
             {
-                _core.Movement.SetVelocityX((Vector2.right * _playerData.DashVelocity).x * _dashDirection);
+                Movement?.SetVelocityX((Vector2.right * _playerData.DashVelocity).x * _dashDirection);
             }
             else
             {

@@ -18,20 +18,23 @@ public class PlayerCeilingMoveState : PlayerState
     {
         base.DoChecks();
 
-        _isTouchingCeiling = _core.CollisionSenses.Ceiling;
-        _isTouchingWall = _core.CollisionSenses.WallFront;
+        if (CollisionSenses)
+        {
+            _isTouchingCeiling = CollisionSenses.Ceiling;
+            _isTouchingWall = CollisionSenses.WallFront;
+        }
     }
 
     public override void Enter()
     {
         base.Enter();
-        _core.Movement.SetGravityScaleZero();
+        Movement?.SetGravityScaleZero();
     }
 
     public override void Exit()
     {
         base.Exit();
-        _core.Movement.ResetGravityScale();
+        Movement?.ResetGravityScale();
     }
 
     public override void LogicUpdate()
@@ -42,9 +45,9 @@ public class PlayerCeilingMoveState : PlayerState
         _yInput = _player.InputHandler.NormInputY;
         _grabInput = _player.InputHandler.GrabInput;
 
-        _core.Movement.CheckIfShouldFlip(_xInput);
+        Movement?.CheckIfShouldFlip(_xInput);
 
-        _core.Movement.SetVelocityX(_xInput * _playerData.WallClimbVelocity);
+        Movement?.SetVelocityX(_xInput * _playerData.WallClimbVelocity);
 
         // if we let go of grab, we are in the air
         if (!_grabInput || !_isTouchingCeiling)

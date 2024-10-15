@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class EnemyState
 {
+    protected CC_Movement Movement { get => _movement ??= _core.GetCoreComponent<CC_Movement>(); }
+    private CC_Movement _movement;
+    protected CC_CollisionSenses CollisionSenses { get => _collisionSenses ??= _core.GetCoreComponent<CC_CollisionSenses>(); }
+    private CC_CollisionSenses _collisionSenses;
+
     protected EnemyStateMachine _stateMachine;
     protected Enemy _enemy;
     protected Core _core;

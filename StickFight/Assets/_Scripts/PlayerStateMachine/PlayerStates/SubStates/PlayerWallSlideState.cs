@@ -16,7 +16,7 @@ public class PlayerWallSlideState : PlayerTouchingWallState
         // this removes unnecessessary(sp!?) indentation
         if (!_isExitingState)
         {
-            _core.Movement.SetVelocityY(-_playerData.WallSlideVelocity);
+            Movement?.SetVelocityY(-_playerData.WallSlideVelocity);
             if (_playerData.CanWallCling && _grabInput && _yInput == 0)
             {
                 _stateMachine.ChangeState(_player.WallGrabState);

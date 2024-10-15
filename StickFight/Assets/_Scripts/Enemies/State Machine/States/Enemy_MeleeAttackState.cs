@@ -61,7 +61,7 @@ public class Enemy_MeleeAttackState : Enemy_AttackState
 
             if (knockbackable != null)
             {
-                knockbackable.Knockback(_stateData.KnockbackAngle, _stateData.KnockbackStrength, _core.Movement.FacingDirection, 0f, false);
+                knockbackable.Knockback(_stateData.KnockbackAngle, _stateData.KnockbackStrength, Movement.FacingDirection, 0f, false);
             }
             else
             {

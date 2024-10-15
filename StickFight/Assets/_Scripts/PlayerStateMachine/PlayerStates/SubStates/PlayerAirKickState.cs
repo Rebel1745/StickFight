@@ -16,7 +16,7 @@ public class PlayerAirKickState : PlayerAbilityState
     public override void Exit()
     {
         base.Exit();
-        _core.Movement.ResetGravityScale();
+        Movement?.ResetGravityScale();
     }
 
     public override void LogicUpdate()
@@ -34,11 +34,11 @@ public class PlayerAirKickState : PlayerAbilityState
 
         if (_hits.Length == 0) return;
 
-        ApplyKnockbackToHits(_playerData.AirPunchKnockbackAngle, _playerData.AirPunchKnockbackForce, _core.Movement.FacingDirection, 0f, false);
+        ApplyKnockbackToHits(_playerData.AirPunchKnockbackAngle, _playerData.AirPunchKnockbackForce, Movement.FacingDirection, 0f, false);
         ApplyDamageToHits(_playerData.AirPunchDamage);
 
         // if we hit something, suspend gravity so we can keep hitting
-        _core.Movement.SetVelocityZero();
-        _core.Movement.SetGravityScaleZero();
+        Movement?.SetVelocityZero();
+        Movement?.SetGravityScaleZero();
     }
 }

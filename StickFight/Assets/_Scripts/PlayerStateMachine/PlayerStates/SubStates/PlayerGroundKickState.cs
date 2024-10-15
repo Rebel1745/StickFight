@@ -14,8 +14,8 @@ public class PlayerGroundKickState : PlayerAbilityState
     public override void Enter()
     {
         base.Enter();
-        _core.Movement.SetVelocityZero();
-        _core.Movement.CanSetVelocity = false;
+        Movement?.SetVelocityZero();
+        Movement.CanSetVelocity = false;
         _player.InputHandler.UseKickInput();
         _player.Anim.SetInteger("Kick_Count", _currentAbilityCount);
     }
@@ -27,7 +27,7 @@ public class PlayerGroundKickState : PlayerAbilityState
 
         if (_hits.Length == 0) return;
 
-        ApplyKnockbackToHits(_playerData.GroundKickKnockbackAngle, _playerData.GroundKickKnockbackForce, _core.Movement.FacingDirection, 0f, false);
+        ApplyKnockbackToHits(_playerData.GroundKickKnockbackAngle, _playerData.GroundKickKnockbackForce, Movement.FacingDirection, 0f, false);
         ApplyDamageToHits(_playerData.GroundKickDamage);
     }
 
@@ -40,6 +40,6 @@ public class PlayerGroundKickState : PlayerAbilityState
     public override void Exit()
     {
         base.Exit();
-        _core.Movement.CanSetVelocity = true;
+        Movement.CanSetVelocity = true;
     }
 }

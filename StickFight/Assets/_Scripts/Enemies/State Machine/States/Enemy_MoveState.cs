@@ -18,15 +18,18 @@ public class Enemy_MoveState : EnemyState
     public override void DoChecks()
     {
         base.DoChecks();
-        _isDetectingGround = _core.CollisionSenses.LedgeVertical;
-        _isDetectingWall = _core.CollisionSenses.WallFront;
+        if (CollisionSenses)
+        {
+            _isDetectingGround = CollisionSenses.LedgeVertical;
+            _isDetectingWall = CollisionSenses.WallFront;
+        }
         _isPlayerInMinAgroRange = _enemy.CheckPlayerInMinAgroRange();
     }
 
     public override void Enter()
     {
         base.Enter();
-        _core.Movement.SetVelocityX(_stateData.MovementSpeed * _core.Movement.FacingDirection);
+        Movement.SetVelocityX(_stateData.MovementSpeed * Movement.FacingDirection);
     }
 
     public override void LogicUpate()

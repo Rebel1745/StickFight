@@ -36,6 +36,7 @@ public class PlayerDashSlideState : PlayerAbilityState
             Movement?.SetVelocityZero();
             ApplyKnockbackToHits(_playerData.DashSlideKnockbackAngle, _playerData.DashSlideKnockbackForce, Movement.FacingDirection, 0f, false);
             ApplyDamageToHits(_playerData.DashSlideDamage);
+            _canDamage = false;
             _isAbilityDone = true;
         }
         else

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CC_Combat : CoreComponent, IDamageable, IKnockbackable
 {
+    [SerializeField] private GameObject _damageParticles;
+    [SerializeField] private Transform _damageParticleSpawnPoint;
+
     private bool _isKnockbackActive;
     private bool _ignoreGravity;
     private float _knockbackStartTime;
@@ -17,6 +20,7 @@ public class CC_Combat : CoreComponent, IDamageable, IKnockbackable
     public void Damage(float amount)
     {
         Stats?.DecreaseHealth(amount);
+        ParticleManager?.StartParticlesWithRandomRotation(_damageParticles, _damageParticleSpawnPoint.position);
     }
 
     public void Knockback(Vector2 angle, float strength, int direction, float duration, bool ignoreGravity)

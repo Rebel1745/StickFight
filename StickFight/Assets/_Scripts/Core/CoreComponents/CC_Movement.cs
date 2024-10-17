@@ -5,6 +5,9 @@ using UnityEngine;
 // TODO: Move the box collider stuff to the collision senses script and setup  _playerData variables
 public class CC_Movement : CoreComponent
 {
+    [SerializeField] private GameObject _footstepParticles;
+    [SerializeField] private Transform _footstepParticleSpawnPoint;
+
     public Rigidbody2D RB { get; private set; }
     public BoxCollider2D Col { get; private set; }
 
@@ -110,5 +113,10 @@ public class CC_Movement : CoreComponent
         {
             Flip();
         }
+    }
+
+    public void PlayFootstepParticles()
+    {
+        ParticleManager?.StartParticles(_footstepParticles, _footstepParticleSpawnPoint.position, Quaternion.identity);
     }
 }

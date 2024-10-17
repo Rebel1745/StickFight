@@ -36,9 +36,7 @@ public class PlayerAirPunchState : PlayerAbilityState
 
         ApplyKnockbackToHits(_playerData.AirPunchKnockbackAngle, _playerData.AirPunchKnockbackForce, Movement.FacingDirection, 0f, false);
         ApplyDamageToHits(_playerData.AirPunchDamage);
-
-        Collider2D[] hits;
-        hits = Physics2D.OverlapBoxAll(_player.HitCheckOriginAirPunch.position, _player.HitBoxSizeAirPunch, 0f, _player.WhatIsEnemy);
+        _canDamage = false;
 
         // if we hit something, suspend gravity so we can keep hitting
         Movement?.SetVelocityZero();

@@ -40,8 +40,11 @@ public class PlayerMoveState : PlayerGroundedState
         }
     }
 
-    public override void PhysicsUpdate()
+    public override void AnimationTrigger()
     {
-        base.PhysicsUpdate();
+        base.AnimationTrigger();
+
+        // play the footstep particle
+        Movement?.PlayFootstepParticles();
     }
 }

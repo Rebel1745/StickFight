@@ -12,6 +12,8 @@ public class CoreComponent : MonoBehaviour, ILogicUpdate
     private CC_CollisionSenses _collisionSenses;
     protected CC_Stats Stats { get => _stats ??= _core.GetCoreComponent<CC_Stats>(); }
     private CC_Stats _stats;
+    protected CC_ParticleManager ParticleManager { get => _particleManager ??= _core.GetCoreComponent<CC_ParticleManager>(); }
+    private CC_ParticleManager _particleManager;
 
     protected virtual void Awake()
     {

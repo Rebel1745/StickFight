@@ -8,6 +8,7 @@ public class PlayerAbilityState : PlayerState
     protected bool _isGrounded;
 
     protected bool _isMultiAbility = false;
+    protected bool _canDamage;
     protected int _maxAbilityCount; // number of different animations to loop through for an ability
     protected int _currentAbilityCount;
     protected float _abilityCountResetTime;
@@ -32,6 +33,7 @@ public class PlayerAbilityState : PlayerState
         base.Enter();
 
         _isAbilityDone = false;
+        _canDamage = true;
 
         // check to see if we have a multi-animation ability, if so, reset if the time has elapsed
         if (!_isMultiAbility) return;
@@ -82,8 +84,6 @@ public class PlayerAbilityState : PlayerState
     {
         foreach (Collider2D c in _hits)
         {
-            Debug.Log("Hit " + c.gameObject.name);
-
             IDamageable damageable = c.gameObject.GetComponentInChildren<IDamageable>();
 
             if (damageable != null)
@@ -101,8 +101,6 @@ public class PlayerAbilityState : PlayerState
     {
         foreach (Collider2D c in _hits)
         {
-            Debug.Log("Knockback " + c.gameObject.name);
-
             IKnockbackable knockbackable = c.gameObject.GetComponentInChildren<IKnockbackable>();
 
             if (knockbackable != null)

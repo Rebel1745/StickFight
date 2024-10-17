@@ -25,7 +25,8 @@ public class PlayerAirKickState : PlayerAbilityState
         if (Time.time >= _startTime + _playerData.AirKickDuration)
             _isAbilityDone = true;
 
-        CheckForHits();
+        if (_canDamage)
+            CheckForHits();
     }
 
     private void CheckForHits()
@@ -36,6 +37,7 @@ public class PlayerAirKickState : PlayerAbilityState
 
         ApplyKnockbackToHits(_playerData.AirPunchKnockbackAngle, _playerData.AirPunchKnockbackForce, Movement.FacingDirection, 0f, false);
         ApplyDamageToHits(_playerData.AirPunchDamage);
+        _canDamage = false;
 
         // if we hit something, suspend gravity so we can keep hitting
         Movement?.SetVelocityZero();

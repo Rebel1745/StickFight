@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CC_Stats : CoreComponent
 {
+    public event Action OnHealthZero;
+
     [SerializeField] private float _maxHealth;
     private float _currentHealth;
 
@@ -21,8 +24,7 @@ public class CC_Stats : CoreComponent
         if (_currentHealth <= 0f)
         {
             _currentHealth = 0f;
-            // TODO: dead
-            Debug.Log("Health is zero!");
+            OnHealthZero?.Invoke();
         }
     }
 

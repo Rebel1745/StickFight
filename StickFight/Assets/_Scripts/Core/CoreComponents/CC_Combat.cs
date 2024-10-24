@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CC_Combat : CoreComponent, IDamageable, IKnockbackable
+public class CC_Combat : CoreComponent, IDamageable
 {
     [SerializeField] private GameObject _damageParticles;
     [SerializeField] private Transform _damageParticleSpawnPoint;

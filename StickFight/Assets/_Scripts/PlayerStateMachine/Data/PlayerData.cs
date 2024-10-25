@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.Utilities;
 
 [CreateAssetMenu(fileName = "New Player Data", menuName = "Data/PlayerData/BaseData")]
 public class PlayerData : ScriptableObject
@@ -71,43 +72,28 @@ public class PlayerData : ScriptableObject
     public Vector2 DashStandardHitboxSize;
 
     [Header("Ground Punch State")]
-    public float PostPunchKnockupPower = 1f;
-    public Vector2 GroundPunchKnockbackAngle = Vector2.one;
-    public float GroundPunchKnockbackForce = 10f;
-    public float GroundPunchDamage = 10f;
+    public AttackDetails GroundPunchAttackDetails;
     public bool IsPunchMultiAbility = true;
     public int MaxPunchCount = 2;
     public float MultiPunchResetTime = 1f;
 
     [Header("Air Punch State")]
+    public AttackDetails AirPunchAttackDetails;
     public float AirPunchDuration = 0.1f;
-    public Vector2 AirPunchKnockbackAngle = new(0.1f, 0.1f);
-    public float AirPunchKnockbackForce = 10f;
-    public float AirPunchDamage = 10f;
 
     [Header("Ground Kick State")]
-    public float PostKickKnockupPower = 5f;
-    public Vector2 GroundKickKnockbackAngle = Vector2.one;
-    public float GroundKickKnockbackForce = 10f;
-    public float GroundKickDamage = 20f;
+    public AttackDetails GroundKickAttackDetails;
     public bool IsKickMultiAbility = true;
     public int MaxKickCount = 2;
     public float MultiKickResetTime = 1f;
 
     [Header("Air Kick State")]
+    public AttackDetails AirKickAttackDetails;
     public float AirKickDuration = 0.1f;
-    public Vector2 AirKickKnockbackAngle = new(0.1f, 0.1f);
-    public float AirKickKnockbackForce = 10f;
-    public float AirKickDamage = 10f;
 
     [Header("Dash Slide State")]
-    public float DashSlideDamage = 5f;
-    public Vector2 DashSlideKnockbackAngle = new(0.2f, 2f);
-    public float DashSlideKnockbackForce = 10f;
+    public AttackDetails DashSlideAttackDetails;
 
     [Header("Dash Kick State")]
-    public float DashKickDamage = 5f;
-    public Vector2 DashKickKnockbackAngle = new(2f, 0f);
-    public float DashKickKnockbackForce = 10f;
-    public float DashKickDuration = 1f;
+    public AttackDetails DashKickAttackDetails;
 }

@@ -54,7 +54,6 @@ public class PlayerKnockedBackState : PlayerState
     {
         base.Exit();
 
-        _returnState.SetKnockedBack(false);
         Movement.CanSetVelocity = true;
         Movement.SetVelocityZero();
         if (_ignoreGravity) Movement.ResetGravityScale();

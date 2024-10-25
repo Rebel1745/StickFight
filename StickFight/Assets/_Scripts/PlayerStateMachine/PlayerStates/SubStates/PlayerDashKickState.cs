@@ -34,8 +34,8 @@ public class PlayerDashKickState : PlayerAbilityState
         if (_hits.Length > 0)
         {
             Movement?.SetVelocityZero();
-            ApplyKnockbackToHits(_playerData.DashKickKnockbackAngle, _playerData.DashKickKnockbackForce, Movement.FacingDirection, _playerData.DashKickDuration, true);
-            ApplyDamageToHits(_playerData.DashSlideDamage);
+            //ApplyKnockbackToHits(_playerData.DashKickKnockbackAngle, _playerData.DashKickKnockbackForce, Movement.FacingDirection, _playerData.DashKickDuration, true);
+            ApplyDamageToHits(_playerData.DashSlideAttackDetails);
             _isAbilityDone = true;
         }
         else

@@ -55,32 +55,53 @@ MonoBehaviour:
   PostDashIdleLinearDrag: 10
   DashStandardHitboxOffset: {x: 0, y: 0.6}
   DashStandardHitboxSize: {x: 0.75, y: 1.2}
-  PostPunchKnockupPower: 1
-  GroundPunchKnockbackAngle: {x: 1, y: 1}
-  GroundPunchKnockbackForce: 10
-  GroundPunchDamage: 10
+  GroundPunchAttackDetails:
+    name: Ground Punch
+    AttackRadius: 0
+    AttackDamage: 10
+    KnockbackAngle: {x: 1, y: 0}
+    KnockbackStrength: 10
+    DisableGravity: 0
   IsPunchMultiAbility: 1
   MaxPunchCount: 2
   MultiPunchResetTime: 0.5
+  AirPunchAttackDetails:
+    name: Air Punch
+    AttackRadius: 0
+    AttackDamage: 10
+    KnockbackAngle: {x: 0.1, y: 0.1}
+    KnockbackStrength: 10
+    DisableGravity: 0
   AirPunchDuration: 0.25
-  AirPunchKnockbackAngle: {x: 0.1, y: 0.1}
-  AirPunchKnockbackForce: 10
-  AirPunchDamage: 10
-  PostKickKnockupPower: 7
-  GroundKickKnockbackAngle: {x: 1, y: 1}
-  GroundKickKnockbackForce: 10
-  GroundKickDamage: 20
+  GroundKickAttackDetails:
+    name: Ground Kick
+    AttackRadius: 0
+    AttackDamage: 20
+    KnockbackAngle: {x: 1, y: 0}
+    KnockbackStrength: 10
+    DisableGravity: 0
   IsKickMultiAbility: 1
   MaxKickCount: 2
   MultiKickResetTime: 1
+  AirKickAttackDetails:
+    name: 
+    AttackRadius: 0
+    AttackDamage: 20
+    KnockbackAngle: {x: 3, y: 0}
+    KnockbackStrength: 10
+    DisableGravity: 1
   AirKickDuration: 0.25
-  AirKickKnockbackAngle: {x: 0.1, y: 0.1}
-  AirKickKnockbackForce: 10
-  AirKickDamage: 10
-  DashSlideDamage: 5
-  DashSlideKnockbackAngle: {x: 0.2, y: 2}
-  DashSlideKnockbackForce: 10
-  DashKickDamage: 5
-  DashKickKnockbackAngle: {x: 2, y: 0}
-  DashKickKnockbackForce: 30
-  DashKickDuration: 0.25
+  DashSlideAttackDetails:
+    name: Dash Slide
+    AttackRadius: 0
+    AttackDamage: 5
+    KnockbackAngle: {x: 0.2, y: 2}
+    KnockbackStrength: 10
+    DisableGravity: 0
+  DashKickAttackDetails:
+    name: 
+    AttackRadius: 0
+    AttackDamage: 30
+    KnockbackAngle: {x: 2, y: 0}
+    KnockbackStrength: 30
+    DisableGravity: 0

@@ -35,8 +35,8 @@ public class PlayerAirKickState : PlayerAbilityState
 
         if (_hits.Length == 0) return;
 
-        ApplyKnockbackToHits(_playerData.AirPunchKnockbackAngle, _playerData.AirPunchKnockbackForce, Movement.FacingDirection, 0f, false);
-        ApplyDamageToHits(_playerData.AirPunchDamage);
+        //ApplyKnockbackToHits(_playerData.AirPunchKnockbackAngle, _playerData.AirPunchKnockbackForce, Movement.FacingDirection, 0f, false);
+        ApplyDamageToHits(_playerData.AirPunchAttackDetails);
         _canDamage = false;
 
         // if we hit something, suspend gravity so we can keep hitting

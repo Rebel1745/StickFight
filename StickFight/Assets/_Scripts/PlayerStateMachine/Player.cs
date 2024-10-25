@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using StickFight;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IKnockbackable
+public class Player : MonoBehaviour, IDamageable
 {
     #region State Variables
     public PlayerStateMachine StateMachine { get; private set; }
@@ -28,7 +28,7 @@ public class Player : MonoBehaviour, IKnockbackable
     public PlayerAirPunchState AirPunchState { get; private set; }
     public PlayerGroundKickState GroundKickState { get; private set; }
     public PlayerAirKickState AirKickState { get; private set; }
-    public PlayerKnockedBackState KnockedBackState { get; private set; }
+    public PlayerDamagedState DamagedState { get; private set; }
     #endregion
 
     #region Components
@@ -89,7 +89,7 @@ public class Player : MonoBehaviour, IKnockbackable
         AirPunchState = new PlayerAirPunchState(this, StateMachine, _playerData, "Air_Punch");
         GroundKickState = new PlayerGroundKickState(this, StateMachine, _playerData, "Kick");
         AirKickState = new PlayerAirKickState(this, StateMachine, _playerData, "Air_Kick");
-        KnockedBackState = new PlayerKnockedBackState(this, StateMachine, _playerData, "Dash_Punch");
+        DamagedState = new PlayerDamagedState(this, StateMachine, _playerData, "Damaged");
     }
 
     private void Start()
@@ -122,10 +122,16 @@ public class Player : MonoBehaviour, IKnockbackable
 
     #region Global Set Functions
     // these functions set the flags for 'interrupter flags' i.e. damage, knockback, and knockup
-    public void Knockback(Vector2 angle, float strength, int direction, float duration, bool ignoreGravity)
+    /*public void Knockback(Vector2 angle, float strength, int direction, float duration, bool ignoreGravity)
     {
         StateMachine.CurrentState.SetKnockedBack(true);
         KnockedBackState.SetKnockbackVariables(StateMachine.CurrentState, angle, strength, direction, duration, ignoreGravity);
+    }*/
+
+    public void Damage(AttackDetails attackDetails)
+    {
+        DamagedState.SetDamagedVariables(attackDetails, StateMachine.CurrentState);
+        StateMachine.CurrentState.SetDamaged(true);
     }
     #endregion
 

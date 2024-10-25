@@ -80,7 +80,7 @@ public class PlayerAbilityState : PlayerState
 
     public Collider2D[] GetHits(Vector2 origin, Vector2 size, LayerMask mask) => Physics2D.OverlapBoxAll(origin, size, 0f, mask);
 
-    public void ApplyDamageToHits(float damage)
+    public void ApplyDamageToHits(AttackDetails attackDetails)
     {
         foreach (Collider2D c in _hits)
         {
@@ -88,7 +88,7 @@ public class PlayerAbilityState : PlayerState
 
             if (damageable != null)
             {
-                damageable.Damage(damage);
+                damageable.Damage(attackDetails);
             }
             else
             {
@@ -97,7 +97,7 @@ public class PlayerAbilityState : PlayerState
         }
     }
 
-    public void ApplyKnockbackToHits(Vector2 angle, float force, int direction, float duration, bool ignoreGravity)
+    /*public void ApplyKnockbackToHits(Vector2 angle, float force, int direction, float duration, bool ignoreGravity)
     {
         foreach (Collider2D c in _hits)
         {
@@ -112,7 +112,7 @@ public class PlayerAbilityState : PlayerState
                 Debug.Log("Knockbackable is null?!");
             }
         }
-    }
+    }*/
 
     public void ResetAbilityCount() => _currentAbilityCount = 0;
 

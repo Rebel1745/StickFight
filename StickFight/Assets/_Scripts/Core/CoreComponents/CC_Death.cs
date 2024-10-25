@@ -18,11 +18,11 @@ public class CC_Death : CoreComponent
 
     private void OnEnable()
     {
-        Stats.OnHealthZero += Die;
+        //Stats.OnHealthZero += Die;
     }
 
     private void OnDisable()
     {
-        Stats.OnHealthZero -= Die;
+        //Stats.OnHealthZero -= Die;
     }
 }

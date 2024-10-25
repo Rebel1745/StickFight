@@ -6,8 +6,6 @@ public class Enemy_MeleeAttackState : Enemy_AttackState
 {
     protected D_MeleeAttackState _stateData;
 
-    protected AttackDetails _attackDetails;
-
     public Enemy_MeleeAttackState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName, Transform attackPosition, D_MeleeAttackState stateData) : base(enemy, stateMachine, animBoolName, attackPosition)
     {
         _stateData = stateData;
@@ -21,11 +19,6 @@ public class Enemy_MeleeAttackState : Enemy_AttackState
     public override void Enter()
     {
         base.Enter();
-        _attackDetails = new AttackDetails
-        {
-            DamageAmount = _stateData.AttackDamage,
-            Position = _enemy.transform.position
-        };
     }
 
     public override void Exit()
@@ -42,7 +35,7 @@ public class Enemy_MeleeAttackState : Enemy_AttackState
     {
         base.TriggerAttack();
 
-        Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(_attackPosition.position, _stateData.AttackRadius, _stateData.WhatIsPlayer);
+        Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(_attackPosition.position, _stateData.MeleeAttackDetails.AttackRadius, _stateData.WhatIsPlayer);
 
         foreach (Collider2D detectedObject in detectedObjects)
         {
@@ -50,23 +43,23 @@ public class Enemy_MeleeAttackState : Enemy_AttackState
 
             if (damageable != null)
             {
-                damageable.Damage(_stateData.AttackDamage);
+                damageable.Damage(_stateData.MeleeAttackDetails);
             }
             else
             {
                 Debug.Log("Damageable is null?!");
             }
 
-            IKnockbackable knockbackable = detectedObject.gameObject.GetComponentInChildren<IKnockbackable>();
+            /*IKnockbackable knockbackable = detectedObject.gameObject.GetComponentInChildren<IKnockbackable>();
 
             if (knockbackable != null)
             {
-                knockbackable.Knockback(_stateData.KnockbackAngle, _stateData.KnockbackStrength, Movement.FacingDirection, 0f, false);
+                knockbackable.Knockback(_stateData.MeleeAttackDetails.KnockbackAngle, _stateData.MeleeAttackDetails.KnockbackStrength, Movement.FacingDirection, 0f, false);
             }
             else
             {
                 Debug.Log("Knockbackable is null?!");
-            }
+            }*/
         }
     }
 

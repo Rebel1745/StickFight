@@ -27,8 +27,8 @@ public class PlayerGroundPunchState : PlayerAbilityState
 
         if (_hits.Length == 0) return;
 
-        ApplyKnockbackToHits(_playerData.GroundPunchKnockbackAngle, _playerData.GroundPunchKnockbackForce, Movement.FacingDirection, 0f, false);
-        ApplyDamageToHits(_playerData.GroundPunchDamage);
+        //ApplyKnockbackToHits(_playerData.GroundPunchKnockbackAngle, _playerData.GroundPunchKnockbackForce, Movement.FacingDirection, 0f, false);
+        ApplyDamageToHits(_playerData.GroundPunchAttackDetails);
     }
 
     public override void AnimationFinishedTrigger()

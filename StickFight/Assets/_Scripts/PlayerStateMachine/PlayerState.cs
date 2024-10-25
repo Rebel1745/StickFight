@@ -21,8 +21,6 @@ public class PlayerState
     protected bool _isExitingState;
     // super flags
     protected bool _playerDamaged = false;
-    protected bool _playerKnockedBack = false;
-    protected bool _playerKnockedUp = false;
 
     protected float _startTime;
 
@@ -62,8 +60,8 @@ public class PlayerState
 
     public virtual void AnimationFinishedTrigger() => _isAnimationFinished = true;
 
-    public void SetKnockedBack(bool knockedBack)
+    public void SetDamaged(bool damaged)
     {
-        _playerKnockedBack = knockedBack;
+        _playerDamaged = damaged;
     }
 }

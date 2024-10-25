@@ -27,8 +27,8 @@ public class PlayerGroundKickState : PlayerAbilityState
 
         if (_hits.Length == 0) return;
 
-        ApplyKnockbackToHits(_playerData.GroundKickKnockbackAngle, _playerData.GroundKickKnockbackForce, Movement.FacingDirection, 0f, false);
-        ApplyDamageToHits(_playerData.GroundKickDamage);
+        //ApplyKnockbackToHits(_playerData.GroundKickKnockbackAngle, _playerData.GroundKickKnockbackForce, Movement.FacingDirection, 0f, false);
+        ApplyDamageToHits(_playerData.GroundKickAttackDetails);
     }
 
     public override void AnimationFinishedTrigger()

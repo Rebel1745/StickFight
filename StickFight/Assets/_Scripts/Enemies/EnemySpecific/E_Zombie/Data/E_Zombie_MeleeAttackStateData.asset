@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e644fee8b81982645b332b67602e21ed, type: 3}
   m_Name: E_Zombie_MeleeAttackStateData
   m_EditorClassIdentifier: 
-  AttackRadius: 0.75
-  AttackDamage: 10
-  KnockbackAngle: {x: 5, y: 5}
-  KnockbackStrength: 20
+  MeleeAttackDetails:
+    name: 
+    AttackRadius: 5
+    AttackDamage: 10
+    KnockbackAngle: {x: 10, y: 10}
+    KnockbackStrength: 10
+    DisableGravity: 0
   WhatIsPlayer:
     serializedVersion: 2
     m_Bits: 128

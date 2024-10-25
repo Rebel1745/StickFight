@@ -57,9 +57,9 @@ public class PlayerGroundedState : PlayerState
         _punchInput = _player.InputHandler.PunchInput;
         _kickInput = _player.InputHandler.KickInput;
 
-        if (_playerKnockedBack)
+        if (_playerDamaged)
         {
-            _stateMachine.ChangeState(_player.KnockedBackState);
+            _stateMachine.ChangeState(_player.DamagedState);
         }
         else if (_jumpInput && _player.JumpState.CanJump())
         {

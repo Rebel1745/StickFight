@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class CC_Stats : CoreComponent
 {
-    public event Action OnHealthZero;
-
     [SerializeField] private float _maxHealth;
     private float _currentHealth;
 
@@ -17,15 +15,16 @@ public class CC_Stats : CoreComponent
         _currentHealth = _maxHealth;
     }
 
-    public void DecreaseHealth(float amount)
+    public float DecreaseHealth(float amount)
     {
         _currentHealth -= amount;
 
         if (_currentHealth <= 0f)
         {
             _currentHealth = 0f;
-            OnHealthZero?.Invoke();
         }
+
+        return _currentHealth;
     }
 
     public void IncreaseHealth(float amount)
